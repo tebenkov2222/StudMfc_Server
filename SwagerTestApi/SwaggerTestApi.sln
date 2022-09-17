@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwaggerTestApi", "SwaggerTestApi\SwaggerTestApi.csproj", "{EBABD1C9-38E9-44BA-800D-7C7DAABC7D0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swagg4erTestApi.Client", "Swagg4erTestApi.Client\Swagg4erTestApi.Client.csproj", "{48DD1C80-D3A8-40E6-A622-764358792055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwaggerTestApi.Web", "SwaggerTestApi.Web\SwaggerTestApi.Web.csproj", "{BC5C3A8A-ED14-4A80-97AC-151333B489F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBABD1C9-38E9-44BA-800D-7C7DAABC7D0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBABD1C9-38E9-44BA-800D-7C7DAABC7D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBABD1C9-38E9-44BA-800D-7C7DAABC7D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBABD1C9-38E9-44BA-800D-7C7DAABC7D0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48DD1C80-D3A8-40E6-A622-764358792055}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48DD1C80-D3A8-40E6-A622-764358792055}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48DD1C80-D3A8-40E6-A622-764358792055}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48DD1C80-D3A8-40E6-A622-764358792055}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC5C3A8A-ED14-4A80-97AC-151333B489F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC5C3A8A-ED14-4A80-97AC-151333B489F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC5C3A8A-ED14-4A80-97AC-151333B489F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC5C3A8A-ED14-4A80-97AC-151333B489F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
