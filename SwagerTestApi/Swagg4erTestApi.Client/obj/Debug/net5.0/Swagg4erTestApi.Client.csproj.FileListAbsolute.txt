@@ -1,0 +1,12 @@
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\bin\Debug\net5.0\Swagg4erTestApi.Client.deps.json
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\bin\Debug\net5.0\Swagg4erTestApi.Client.dll
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\bin\Debug\net5.0\ref\Swagg4erTestApi.Client.dll
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\bin\Debug\net5.0\Swagg4erTestApi.Client.pdb
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\obj\Debug\net5.0\Swagg4erTestApi.Client.csproj.AssemblyReference.cache
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\obj\Debug\net5.0\Swagg4erTestApi.Client.GeneratedMSBuildEditorConfig.editorconfig
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\obj\Debug\net5.0\Swagg4erTestApi.Client.AssemblyInfoInputs.cache
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\obj\Debug\net5.0\Swagg4erTestApi.Client.AssemblyInfo.cs
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\obj\Debug\net5.0\Swagg4erTestApi.Client.csproj.CoreCompileInputs.cache
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\obj\Debug\net5.0\Swagg4erTestApi.Client.dll
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\obj\Debug\net5.0\ref\Swagg4erTestApi.Client.dll
+E:\Projects\Rider\TestWebApi\SwagerTestApi\Swagg4erTestApi.Client\obj\Debug\net5.0\Swagg4erTestApi.Client.pdb
