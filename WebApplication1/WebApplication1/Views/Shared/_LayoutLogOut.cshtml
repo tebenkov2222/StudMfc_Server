@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+	<div class="nav-link" style="left:0">
+		<a asp-area="" asp-controller="Home" asp-action="Index">
+			<img src="~/Images/IstuLogo.png" width="80px" height="80px" alt="логотип"/>
+		</a>
+	</div>
+	<div class="nav-link" style="right:0">
+		<a asp-area="" asp-controller="Home" asp-action="Auth">
+			<img src="~/Images/LogoutLogo.png" width="80px" height="80px" alt="выход"/>
+		</a>
+	</div>
+	<header style="background-color:#E6E6E6;height:58.5px;padding:21.5px 0 0 0">
+		<h1 align="center" style="margin:0">МФЦ ИжГТУ</h1>
+	</header>
+@RenderBody()
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
