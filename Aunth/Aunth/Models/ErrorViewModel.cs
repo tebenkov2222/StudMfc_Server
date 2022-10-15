@@ -1,6 +1,6 @@
 using System;
 
-namespace Aunth.Models
+namespace AspNetMvcAuthGuide.Models
 {
     public class ErrorViewModel
     {

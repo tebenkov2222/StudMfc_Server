@@ -70,3 +70,5 @@ D:\C#\StudMfc_Server\Aunth\Aunth\obj\Debug\net5.0\Aunth.dll
 D:\C#\StudMfc_Server\Aunth\Aunth\obj\Debug\net5.0\ref\Aunth.dll
 D:\C#\StudMfc_Server\Aunth\Aunth\obj\Debug\net5.0\Aunth.pdb
 D:\C#\StudMfc_Server\Aunth\Aunth\obj\Debug\net5.0\Aunth.genruntimeconfig.cache
+D:\C#\StudMfc_Server\Aunth\Aunth\obj\Debug\net5.0\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
+D:\C#\StudMfc_Server\Aunth\Aunth\obj\Debug\net5.0\Razor\Views\Shared\_LoginPartial.cshtml.g.cs

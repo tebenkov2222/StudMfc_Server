@@ -2,10 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <UserSecretsId>aspnet-AspNetMvcAuthGuide-292B12E4-B1AA-42C7-8617-974B3A1261DB</UserSecretsId>
+        <RootNamespace>Aunth</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="EntityFramework" Version="6.4.4" />
+        <PackageReference Include="EntityFramework" Version="6.4.4" />
       <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.17" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.17" />
