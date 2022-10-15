@@ -9,7 +9,7 @@ namespace Aunth.Controllers
     {
         [HttpGet("admin")]
         [Authorize(Roles = RoleNames.Administrator)]
-        public IActionResult Get()
+        public IActionResult GetAdmin()
         {
             return Ok("Страница администратора");
         }
@@ -19,6 +19,20 @@ namespace Aunth.Controllers
         public IActionResult GetModerator()
         {
             return Ok("Страница модератора");
+        }
+        
+        [HttpGet("user")]
+        [Authorize(Roles = RoleNames.User)]
+        public IActionResult GetUser()
+        {
+            return Ok("Страница пользователя");
+        }
+        
+        [HttpGet("worker")]
+        [Authorize(Roles = RoleNames.Worker)]
+        public IActionResult GetWorker()
+        {
+            return Ok("Страница сотрудника");
         }
     }
 }
