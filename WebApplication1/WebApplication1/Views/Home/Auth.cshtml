@@ -2,16 +2,22 @@
     ViewData["Title"] = "Auth";
     Layout = "_LayoutLogIn";
 }
+@model WebApplication1.Models.LoginData
+
 <h1 align="center">Login</h1>
 <div align="center">
-	<form method="POST">
+	<form method="POST" asp-action="Login" asp-controller="Home" asp-anti-forgery="true">
+		<div class="validation" asp-validation-summary="ModelOnly"></div>
 		<div class="form-group">
 			<label for="login">Логин</label>
-			<input id="login" name="login" type="text" required autofocus/>
+			<input id="login" name="Username" type="text" asp-for="Username" required autofocus/>
+			<span asp-validation-for="Username"></span>
 		</div>
 		<div class="form-group">
 			<label for="psw">Пароль</label>
-			<input id="psw" name="psw" type="password" required/>
+			<input id="psw" name="Password" type="password" asp-for="Password" required/>
+			<span asp-validation-for="Password"></span>
+
 		</div>
 		<div class="form-group">
 			<input name="submit" type="submit" value="Войти"/>
