@@ -1,0 +1,25 @@
+﻿@model dynamic
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "RegServise";
+}
+
+<h4 name="NameOfServise" class="d-flex justify-content-center">**Справка об обучении**</h4>
+
+<div name="form" class="login-form">
+    <form name="auth" class="form-horizontal">
+        <fieldset name="caption" class="form-group">
+            <h5>Личная информация</h5>
+        </fieldset>
+
+        <fieldset name="" class="form-group">
+            <label for="fio"></label>
+            <input type="text" name="fio" placeholder="ФИО" autofocus required/>
+        </fieldset>
+
+        <fieldset class="form-group">
+            <input type="button" name="send" value="Отправить" class="btn"/>
+        </fieldset>
+    </form>
+</div>

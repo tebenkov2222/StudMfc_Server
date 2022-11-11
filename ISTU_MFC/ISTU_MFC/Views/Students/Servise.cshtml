@@ -1,0 +1,17 @@
+﻿@model dynamic
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Servise";
+}
+
+<h4 name="NameOfServise" class="d-flex justify-content-center">**Справка об обучении**</h4>
+
+<div>
+    <p>Информация об услуге</p>
+</div>
+
+<div class="d-flex justify-content-between">
+    <div name="RegService" class="btn"><a asp-area="" asp-controller="Students" asp-action="RegService">Запросить услугу</a></div>
+    <div name="DownloadBlank" class="btn"><a>Скачать бланк заявления</a></div>
+</div>

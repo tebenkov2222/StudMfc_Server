@@ -1,0 +1,61 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Log-in";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="position-absolute left top">
+        <a asp-area="" asp-controller="LogIn" asp-action="LogIn"><img src="~/images/IstuLogo.png" alt="лого" width="42px" height="42px" /></a>
+    </div>
+
+    <div class="colored d-flex justify-content-center">
+        <a asp-area="" asp-controller="LogIn" asp-action="LogIn" style="font-size:20pt; color:black;"><p>МФЦ ИжГТУ</p></a>
+    </div>
+
+    <header style="height:200px; color:white; ">
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div name="form" class="login-form">
+                <form name="auth" class="form-horizontal">
+                    <fieldset name="caption" class="form-group">
+                        <h4 class="d-flex justify-content-center">Вход</h4>
+                    </fieldset>
+
+                    <fieldset name="login" class="form-group">
+                        <label for="login">Логин</label>
+                        <input type="text" name="login" placeholder="" autofocus required />
+                    </fieldset>
+
+                    <fieldset name="password" class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" name="password" required />
+                    </fieldset>
+
+                    <fieldset name="error" class="form-group">
+                        <p style="color:red; display:none;">Неверный логин или пароль</p>
+                    </fieldset>
+
+                    <fieldset name="buttonIN" class="form-group">
+                        <input type="button" name="in" value="Войти" class="btn"/>
+                    </fieldset>
+
+                    <fieldset name="bottonINWITH" class="form-group">
+                        <input type="button" name="inwith" value="Войти с помощью istu.ru" class="btn"/>
+                    </fieldset>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿@model dynamic
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Profile";
+}
+
+<h2 class="d-flex justify-content-center">Профиль</h2>
+
+<div class="d-flex justify-content-sm-between">
+    <div name="profile" class="d-inline">
+        <h4 name="fio">Иванов Иван Иванович</h4>
+        <div name="acc_lvl">Базовый аккаунт</div>
+        <div name="docs" class="docs">
+            <p class="pdocs">Предоставленные документы:</p>
+            <p class="pdocs">Паспорт</p>
+            <p class="pdocs">СНИЛС</p>
+            <p class="pdocs">ИНН</p>
+            <p class="pdocs">Фотография</p>
+        </div>
+    </div>
+    <div id="FAQ" class="d-inline black-grey">
+        <p class="d-flex justify-content-center">Часто задаваемые вопросы</p>
+    </div>
+</div>

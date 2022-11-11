@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
+</head>
+<body>
+    <div class="left-logo-text position-absolute left top">
+        <div class="d-inline">
+            <a asp-area="" asp-controller="Employees" asp-action="WorkWithDoc"><img src="~/images/IstuLogo.png" alt="лого" width="40px" height="40px" /></a>
+        </div>
+        <a asp-area="" asp-controller="Employees" asp-action="WorkWithDoc"><p class="d-inline align-content-center" style="color:black;">МФЦ ИжГТУ</p></a>
+    </div>
+    <div class="right-logos position-absolute right top">
+        <div class="d-inline">
+            <a asp-area="" asp-controller="Employees" asp-action="WorkWithDoc"><img src="~/images/NotifLogo.png" alt="увед" width="40px" height="40px" /></a>
+        </div>
+        <div class="d-inline">
+            <a asp-area="" asp-controller="LogIn" asp-action="LogIn"><img src="~/images/ExitLogo.png" alt="выход" width="40px" height="40px" /></a>
+        </div>
+    </div>
+    <div class="colored"></div>
+
+<header>
+    
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

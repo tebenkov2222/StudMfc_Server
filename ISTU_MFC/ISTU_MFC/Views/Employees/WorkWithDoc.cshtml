@@ -1,0 +1,32 @@
+﻿@model dynamic
+
+@{
+    Layout = "_LayoutEmployees";
+    ViewData["Title"] = "Home";
+}
+
+<header style="height:50px">
+
+</header>
+
+<div name="ServiseConstructor" class="btn left-margin"><a asp-area="" asp-controller="Employees" asp-action="ServiceConstructor">Конструктор услуг</a></div>
+
+<div name="Archive" class="btn left-margin"><a>Архив</a></div>
+
+<div name="ServiceCollection" class="btn left-margin"><a>Список услуг</a></div>
+
+<div name="SearchFilter" class="d-flex justify-content-start site-header-top-search">
+    <form>
+        <input type="text" class="input" name="query" placeholder="Поиск по номеру заявок">
+        <button type="submit"></button>
+    </form>
+</div>
+
+<div name="Services" class="services white-grey">
+    <div name="service1" class="service black-grey">
+        <div onclick="isCheked()" class="bg-white" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px"></div>
+    </div>
+    <div name="service2" class="service black-grey">
+        <div onclick="isCheked()" class="bg-white" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px"></div>
+    </div>
+</div>

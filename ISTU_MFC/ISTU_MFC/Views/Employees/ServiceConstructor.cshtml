@@ -1,0 +1,32 @@
+﻿@model dynamic
+
+@{
+    Layout = "_LayoutEmployees";
+    ViewData["Title"] = "ServiceConstructor";
+}
+
+<div name="form" class="login-form justify-content-start">
+    <form name="auth" class="form-horizontal">
+        <fieldset name="nameservice" class="form-group">
+            <label for="nameservice">Название услуги</label>
+            <input type="text" name="nameservice" placeholder="" autofocus required />
+        </fieldset>
+
+        <fieldset name="infoservice" class="form-group">
+            <label for="infoservice">Информация об услуге</label>
+            <textarea></textarea>
+        </fieldset>
+
+        <fieldset name="choosepref" class="form-group">
+            <p class="btn">Выбрать шаблон</p>
+        </fieldset>
+
+        <fieldset name="createpref" class="form-group">
+            <p class="btn"><a asp-area="" asp-controller="Employees" asp-action="DocGenerator">Создать шаблон</a></p>
+        </fieldset>
+
+        <fieldset name="save" class="form-group">
+            <input type="button" name="save" value="Сохранить" class="btn" />
+        </fieldset>
+    </form>
+</div>
