@@ -7,6 +7,7 @@ namespace Repository
     public class RepositoryController: IRepository
     {
         private Database _db;
+        public int UserId { get; set; }
 
         public RepositoryController()
         {
@@ -32,6 +33,11 @@ namespace Repository
         public bool CheckByEmployees(int idUser)
         {
             return _db.CheckByEmployee(idUser);
+        }
+
+        public string[][] GetStudentInfo(int userId)
+        {
+            return _db.GetStudentInfo(userId);
         }
     }
 }

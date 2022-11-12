@@ -8,16 +8,24 @@ using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using ISTU_MFC.Models;
+using ISTU_MFC.ViewModels;
+using Repository;
+
 
 namespace ISTU_MFC.Controllers
 {
     public class StudentsController : Controller
     {
         private readonly ILogger<StudentsController> _logger;
+        private UserContext db;
+        private readonly IRepository _repository;
 
-        public StudentsController(ILogger<StudentsController> logger)
+        public StudentsController(ILogger<StudentsController> logger, UserContext context, IRepository repository)
         {
             _logger = logger;
+            db = context;
+            _repository = repository;
         }
 
         [Authorize(Roles = "Student")]
@@ -35,7 +43,14 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult Profile()
         {
-            return View();
+            var res = _repository.GetStudentInfo(_repository.UserId);
+            var dict = new Dictionary<string, string>(); 
+            dict["name"] = res[1][3];
+            dict["family"] = res[1][2];
+            dict["secondName"] = res[1][4];;
+            dict["numBil"] = res[1][1];
+            dict["group"] = res[1][5];
+            return View(dict);
         }
 
         [Authorize(Roles = "Student")]
