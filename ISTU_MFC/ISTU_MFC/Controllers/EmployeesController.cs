@@ -7,22 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
 using Microsoft.AspNetCore.Authorization;
+using Repository;
 
 namespace ISTU_MFC.Controllers
 {
     public class EmployeesController : Controller
     {
         private readonly ILogger<EmployeesController> _logger;
-
-        public EmployeesController(ILogger<EmployeesController> logger)
+        private readonly IRepository _repository;
+        public EmployeesController(ILogger<EmployeesController> logger, IRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
 
         [Authorize(Roles = "Employee")]
         public IActionResult WorkWithDoc()
         {
-            return View();
+            var requests = _repository.GetRequests(_repository.UserId);
+            return View(requests);
         }
 
         [Authorize(Roles = "Employee")]

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ModelsData;
 
@@ -10,7 +11,7 @@ namespace Repository
         bool CheckByStudent(int idUser);
         bool CheckByEmployees(int idUser);
         public StudentProfileModel GetStudentProfileModel(int userId);
-        public string[][] GetStudentInfo(int userId);
+        public List<RequestModel> GetRequests(int userId);
     }
     
     

@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model List<ModelsData.RequestModel>
 
 @{
     Layout = "_LayoutEmployees";
@@ -23,10 +23,11 @@
 </div>
 
 <div name="Services" class="services white-grey">
-    <div name="service1" class="service black-grey">
-        <div onclick="isCheked()" class="bg-white" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px"></div>
-    </div>
-    <div name="service2" class="service black-grey">
-        <div onclick="isCheked()" class="bg-white" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px"></div>
-    </div>
+    @foreach (var req in Model)
+    {
+        <div name="service1" class="service black-grey">
+            <div onclick="isCheked()" class="bg-white" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px"> </div>
+            <p>@req.Id  @req.Caption</p>
+        </div>
+    }
 </div>

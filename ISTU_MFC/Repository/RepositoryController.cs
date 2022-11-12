@@ -55,5 +55,22 @@ namespace Repository
         {
             return _db.GetStudentInfo(userId);
         }
+
+        public List<RequestModel> GetRequests(int userId)
+        {
+            return new List<RequestModel>()
+            {
+                new RequestModel()
+                {
+                    Caption = "Название",
+                    Id = "1"
+                },
+                new RequestModel()
+                {
+                    Caption = "Название2",
+                    Id = "2"
+                }
+            };
+        }
     }
 }
