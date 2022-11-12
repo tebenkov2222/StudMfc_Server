@@ -29,8 +29,13 @@ namespace Repository
 
         public bool CheckByStudent(int idUser)
         {
-            using var query = new QueryTool(_db);
-            return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM students WHERE user_id = {idUser}) = 1")[0][1]);
+            using (var query = new QueryTool(_db))
+            {
+                var result = query.QueryWithTable($"SELECT (SELECT Count(*) FROM students WHERE user_id = {idUser}) = 1");
+                return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM students WHERE user_id = {idUser}) = 1")[0][1]);
+            }
+
+            return false;
         }
 
         public bool CheckByEmployee(int idUser)
