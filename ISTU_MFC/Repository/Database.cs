@@ -16,15 +16,27 @@ namespace Repository
             _db = new NpgsqlConnection(databaseConnectData.ToString());
         }
 
-        public string[][] StudentGroup(string variable) // например, группу студента по фамилии
+        public string[][] StudentGroup(string variable, string field1, string field2) // например, группу студента по фамилии
         {
             string[][] result;
             using var query = new QueryTool(_db);
-            result = query.QueryWithTable("Select g.group_number FROM Groups As g" + 
-                                          " JOIN students As s ON s.group_number = g.id " + 
+            result = query.QueryWithTable($"Select g.group_number AS {field1} FROM Groups As g" + 
+                                          $" JOIN students As s ON s.group_number = g.id " + 
                                           $" JOIN Users As u ON s.user_id = u.id WHERE u.surname = '{variable}';");
 
             return result;
+        }
+
+        public bool CheckByStudent(int idUser)
+        {
+            using var query = new QueryTool(_db);
+            return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM students WHERE user_id = {idUser}) = 1")[0][1]);
+        }
+
+        public bool CheckByEmployee(int idUser)
+        {
+            using var query = new QueryTool(_db);
+            return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM employees WHERE user_id = {idUser}) = 1")[0][1]);
         }
 
         public void Disconnect()
