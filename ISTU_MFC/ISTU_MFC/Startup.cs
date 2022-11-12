@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ISTU_MFC.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 
@@ -36,6 +37,9 @@ namespace ISTU_MFC
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Login/Login");
                 });
+            /*services.AddDefaultIdentity<IdentityRole>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<UserContext>();*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
