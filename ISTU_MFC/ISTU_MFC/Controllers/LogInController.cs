@@ -50,9 +50,9 @@ namespace ISTU_MFC.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.login == model.login && u.password == model.password);
                 if (user != null)
                 {
-                    
+                    _repository.UserId = user.Id;
                     bool isStudent = _repository.CheckByStudent(user.Id);
-                    await Authenticate(model.login, isStudent ? "Student" : "Employee"); // аутентификация
+                    await Authenticate(user.Id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
                     if(isStudent)
                         return RedirectToAction("Home", "Students");
                     else
