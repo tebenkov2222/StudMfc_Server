@@ -11,6 +11,7 @@ using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Repository;
 
 namespace ISTU_MFC.Controllers
 {
@@ -18,10 +19,11 @@ namespace ISTU_MFC.Controllers
     {
         private readonly ILogger<LogInController> _logger;
 
-        public LogInController(ILogger<LogInController> logger, UserContext context)
+        public LogInController(ILogger<LogInController> logger, UserContext context, IRepository repository)
         {
             _logger = logger;
             db = context;
+            _repository = repository;
         }
         
 
@@ -31,6 +33,8 @@ namespace ISTU_MFC.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         private UserContext db;
+        private readonly IRepository _repository;
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -40,6 +44,7 @@ namespace ISTU_MFC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
         {
+            _repository.WriteMessage(model.login);
             if (ModelState.IsValid)
             {
                 User user = await db.Users.FirstOrDefaultAsync(u => u.login == model.login && u.password == model.password);
