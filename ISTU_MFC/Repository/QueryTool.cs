@@ -26,11 +26,11 @@ namespace Repository
             var count = reader.FieldCount;
             var result = new List<string[]>
             {
-                Enumerable.Range(1, count).Select(i=> reader.GetName(i).ToString()).ToArray()
+                Enumerable.Range(1, count).Select((name, i)=> reader.GetName(i).ToString()).ToArray()
             };
             if (!reader.HasRows) return result.ToArray();
             while (reader.Read())
-                result.Add(Enumerable.Range(1, count).Select(j => reader.GetValue(j).ToString()).ToArray()!);
+                result.Add(Enumerable.Range(1, count).Select((value, j) => reader.GetValue(j).ToString()).ToArray()!);
         
             return result.ToArray();
         }

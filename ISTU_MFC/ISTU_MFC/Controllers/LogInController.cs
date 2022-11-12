@@ -44,15 +44,18 @@ namespace ISTU_MFC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            _repository.WriteMessage(model.login);
+            
             if (ModelState.IsValid)
             {
                 User user = await db.Users.FirstOrDefaultAsync(u => u.login == model.login && u.password == model.password);
                 if (user != null)
                 {
                     await Authenticate(model.login); // аутентификация
- 
-                    return RedirectToAction("WorkWithDoc", "Employees");
+                    bool isStudent = _repository.CheckByStudent(user.Id);
+                    if(isStudent)
+                        return RedirectToAction("Home", "Students");
+                    else
+                        return RedirectToAction("WorkWithDoc", "Employees");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
