@@ -22,5 +22,8 @@ namespace Repository
             CommandTimeout = 300,
             KeepAlive = 300
         };
+
+        public override string ToString() => 
+            $"Host={Server};Port={Port};Database={Database};Username={UserId};Password={Password}";
     }
 }
