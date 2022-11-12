@@ -27,16 +27,22 @@ namespace Repository
             return result;
         }
 
-        public bool CheckByStudent(int idUser)
+        public bool CheckByStudent(int userId)
         {
             using var query = new QueryTool(_db);
-            return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM students WHERE user_id = {idUser}) = 1")[1][0]);
+            return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM students WHERE user_id = {userId}) = 1")[1][0]);
         }
 
-        public bool CheckByEmployee(int idUser)
+        public bool CheckByEmployee(int userId)
         {
             using var query = new QueryTool(_db);
-            return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM employees WHERE user_id = {idUser}) = 1")[0][1]);
+            return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM employees WHERE user_id = {userId}) = 1")[1][0]);
+        }
+        
+        public string[][] GetStudentInfo(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT * FROM students_info WHERE user_id = {userId}");
         }
 
         public void Disconnect()
