@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using ModelsData;
 
 namespace Repository
 {
@@ -8,6 +9,7 @@ namespace Repository
         void WriteMessage(string message);
         bool CheckByStudent(int idUser);
         bool CheckByEmployees(int idUser);
+        public StudentProfileModel GetStudentProfileModel(int userId);
         public string[][] GetStudentInfo(int userId);
     }
     

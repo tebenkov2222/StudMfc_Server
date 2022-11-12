@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ModelsData;
 
 namespace Repository
 {
@@ -20,6 +21,8 @@ namespace Repository
             
         }
 
+        public int Id { get; set; }
+
         public void WriteMessage(string message)
         {
             Console.WriteLine($"Test message {message}");
@@ -33,6 +36,19 @@ namespace Repository
         public bool CheckByEmployees(int idUser)
         {
             return _db.CheckByEmployee(idUser);
+        }
+
+        public StudentProfileModel GetStudentProfileModel(int userId)
+        {
+            var studentInfo = _db.GetStudentInfo(userId);
+            return new StudentProfileModel()
+            {
+                Family = studentInfo[1][2],
+                Name = studentInfo[1][3],
+                SecondName = studentInfo[1][4],
+                Group = studentInfo[1][1],
+                StudId = studentInfo[1][5]
+            };
         }
 
         public string[][] GetStudentInfo(int userId)
