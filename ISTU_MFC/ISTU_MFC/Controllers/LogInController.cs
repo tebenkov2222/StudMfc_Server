@@ -23,11 +23,7 @@ namespace ISTU_MFC.Controllers
             _logger = logger;
             db = context;
         }
-
-        /*public IActionResult LogIn()
-        {
-            return View();
-        }*/
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -41,7 +37,7 @@ namespace ISTU_MFC.Controllers
             return View();
         }
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
         {
             if (ModelState.IsValid)
@@ -51,40 +47,13 @@ namespace ISTU_MFC.Controllers
                 {
                     await Authenticate(model.login); // аутентификация
  
-                    return RedirectToAction("DocGenerator", "Employees");
+                    return RedirectToAction("WorkWithDoc", "Employees");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
         }
-        /*[HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }*/
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.login == model.Email);
-                if (user == null)
-                {
-                    // добавляем пользователя в бд
-                    db.Users.Add(new User { login = model.Email, password = model.Password });
-                    await db.SaveChangesAsync();
- 
-                    await Authenticate(model.Email); // аутентификация
- 
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
-            }
-            return View(model);
-        }*/
- 
+
         private async Task Authenticate(string userName)
         {
             // создаем один claim
