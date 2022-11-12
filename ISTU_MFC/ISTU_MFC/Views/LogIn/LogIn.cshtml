@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model ISTU_MFC.ViewModels.LoginModel
 
 @{
     Layout = null;
@@ -27,7 +27,7 @@
     <div class="container">
         <main role="main" class="pb-3">
             <div name="form" class="login-form">
-                <form name="auth" class="form-horizontal">
+                <form name="auth" method="post" class="form-horizontal">
                     <fieldset name="caption" class="form-group">
                         <h4 class="d-flex justify-content-center">Вход</h4>
                     </fieldset>
@@ -47,7 +47,7 @@
                     </fieldset>
 
                     <fieldset name="buttonIN" class="form-group">
-                        <input type="button" name="in" value="Войти" class="btn"/>
+                        <input type="submit" name="in" value="Войти" class="btn"/>
                     </fieldset>
 
                     <fieldset name="bottonINWITH" class="form-group">
