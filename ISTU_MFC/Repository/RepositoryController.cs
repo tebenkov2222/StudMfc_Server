@@ -8,6 +8,7 @@ namespace Repository
     public class RepositoryController: IRepository
     {
         private Database _db;
+        public int UserId { get; set; }
 
         public RepositoryController()
         {
@@ -47,6 +48,11 @@ namespace Repository
                 Group = "Group Test",
                 StudId = "1234567890"
             };
+        }
+
+        public string[][] GetStudentInfo(int userId)
+        {
+            return _db.GetStudentInfo(userId);
         }
     }
 }

@@ -5,13 +5,12 @@ namespace Repository
 {
     public interface IRepository
     {
-        int Id { get; set; }
+        public int UserId { get; set; }
         void WriteMessage(string message);
         bool CheckByStudent(int idUser);
         bool CheckByEmployees(int idUser);
-
-        StudentProfileModel GetStudentProfileModel();
-    }
+        public string[][] GetStudentInfo(int userId);
+}
     
     
 }

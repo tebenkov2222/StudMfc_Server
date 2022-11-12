@@ -30,7 +30,7 @@ namespace ISTU_MFC
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<UserContext>(options => options.UseNpgsql(connection));
-            services.AddScoped<IRepository, RepositoryController>();
+            services.AddSingleton<IRepository, RepositoryController>();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
