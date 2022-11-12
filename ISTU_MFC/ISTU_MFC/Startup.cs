@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ISTU_MFC.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository;
 
 namespace ISTU_MFC
 {
@@ -28,7 +29,7 @@ namespace ISTU_MFC
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<UserContext>(options => options.UseNpgsql(connection));
-            
+            services.AddScoped<IRepository, RepositoryController>();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
