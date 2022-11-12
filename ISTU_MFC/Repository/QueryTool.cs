@@ -34,6 +34,20 @@ namespace Repository
         
             return result.ToArray();
         }
+        
+        public Dictionary<string, string?> QueryWithDictionary(string query) =>
+            ProcessDictionary(new NpgsqlCommand(query, _dataBase).ExecuteReader());
+    
+        private Dictionary<string, string?> ProcessDictionary(NpgsqlDataReader reader)
+        {
+            var count = reader.FieldCount;
+            var result = new Dictionary<string, string?>();
+            if (!reader.HasRows) return result;
+            for (var i = 0; i < count; i++)
+                result.Add(reader.GetName(i), reader.GetValue(i).ToString());
+        
+            return result;
+        }
 
         private bool _isDisposed;
 
