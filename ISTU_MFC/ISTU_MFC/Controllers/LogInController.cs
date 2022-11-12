@@ -50,24 +50,27 @@ namespace ISTU_MFC.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.login == model.login && u.password == model.password);
                 if (user != null)
                 {
-                    await Authenticate(model.login); // аутентификация
+                    
                     bool isStudent = _repository.CheckByStudent(user.Id);
+                    await Authenticate(model.login, isStudent ? "Student" : "Employee"); // аутентификация
                     if(isStudent)
                         return RedirectToAction("Home", "Students");
                     else
                         return RedirectToAction("WorkWithDoc", "Employees");
+                    
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
         }
 
-        private async Task Authenticate(string userName)
+        private async Task Authenticate(string userName, string userRole)
         {
             // создаем один claim
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, userName)
+                new Claim(ClaimsIdentity.DefaultNameClaimType, userName),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, userRole)
             };
             // создаем объект ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
