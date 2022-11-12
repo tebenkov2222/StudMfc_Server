@@ -32,7 +32,8 @@ namespace Repository
             using (var query = new QueryTool(_db))
             {
                 var result = query.QueryWithTable($"SELECT (SELECT Count(*) FROM students WHERE user_id = {idUser}) = 1");
-                return bool.Parse(query.QueryWithTable($"SELECT (SELECT Count(*) FROM students WHERE user_id = {idUser}) = 1")[0][1]);
+                var test = result[1][0];
+                return bool.Parse(result[1][0]);
             }
 
             return false;
