@@ -43,14 +43,8 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult Profile()
         {
-            var res = _repository.GetStudentInfo(_repository.UserId);
-            var dict = new Dictionary<string, string>(); 
-            dict["name"] = res[1][3];
-            dict["family"] = res[1][2];
-            dict["secondName"] = res[1][4];;
-            dict["numBil"] = res[1][1];
-            dict["group"] = res[1][5];
-            return View(dict);
+            var model = _repository.GetStudentProfileModel(_repository.UserId);
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]

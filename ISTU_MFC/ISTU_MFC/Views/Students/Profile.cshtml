@@ -1,4 +1,4 @@
-﻿@model Dictionary<string, string>
+﻿@model ModelsData.StudentProfileModel
 
 @{
     Layout = "_Layout";
@@ -10,9 +10,9 @@
 
 <div class="d-flex justify-content-sm-between">
     <div name="profile" class="d-inline">
-        <div name="fml">ФИО: @Model["family"] @Model["name"] @Model["secondName"]</div>
-        <div name="fml">Номер студенческого билета: @Model["numBil"] </div>
-        <div name="fml">Номер группы: @Model["group"] </div>
+        <div name="fml">ФИО: @Model.Family @Model.Name @Model.SecondName</div>
+        <div name="fml">Номер студенческого билета: @Model.StudId </div>
+        <div name="fml">Номер группы: @Model.Group </div>
         <div name="acc_lvl">Базовый аккаунт</div>
         <div name="docs" class="docs">
             <p class="pdocs">Предоставленные документы:</p>

@@ -38,15 +38,16 @@ namespace Repository
             return _db.CheckByEmployee(idUser);
         }
 
-        public StudentProfileModel GetStudentProfileModel()
+        public StudentProfileModel GetStudentProfileModel(int userId)
         {
+            var studentInfo = _db.GetStudentInfo(userId);
             return new StudentProfileModel()
             {
-                Family = "Test",
-                Name = "Test",
-                SecondName = "Test",
-                Group = "Group Test",
-                StudId = "1234567890"
+                Family = studentInfo[1][2],
+                Name = studentInfo[1][3],
+                SecondName = studentInfo[1][4],
+                Group = studentInfo[1][1],
+                StudId = studentInfo[1][5]
             };
         }
 
