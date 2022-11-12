@@ -51,9 +51,11 @@ namespace ISTU_MFC.Controllers
                 if (user != null)
                 {
                     await Authenticate(model.login); // аутентификация
-                    _repository.WriteMessage($"{_repository.CheckByStudent(user.Id)}");
- 
-                    return RedirectToAction("WorkWithDoc", "Employees");
+                    bool isStudent = _repository.CheckByStudent(user.Id);
+                    if(isStudent)
+                        return RedirectToAction("Home", "Students");
+                    else
+                        return RedirectToAction("WorkWithDoc", "Employees");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
