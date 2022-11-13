@@ -10,15 +10,14 @@ namespace Documents
     public class DocumentsController
     {
         private readonly IRepository _repository;
-        private readonly DocumentsSettings _settings;
+        private readonly DocumentsSettings _settings = DocumentsSettings.LocalHartmann;
 
         private FieldsController _fieldsController;
 
         public FieldsController FieldsController => _fieldsController;
-        public DocumentsController(IRepository repository,DocumentsSettings settings)
+        public DocumentsController(IRepository repository)
         {
             _repository = repository;
-            _settings = settings;
             _fieldsController = new FieldsController(repository);
         }
         //public void 
