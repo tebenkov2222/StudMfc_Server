@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
+using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Repository;
 
@@ -68,9 +69,10 @@ namespace ISTU_MFC.Controllers
         
         [HttpPost]
         [Authorize(Roles = "Employee")]
-        public IActionResult ChangeStatus(string request_id)
+        public IActionResult ChangeStatus(ChangeStatusModel model)
         {
-            ViewData["request_id"] = request_id;
+            _repository.ChangeRequestState(Int32.Parse(model.request_id), _repository.UserId , model.status);
+            _repository.CreateMessage(Int32.Parse(model.request_id), _repository.UserId, model.message);
             return View();
         }
         

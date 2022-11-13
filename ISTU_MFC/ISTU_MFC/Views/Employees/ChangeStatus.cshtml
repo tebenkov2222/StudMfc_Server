@@ -8,28 +8,28 @@
 <h3>Изменение статуса заявки</h3>
 
 <div name="id" class="d-flex">
-    <div>ID заявки: </div>
-    <div>12345</div>
+<div>ID заявки: </div>
+<div name="request_id" value = @ViewData["request_id"]> @ViewData["request_id"] </div>
 </div>
 
 <div name="form" class="login-form">
-    <form name="ChangeStatus" class="form-horizontal">
+    <form method="post" name="ChangeStatus" class="form-horizontal">
         <fieldset name="status" class="form-group">
             <label for="status">Статус заявки:</label>
             <select name="status" required="required">
                 <option value="">Выберите значение</option>
-                <option value="1">Отменена</option>
-                <option value="2">Принята</option>
+                <option value="Canceled">Отменена</option>
+                <option value="processing">Принята</option>
             </select>
         </fieldset>
     
-        <fieldset name="description" class="form-group">
-            <label for="description">Описание</label>
-            <textarea name="description"></textarea>
+        <fieldset name="message" class="form-group">
+            <label for="message">Сообщение</label>
+            <textarea name="message"></textarea> 
         </fieldset>
     
         <fieldset name="buttons" class="form-group">
-            <button class="btn" type="button">Изменить статус</button>
+            <button class="btn" type="submit">Изменить статус</button>
         </fieldset>
     </form>
 </div>

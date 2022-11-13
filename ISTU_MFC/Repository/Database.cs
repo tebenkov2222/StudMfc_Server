@@ -115,5 +115,19 @@ namespace Repository
             var res = query.QueryWithTable($"SELECT user_id FROM students WHERE stud_id = (SELECT stud_id FROM requests WHERE id = {requestId})");
             return Int32.Parse(res[1][0]);
         }
+
+        public void ChangeRequestState(int requestId, int user_id, string status)
+        {
+            using var query = new QueryTool(_db);
+            query.QueryWithoutTable($"UPDATE requests SET employee_id = (SELECT employee_id FROM employees WHERE user_id = {user_id}), status = '{status}' WHERE id = {requestId}");
+        }
+
+        public void CreateMessage(int requestId, int employee_id, string message)
+        {
+            using var query = new QueryTool(_db);
+            query.QueryWithoutTable($"INSERT INTO messages (employee_id, stud_id, text_message, request_id) VALUES " +
+                                    $" ((SELECT employee_id FROM employees WHERE user_id = {employee_id}),"+
+                                    $"(SELECT stud_id FROM requests WHERE id = {requestId}), '{message}', {requestId})");
+        }
     }
 }
