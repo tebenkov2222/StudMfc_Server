@@ -147,5 +147,11 @@ namespace Repository
             using var query = new QueryTool(_db);
             return query.QueryWithTable($"SELECT services_id, name FROM services_info_by_subdivisions WHERE subdivision_id = {subId}");
         }
+
+        public string[][] GetServisesInfo(int servId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT name, information FROM services_info_by_subdivisions WHERE services_id = {servId}");
+        }
     }
 }
