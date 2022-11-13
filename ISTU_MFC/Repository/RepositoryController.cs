@@ -55,5 +55,10 @@ namespace Repository
         {
             return _db.GetStudentInfo(userId);
         }
+
+        public IDictionary<string, string[]> GetValueFields()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

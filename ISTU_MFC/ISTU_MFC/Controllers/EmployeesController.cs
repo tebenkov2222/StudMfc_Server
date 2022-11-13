@@ -20,11 +20,15 @@ namespace ISTU_MFC.Controllers
         }
 
         [Authorize(Roles = "Employee")]
+        [HttpGet]
         public IActionResult WorkWithDoc()
         {
             return View();
         }
-
+        public string Action(string value)
+        {
+            return $"TEST value = [{value}]";
+        }
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
         {
