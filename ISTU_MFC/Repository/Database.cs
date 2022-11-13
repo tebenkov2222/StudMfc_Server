@@ -54,12 +54,12 @@ namespace Repository
         //   1223	    "Материальная помошь"
         //  443355	    "Материальная помошь"
         //  335544	    "Академический отпуск"
-        public string[][] GetTableAvailableRequestsForEmployees(int userId) 
+        public string[][] GetTableAvailableRequestsForEmployees(int userId, string status = "closed") 
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable
-                ("SELECT request_id, name_service FROM list_of_requests_for_employees " + 
-                 $"WHERE employee_id IS null AND user_id = {userId};");
+            ("SELECT request_id, name_service FROM list_of_requests_for_employees " + 
+             $"WHERE status <> '{status}' AND user_id = {userId};");
         }
 
         //   document_link
