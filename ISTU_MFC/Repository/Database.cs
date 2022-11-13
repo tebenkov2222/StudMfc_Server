@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using ModelsData;
 using Npgsql;
 
 namespace Repository
@@ -59,7 +61,29 @@ namespace Repository
                 ("SELECT request_id, name_service FROM list_of_requests_for_employees " + 
                  $"WHERE employee_id IS null AND user_id = {userId};");
         }
+        public List<FieldsModel> GetRequestFeelds(int requestId)
+        {
+            using var query = new QueryTool(_db);
+            var res = query.QueryWithTable($"SELECT name, value, manually_filled FROM fields WHERE request_id = {requestId}");
+            var list = new List<FieldsModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                list.Add(new FieldsModel()
+                {
+                    Name = res[i][0],
+                    Value = res[i][1],
+                    Malually_fiiled = bool.Parse(res[i][2])
+                });
+            }
+            return list;
+        }
 
+        public int GetStudentByRequest(int requestId)
+        {
+            using var query = new QueryTool(_db);
+            var res = query.QueryWithTable($"SELECT user_id FROM students WHERE stud_id = (SELECT stud_id FROM requests WHERE id = {requestId})");
+            return Int32.Parse(res[1][0]);
+        }
         //   document_link
         // "ссылка на документ"
         public Dictionary<string, string> GetLinkToDocument(int requestId)

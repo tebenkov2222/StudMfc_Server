@@ -35,6 +35,20 @@ namespace ISTU_MFC.Controllers
         private UserContext db;
         private readonly IRepository _repository;
 
+        public IActionResult Home()
+        {
+            if (_repository.UserId == 0)
+                return RedirectToAction("Login");
+            else
+            {
+                bool isStudent = _repository.CheckByStudent(_repository.UserId);
+                if (isStudent)
+                    return RedirectToAction("Home", "Students");
+                else
+                    return RedirectToAction("WorkWithDoc", "Employees");
+            }
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -81,6 +95,7 @@ namespace ISTU_MFC.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            _repository.UserId = 0;
             return RedirectToAction("Login", "Login");
         }
     }

@@ -1,4 +1,6 @@
-﻿@model dynamic
+﻿@model List<ModelsData.RequestModel>
+
+
 
 @{
     Layout = "_LayoutEmployees";
@@ -23,10 +25,13 @@
 </div>
 
 <div name="Services" class="services white-grey">
-    <div name="service1" class="service black-grey">
-        <div onclick="isCheked()" class="bg-white" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px"></div>
-    </div>
-    <div name="service2" class="service black-grey">
-        <div onclick="isCheked()" class="bg-white" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px"></div>
-    </div>
+    <form method="post">
+        
+        @foreach (var req in Model)
+        {
+            <div style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px">
+                @Html.ActionLink(@$"{req.Id} {req.Caption}", "RequestGenerator", "Employees", new { req_id = @req.Id }, null)
+            </div>
+        }
+    </form>
 </div>
