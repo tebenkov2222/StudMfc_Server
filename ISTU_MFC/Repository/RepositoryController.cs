@@ -56,7 +56,7 @@ namespace Repository
             return _db.GetStudentInfo(userId);
         }
 
-        public IDictionary<string, string[]> GetValueFields()
+        public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
         {
             throw new NotImplementedException();
         }

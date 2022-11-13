@@ -12,7 +12,7 @@ namespace Repository
         bool CheckByEmployees(int idUser);
         public StudentProfileModel GetStudentProfileModel(int userId);
         public string[][] GetStudentInfo(int userId);
-        public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
+        public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath);
     }
     
     
