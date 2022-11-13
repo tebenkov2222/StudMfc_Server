@@ -55,5 +55,45 @@ namespace Repository
             }
             return result;
         }
+
+        public List<RequestModel> GetRequests(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FieldsModel> GetRequestFeelds(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public StudentProfileModel GetStudentByRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeRequestState(int requestId, int user_id, string state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateMessage(int requestId, int employee_id, string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<MessageModel> GetTableMessages(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<SubdivisionModel> GetDevisionsList(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Servises> GetSubdivisionInfo(int sun_id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
