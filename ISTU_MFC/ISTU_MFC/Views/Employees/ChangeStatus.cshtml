@@ -5,3 +5,31 @@
     ViewData["Title"] = "ChangeStatus";
 }
 
+<h3>Изменение статуса заявки</h3>
+
+<div name="id" class="d-flex">
+    <div>ID заявки: </div>
+    <div>12345</div>
+</div>
+
+<div name="form" class="login-form">
+    <form name="ChangeStatus" class="form-horizontal">
+        <fieldset name="status" class="form-group">
+            <label for="status">Статус заявки:</label>
+            <select name="status" required="required">
+                <option value="">Выберите значение</option>
+                <option value="1">Отменена</option>
+                <option value="2">Принята</option>
+            </select>
+        </fieldset>
+    
+        <fieldset name="description" class="form-group">
+            <label for="description">Описание</label>
+            <textarea name="description"></textarea>
+        </fieldset>
+    
+        <fieldset name="buttons" class="form-group">
+            <button class="btn" type="button">Изменить статус</button>
+        </fieldset>
+    </form>
+</div>
