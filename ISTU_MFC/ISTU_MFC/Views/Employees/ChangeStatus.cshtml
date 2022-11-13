@@ -1,4 +1,4 @@
-﻿@model List<ModelsData.FieldsModel>
+﻿@model string
 
 @{
     Layout = "_LayoutEmployees";
@@ -8,8 +8,8 @@
 <h3>Изменение статуса заявки</h3>
 
 <div name="id" class="d-flex">
-    <div>ID заявки: </div>
-    <div name="request_id" value = @ViewData["request_id"]> @ViewData["request_id"] </div>
+<div>ID заявки: </div>
+<div name="request_id" value = @ViewData["request_id"]> @ViewData["request_id"] </div>
 </div>
 
 <div name="form" class="login-form">
@@ -23,7 +23,7 @@
             </select>
         </fieldset>
     
-        <fieldset name="description" class="form-group">
+        <fieldset name="message" class="form-group">
             <label for="message">Сообщение</label>
             <textarea name="message"></textarea> 
         </fieldset>

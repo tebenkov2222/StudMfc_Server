@@ -42,5 +42,6 @@
 
 <div name="buttons" class="d-flex">
     <div class="btn"><a asp-area="" asp-controller="Employees" asp-action="DownloadGeneration">Предпросмотр</a></div>
-    <div class="btn" style="margin-left: 40px"><a asp-area="" asp-controller="Employees" asp-action="ChangeStatus">Изменить статус заявки</a></div>
+    <div class="btn" style="margin-left: 40px">@Html.ActionLink("Изменить статус заявки", "ChangeStatus", "Employees", new { request_id = @ViewData["req_id"] }, null)</div>
+    
 </div>

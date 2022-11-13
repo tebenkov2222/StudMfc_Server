@@ -81,7 +81,15 @@ namespace Repository
             var user_id = _db.GetStudentByRequest(requestId);
             return GetStudentProfileModel(user_id);
         }
-        
-        
+
+        public void ChangeRequestState(int requestId, int user_id, string state)
+        {
+            _db.ChangeRequestState(requestId, user_id, state);
+        }
+
+        public void CreateMessage(int requestId, int employee_id, string message)
+        {
+            _db.CreateMessage(requestId, employee_id, message);
+        }
     }
 }
