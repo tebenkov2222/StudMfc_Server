@@ -14,7 +14,7 @@
 <div name="servises">
     @foreach (var item in Model)
     {
-        <p name="servise1">@Html.ActionLink(@item.Name, "Servise", "Students", new { ser_id = @item.Id }, null)</p>
+        <p name="servise1">@Html.ActionLink(@item.Name, "Servise", "Students", new { servId = @item.Id }, null)</p>
     }
     
 </div>

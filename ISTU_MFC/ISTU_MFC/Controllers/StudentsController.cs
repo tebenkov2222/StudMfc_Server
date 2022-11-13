@@ -56,14 +56,17 @@ namespace ISTU_MFC.Controllers
         }
 
         [Authorize(Roles = "Student")]
-        public IActionResult Servise()
+        public IActionResult Servise(int servId)
         {
-            return View();
+            var model = _repository.GetServisesInfo(servId);
+            ViewData["id"] = servId;
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]
-        public IActionResult RegService()
+        public IActionResult RegService(int servId)
         {
+            
             return View();
         }
 

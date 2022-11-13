@@ -143,5 +143,20 @@ namespace Repository
             }
             return answ;
         }
+
+        public ServiseModel GetServisesInfo(int servId)
+        {
+            var res = _db.GetServisesInfo(servId);
+            return new ServiseModel()
+            {
+                Name = res[1][0],
+                Info = res[1][1]
+            };
+        }
+
+        public void CreateRequestWithFields(int servId)
+        {
+            
+        }
     }
 }

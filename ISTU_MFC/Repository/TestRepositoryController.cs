@@ -96,5 +96,10 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public ServiseModel GetServisesInfo(int servId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
