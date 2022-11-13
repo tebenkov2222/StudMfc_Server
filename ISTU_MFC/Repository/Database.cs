@@ -36,10 +36,10 @@ namespace Repository
         
         //user_id   student_id  family     name    secondName      Group            faculty                     istituty
         // 19	    20043561	"Test"	"Student"	"Test"	    "Б20-191-1"	"Программное обеспечение"	"Информатика и Вычислительная Техника"
-        public Dictionary<string, string> GetStudentInfo(int userId)
+        public string[][] GetStudentInfo(int userId)
         {
             using var query = new QueryTool(_db);
-            return query.QueryWithDictionary($"SELECT * FROM students_info WHERE user_id = {userId}");
+            return query.QueryWithTable($"SELECT * FROM students_info WHERE user_id = {userId}");
         }
         
         // user_id  family     name         secondName          post                 subdivision
@@ -61,29 +61,7 @@ namespace Repository
                 ("SELECT request_id, name_service FROM list_of_requests_for_employees " + 
                  $"WHERE employee_id IS null AND user_id = {userId};");
         }
-        public List<FieldsModel> GetRequestFeelds(int requestId)
-        {
-            using var query = new QueryTool(_db);
-            var res = query.QueryWithTable($"SELECT name, value, manually_filled FROM fields WHERE request_id = {requestId}");
-            var list = new List<FieldsModel>();
-            for (int i = 1; i < res.Length; i++)
-            {
-                list.Add(new FieldsModel()
-                {
-                    Name = res[i][0],
-                    Value = res[i][1],
-                    Malually_fiiled = bool.Parse(res[i][2])
-                });
-            }
-            return list;
-        }
 
-        public int GetStudentByRequest(int requestId)
-        {
-            using var query = new QueryTool(_db);
-            var res = query.QueryWithTable($"SELECT user_id FROM students WHERE stud_id = (SELECT stud_id FROM requests WHERE id = {requestId})");
-            return Int32.Parse(res[1][0]);
-        }
         //   document_link
         // "ссылка на документ"
         public Dictionary<string, string> GetLinkToDocument(int requestId)
@@ -112,6 +90,30 @@ namespace Repository
             using var query = new QueryTool(_db);
             return query.QueryWithDictionary
                 ($"SELECT * FROM information_about_requests WHERE request_id = {requestId}");
+        }
+        
+        public List<FieldsModel> GetRequestFeelds(int requestId)
+        {
+            using var query = new QueryTool(_db);
+            var res = query.QueryWithTable($"SELECT name, value, manually_filled FROM fields WHERE request_id = {requestId}");
+            var list = new List<FieldsModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                list.Add(new FieldsModel()
+                {
+                    Name = res[i][0],
+                    Value = res[i][1],
+                    Malually_fiiled = bool.Parse(res[i][2])
+                });
+            }
+            return list;
+        }
+        
+        public int GetStudentByRequest(int requestId)
+        {
+            using var query = new QueryTool(_db);
+            var res = query.QueryWithTable($"SELECT user_id FROM students WHERE stud_id = (SELECT stud_id FROM requests WHERE id = {requestId})");
+            return Int32.Parse(res[1][0]);
         }
     }
 }
