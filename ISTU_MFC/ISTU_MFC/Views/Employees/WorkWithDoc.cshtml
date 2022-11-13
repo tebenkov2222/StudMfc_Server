@@ -1,4 +1,6 @@
-﻿@model dynamic
+﻿@model List<ModelsData.RequestModel>
+
+
 
 @{
     Layout = "_LayoutEmployees";
@@ -24,17 +26,13 @@
 </div>*@
 
 <div name="Services" class="services white-grey">
-    <div name="service1" class="service black-grey">
-        <button type="submit" class="btn-primary" name = "Action" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px" value = "1" asp-area="" asp-controller="Employees" asp-action = "Action">TESTOVOE GOVNO</button>
-    </div>
-    <div name="service2" class="service black-grey">
-        <button type="button" class="btn-primary" name = "Action" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px" value = "2" asp-area="" asp-controller="Employees"  asp-action = "Action">GOVNO V2</button>
-    </div>
-    <div name="service3" class="service black-grey">
-        <button class="btn-primary" name = "Action"  style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px" value = "2" asp-area="" asp-controller="Employees"  asp-action = "Action">GOVNO V2</button>
-    </div>
-    <div name="service4" class="service black-grey">
-        <button style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px" asp-route-value="" value = "2" asp-area="" asp-controller="Employees"  asp-action = "Action">GOVNO V2</button>
-    </div>
-    
+    <form method="post">
+        
+        @foreach (var req in Model)
+        {
+            <div style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px">
+                @Html.ActionLink(@$"{req.Id} {req.Caption}", "RequestGenerator", "Employees", new { req_id = @req.Id }, null)
+            </div>
+        }
+    </form>
 </div>

@@ -11,8 +11,10 @@ namespace Repository
         bool CheckByStudent(int idUser);
         bool CheckByEmployees(int idUser);
         public StudentProfileModel GetStudentProfileModel(int userId);
-        public string[][] GetStudentInfo(int userId);
         public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath);
+        public List<RequestModel> GetRequests(int userId);
+        public List<FieldsModel> GetRequestFeelds(int requestId);
+        public StudentProfileModel GetStudentByRequest(int requestId);
     }
     
     

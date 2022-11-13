@@ -19,9 +19,9 @@ namespace Repository
             new NpgsqlCommand(query, _dataBase).ExecuteNonQuery();
     
         public string[][] QueryWithTable(string query) =>
-            Process(new NpgsqlCommand(query, _dataBase).ExecuteReader());
+            ProcessForTable(new NpgsqlCommand(query, _dataBase).ExecuteReader());
     
-        private string[][] Process(NpgsqlDataReader reader)
+        private string[][] ProcessForTable(NpgsqlDataReader reader)
         {
             var count = reader.FieldCount;
             var result = new List<string[]>
@@ -35,14 +35,15 @@ namespace Repository
             return result.ToArray();
         }
         
-        public Dictionary<string, string?> QueryWithDictionary(string query) =>
-            ProcessDictionary(new NpgsqlCommand(query, _dataBase).ExecuteReader());
+        public Dictionary<string, string> QueryWithDictionary(string query) =>
+            ProcessForDictionary(new NpgsqlCommand(query, _dataBase).ExecuteReader());
     
-        private Dictionary<string, string?> ProcessDictionary(NpgsqlDataReader reader)
+        private Dictionary<string, string> ProcessForDictionary(NpgsqlDataReader reader)
         {
             var count = reader.FieldCount;
-            var result = new Dictionary<string, string?>();
+            var result = new Dictionary<string, string>();
             if (!reader.HasRows) return result;
+            reader.Read();
             for (var i = 0; i < count; i++)
                 result.Add(reader.GetName(i), reader.GetValue(i).ToString());
         

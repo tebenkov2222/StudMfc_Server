@@ -68,7 +68,7 @@ namespace ISTU_MFC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=LogIn}/{action=LogIn}/{id?}");
+                    pattern: "{controller=LogIn}/{action=Home}/{id?}");
             });
         }
     }

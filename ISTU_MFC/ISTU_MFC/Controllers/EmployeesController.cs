@@ -7,27 +7,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
 using Microsoft.AspNetCore.Authorization;
+using Repository;
 
 namespace ISTU_MFC.Controllers
 {
     public class EmployeesController : Controller
     {
         private readonly ILogger<EmployeesController> _logger;
-
-        public EmployeesController(ILogger<EmployeesController> logger)
+        private readonly IRepository _repository;
+        public EmployeesController(ILogger<EmployeesController> logger, IRepository repository)
         {
             _logger = logger;
+            _repository = repository;
         }
-
+        
         [Authorize(Roles = "Employee")]
         [HttpGet]
         public IActionResult WorkWithDoc()
         {
-            return View();
-        }
-        public string Action(string value)
-        {
-            return $"TEST value = [{value}]";
+            var requests = _repository.GetRequests(_repository.UserId);
+            return View(requests);
         }
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
@@ -42,9 +41,15 @@ namespace ISTU_MFC.Controllers
         }
 
         [Authorize(Roles = "Employee")]
-        public IActionResult RequestGenerator()
+        public IActionResult RequestGenerator(string req_id)
         {
-            return View();
+            ViewData["req_id"] = req_id;
+            var user = _repository.GetStudentByRequest(Int32.Parse(req_id));
+            ViewData["name"] = $"{user.Family} {user.Name} {user.SecondName}";
+            ViewData["group"] = user.Group;
+            ViewData["studId"] = user.StudId;
+            var model = _repository.GetRequestFeelds(Int32.Parse(req_id));
+            return View(model);
         }
 
         [Authorize(Roles = "Employee")]

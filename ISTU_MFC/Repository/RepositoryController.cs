@@ -55,10 +55,34 @@ namespace Repository
         {
             return _db.GetStudentInfo(userId);
         }
-
         public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
         {
             throw new NotImplementedException();
+        }
+        public List<RequestModel> GetRequests(int userId)
+        {
+            var res = _db.GetTableAvailableRequestsForEmployees(userId);
+            var answ = new List<RequestModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new RequestModel()
+                {
+                    Caption = res[i][1],
+                    Id = res[i][0]
+                });
+            }
+            return answ;
+        }
+
+        public List<FieldsModel> GetRequestFeelds(int requestId)
+        {
+            return _db.GetRequestFeelds(requestId);
+        }
+
+        public StudentProfileModel GetStudentByRequest(int requestId)
+        {
+            var user_id = _db.GetStudentByRequest(requestId);
+            return GetStudentProfileModel(user_id);
         }
     }
 }
