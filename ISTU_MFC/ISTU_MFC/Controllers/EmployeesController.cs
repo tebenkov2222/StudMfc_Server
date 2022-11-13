@@ -58,11 +58,23 @@ namespace ISTU_MFC.Controllers
             return View();
         }
 
+        [HttpGet]
         [Authorize(Roles = "Employee")]
-        public IActionResult ChangeStatus()
+        public IActionResult ChangeStatus(string request_id)
         {
+            ViewData["request_id"] = request_id;
             return View();
         }
+        
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public IActionResult ChangeStatus(string request_id)
+        {
+            ViewData["request_id"] = request_id;
+            return View();
+        }
+        
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         [Authorize(Roles = "Employee")]
