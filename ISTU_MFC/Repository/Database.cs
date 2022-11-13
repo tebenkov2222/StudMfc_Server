@@ -136,5 +136,16 @@ namespace Repository
             using var query = new QueryTool(_db);
             return query.QueryWithTable($"SELECT * FROM messages_table_for_student WHERE user_id = {userId}");
         }
+        public string[][] GetTableSubdivisionsInfoForStudent(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT * FROM subdivisions_info WHERE user_id =  {userId}");
+        }
+
+        public string[][] GetServisesBySubdevision(int subId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT services_id, name FROM services_info_by_subdivisions WHERE subdivision_id = {subId}");
+        }
     }
 }

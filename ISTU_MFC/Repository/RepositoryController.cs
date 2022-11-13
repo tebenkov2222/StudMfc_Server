@@ -108,5 +108,37 @@ namespace Repository
             }
             return answ;
         }
+
+        public List<SubdivisionModel> GetDevisionsList(int userId)
+        {
+            var res = _db.GetTableSubdivisionsInfoForStudent(userId);
+            var answ = new List<SubdivisionModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new SubdivisionModel()
+                {
+                    Id = res[i][1],
+                    Information = res[i][3],
+                    Name = res[i][2]
+                });
+            }
+
+            return answ;
+        }
+
+        public List<Servises> GetSubdivisionInfo(int sun_id)
+        {
+            var res = _db.GetServisesBySubdevision(sun_id);
+            var answ = new List<Servises>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new Servises()
+                {
+                    Name = res[i][1],
+                    Id = res[i][0]
+                });
+            }
+            return answ;
+        }
     }
 }
