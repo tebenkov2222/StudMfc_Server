@@ -66,8 +66,9 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult RegService(int servId, string name)
         {
+            var model = _repository.GetStudentProfileModel(_repository.UserId);
             ViewData["name"] = name;
-            return View();
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

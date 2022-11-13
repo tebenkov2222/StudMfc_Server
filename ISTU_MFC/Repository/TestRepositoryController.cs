@@ -42,9 +42,10 @@ namespace Repository
 
         private Dictionary<string, string> _testValueFields = new Dictionary<string, string>()
         {
-            {"StudentName", "Иван"},
-            {"StudentFamily", "Иванов"},
-            {"StudentSecondName", "Иванович"}
+            {"NameStudentField", "Иван"},
+            {"SurnameStudentField", "Иванов"},
+            {"PatronymicStudentField", "Иванович"},
+            {"GroupStudentField", "Нет нахой"}
         };
         public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
         {
