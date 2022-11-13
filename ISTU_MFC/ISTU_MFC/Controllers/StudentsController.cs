@@ -35,7 +35,8 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult Notifications()
         {
-            return View();
+            var model = _repository.GetTableMessages(_repository.UserId);
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]

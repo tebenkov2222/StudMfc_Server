@@ -129,5 +129,12 @@ namespace Repository
                                     $" ((SELECT employee_id FROM employees WHERE user_id = {employee_id}),"+
                                     $"(SELECT stud_id FROM requests WHERE id = {requestId}), '{message}', {requestId})");
         }
+        
+        // user_id, dispatch_date, text_message, request_id, status
+        public string[][] GetTableMessages(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT * FROM messages_table_for_student WHERE user_id = {userId}");
+        }
     }
 }

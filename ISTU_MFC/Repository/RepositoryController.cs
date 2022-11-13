@@ -91,5 +91,22 @@ namespace Repository
         {
             _db.CreateMessage(requestId, employee_id, message);
         }
+
+        public List<MessageModel> GetTableMessages(int userId)
+        {
+            var res = _db.GetTableMessages(userId);
+            var answ = new List<MessageModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new MessageModel()
+                {
+                    Date = res[i][1],
+                    Text = res[i][2],
+                    RequestId = res[i][3],
+                    Status = res[i][4]
+                });
+            }
+            return answ;
+        }
     }
 }

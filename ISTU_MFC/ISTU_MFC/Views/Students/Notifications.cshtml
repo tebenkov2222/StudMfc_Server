@@ -1,4 +1,5 @@
-﻿@model dynamic
+﻿@using System.Xml
+@model List<ModelsData.MessageModel>
 
 @{
     Layout = "_Layout";
@@ -12,6 +13,10 @@
     <p class="d-inline">Прочитать всё</p>
 </div>
 
-<div id="notifications">
-
+<div id="notifications" class="form-group">
+    @foreach (var noty in Model)
+    {
+        <p class="d-inline">@noty.RequestId @noty.Text,</p>
+        <p class="d-inline">@noty.Date @noty.Status,</p>
+    }
 </div>
