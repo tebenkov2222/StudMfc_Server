@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model List<ModelsData.Servises>
 
 @{
     Layout = "_Layout";
@@ -7,16 +7,14 @@
 
 <h4 class="d-flex justify-content-center">О деканате</h4>
 
-<p name="hours-of-work">Часы работы: </p>
-
-<p name="hours-of-dinner">Обед: </p>
-
-<p><a name="about" href="">О нас</a></p>
-
-<p name="cabinet">Кабинет: </p>
+<p name="hours-of-work">@ViewData["Information"] </p>
 
 <p>Предоставляемые услуги:</p>
 
 <div name="servises">
-    <p name="servise1"><a asp-area="" asp-controller="Students" asp-action="Servise">**Справка об обучении**</a></p>
+    @foreach (var item in Model)
+    {
+        <p name="servise1">@Html.ActionLink(@item.Name, "Servise", "Students", new { ser_id = @item.Id }, null)</p>
+    }
+    
 </div>

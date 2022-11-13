@@ -15,6 +15,11 @@ namespace Repository
         public List<RequestModel> GetRequests(int userId);
         public List<FieldsModel> GetRequestFeelds(int requestId);
         public StudentProfileModel GetStudentByRequest(int requestId);
+        public void ChangeRequestState(int requestId, int user_id, string state);
+        public void CreateMessage(int requestId, int employee_id, string message);
+        public List<MessageModel> GetTableMessages(int userId);
+        public List<SubdivisionModel> GetDevisionsList(int userId);
+        public List<Servises> GetSubdivisionInfo(int sun_id);
     }
     
     

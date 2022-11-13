@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
+using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Repository;
 
@@ -49,6 +50,7 @@ namespace ISTU_MFC.Controllers
             ViewData["group"] = user.Group;
             ViewData["studId"] = user.StudId;
             var model = _repository.GetRequestFeelds(Int32.Parse(req_id));
+            _repository.ChangeRequestState(Int32.Parse(req_id), _repository.UserId , "processing");
             return View(model);
         }
 
@@ -58,17 +60,37 @@ namespace ISTU_MFC.Controllers
             return View();
         }
 
+        [HttpGet]
         [Authorize(Roles = "Employee")]
-        public IActionResult ChangeStatus()
+        public IActionResult ChangeStatus(string request_id)
         {
+            ViewData["request_id"] = request_id;
             return View();
         }
+        
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public IActionResult ChangeStatus(ChangeStatusModel model)
+        {
+            _repository.ChangeRequestState(Int32.Parse(model.request_id), _repository.UserId , model.status);
+            _repository.CreateMessage(Int32.Parse(model.request_id), _repository.UserId, model.message);
+            return View();
+        }
+        
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         [Authorize(Roles = "Employee")]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        
+        [Authorize(Roles = "Employee")]
+        public IActionResult Notifications()
+        {
+            var model = _repository.GetTableMessages(_repository.UserId);
+            return View(model);
         }
     }
 }

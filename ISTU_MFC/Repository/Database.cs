@@ -115,5 +115,37 @@ namespace Repository
             var res = query.QueryWithTable($"SELECT user_id FROM students WHERE stud_id = (SELECT stud_id FROM requests WHERE id = {requestId})");
             return Int32.Parse(res[1][0]);
         }
+
+        public void ChangeRequestState(int requestId, int user_id, string status)
+        {
+            using var query = new QueryTool(_db);
+            query.QueryWithoutTable($"UPDATE requests SET employee_id = (SELECT employee_id FROM employees WHERE user_id = {user_id}), status = '{status}' WHERE id = {requestId}");
+        }
+
+        public void CreateMessage(int requestId, int employee_id, string message)
+        {
+            using var query = new QueryTool(_db);
+            query.QueryWithoutTable($"INSERT INTO messages (employee_id, stud_id, text_message, request_id) VALUES " +
+                                    $" ((SELECT employee_id FROM employees WHERE user_id = {employee_id}),"+
+                                    $"(SELECT stud_id FROM requests WHERE id = {requestId}), '{message}', {requestId})");
+        }
+        
+        // user_id, dispatch_date, text_message, request_id, status
+        public string[][] GetTableMessages(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT * FROM messages_table_for_student WHERE user_id = {userId}");
+        }
+        public string[][] GetTableSubdivisionsInfoForStudent(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT * FROM subdivisions_info WHERE user_id =  {userId}");
+        }
+
+        public string[][] GetServisesBySubdevision(int subId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT services_id, name FROM services_info_by_subdivisions WHERE subdivision_id = {subId}");
+        }
     }
 }

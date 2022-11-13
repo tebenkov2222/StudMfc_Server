@@ -29,13 +29,15 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult Home()
         {
-            return View();
+            var model = _repository.GetDevisionsList(_repository.UserId);
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]
         public IActionResult Notifications()
         {
-            return View();
+            var model = _repository.GetTableMessages(_repository.UserId);
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]
@@ -46,9 +48,11 @@ namespace ISTU_MFC.Controllers
         }
 
         [Authorize(Roles = "Student")]
-        public IActionResult About()
+        public IActionResult About(string sub_id, string info)
         {
-            return View();
+            ViewData["Information"] = info;
+            var model = _repository.GetSubdivisionInfo(Int32.Parse(sub_id));
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]
