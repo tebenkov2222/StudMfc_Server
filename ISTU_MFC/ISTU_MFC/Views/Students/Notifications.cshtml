@@ -8,15 +8,23 @@
 
 <h2 class="d-flex justify-content-center">Уведомления</h2>
 
-<div class="d-flex justify-content-sm-between w-75">
-    <p class="d-inline">Архив</p>
-    <p class="d-inline">Прочитать всё</p>
+<div class="d-flex" style="margin-bottom: 20px;">
+    <button type="submit" class="btn">Прочитать всё</button>
 </div>
 
-<div id="notifications" class="form-group">
+<div name="notifications" class="black-grey" style="padding: 10px 20px 0px 20px">
     @foreach (var noty in Model)
     {
-        <p class="d-inline">@noty.RequestId @noty.Text,</p>
-        <p class="d-inline">@noty.Date @noty.Status,</p>
+        <div name="notif" class="d-flex justify-content-around" style="background-color: white; border-radius: 30px; margin-bottom: 20px;">
+            <div>
+                @noty.RequestId, @noty.Status
+            </div>
+            <div>
+                @noty.Text
+            </div>
+            <div>
+                @noty.Date
+            </div>
+        </div>
     }
 </div>
