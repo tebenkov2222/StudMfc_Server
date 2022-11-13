@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model ModelsData.StudentProfileModel
 
 @{
     Layout = "_Layout";
@@ -8,14 +8,34 @@
 <h4 name="NameOfServise" class="d-flex justify-content-center">**Справка об обучении**</h4>
 
 <div name="form" class="login-form">
-    <form name="auth" class="form-horizontal">
+    <form method="post" name="auth" class="form-horizontal">
         <fieldset name="caption" class="form-group">
             <h5>Личная информация</h5>
         </fieldset>
-
-        <fieldset name="" class="form-group">
-            <label for="fio"></label>
-            <input type="text" name="fio" placeholder="ФИО" autofocus required/>
+        
+        <fieldset name="FirstName" class="form-group">
+            <label for="FirstName">Имя</label>
+            <div name="FirstName">@Model.Name</div>
+        </fieldset>
+        
+        <fieldset name="SurName" class="form-group">
+            <label for="SurName">Фамилия</label>
+            <div name="SurName">@Model.Family</div>
+        </fieldset>
+        
+        <fieldset name="SecondName" class="form-group">
+            <label for="SecondName">Отчество</label>
+            <div name="SecondName">@Model.SecondName</div>
+        </fieldset>
+        
+        <fieldset name="Group" class="form-group">
+            <label for="Group">Номер группы</label>
+            <div name="Group">@Model.Group</div>
+        </fieldset>
+        
+        <fieldset name="StudId" class="form-group">
+            <label for="StudId">Номер студенческого</label>
+            <div name="StudId">@Model.StudId</div>
         </fieldset>
 
         <fieldset class="form-group">
