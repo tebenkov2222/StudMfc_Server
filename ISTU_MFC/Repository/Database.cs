@@ -153,5 +153,22 @@ namespace Repository
             using var query = new QueryTool(_db);
             return query.QueryWithTable($"SELECT name, information FROM services_info_by_subdivisions WHERE services_id = {servId}");
         }
+        
+        public string[][] InsertAndGetRequestId(int userId, int subdivisionService)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ("INSERT INTO requests (stud_id, subdivision_service_id)"+
+             $" VALUES ((SELECT stud_id FROM students WHERE user_id = {userId}), "+
+             $" {subdivisionService}) returning id AS request_id");
+        }
+
+        public int InsertField(int requestId, string name, string value, bool manuallyFilled = false)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithoutTable
+            ("INSERT INTO fields (request_id, name, value, manually_filled) " +
+             $"Values ({requestId}, '{name}', '{value}', {manuallyFilled});");
+        }
     }
 }
