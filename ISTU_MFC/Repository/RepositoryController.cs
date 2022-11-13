@@ -58,19 +58,17 @@ namespace Repository
 
         public List<RequestModel> GetRequests(int userId)
         {
-            return new List<RequestModel>()
+            var res = _db.GetTableAvailableRequestsForEmployees(userId);
+            var answ = new List<RequestModel>();
+            for (int i = 1; i < res.Length; i++)
             {
-                new RequestModel()
+                answ.Add(new RequestModel()
                 {
-                    Caption = "Название",
-                    Id = "12"
-                },
-                new RequestModel()
-                {
-                    Caption = "Название2",
-                    Id = "335544"
-                }
-            };
+                    Caption = res[i][1],
+                    Id = res[i][0]
+                });
+            }
+            return answ;
         }
 
         public List<FieldsModel> GetRequestFeelds(int requestId)
@@ -83,5 +81,7 @@ namespace Repository
             var user_id = _db.GetStudentByRequest(requestId);
             return GetStudentProfileModel(user_id);
         }
+        
+        
     }
 }
