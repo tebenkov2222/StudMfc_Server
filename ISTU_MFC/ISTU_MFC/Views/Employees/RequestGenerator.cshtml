@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model List<ModelsData.FieldsModel>
 
 @{
     Layout = "_LayoutEmployees";
@@ -11,17 +11,37 @@
 
 <div name="id" class="d-flex" style="margin-left: 20px">
     <div name="labelID" class="d-inline grey1">ID</div>
-    <div name="fieldID" class="d-inline grey2">12345</div>
+    <div name="fieldID" class="d-inline grey2">@ViewData["req_id"]</div>
+</div>
+
+<div name="about_student" class="grey2" style="margin: 0px 0px 20px 0px; padding: 30px 20px">
+    <div name="fio" class="d-flex">
+        <div name="labelfio" class="d-inline grey1">ФИО</div>
+        <div name="fieldfio" class="d-inline grey2">@ViewData["name"]</div>
+    </div>
+    <div name="fio" class="d-flex">
+        <div name="labelfio" class="d-inline grey1">Группа</div>
+        <div name="fieldfio" class="d-inline grey2">@ViewData["group"]</div>
+    </div>
+    <div name="fio" class="d-flex">
+        <div name="labelfio" class="d-inline grey1">Студенческий билет №</div>
+        <div name="fieldfio" class="d-inline grey2">@ViewData["studId"]</div>
+    </div>
 </div>
 
 <div name="about" class="grey2" style="margin: 0px 0px 20px 0px; padding: 30px 20px">
-    <div name="fio" class="d-flex">
-        <div name="labelfio" class="d-inline grey1">ФИО</div>
-        <div name="fieldfio" class="d-inline grey2">Иванов Иван Иванович</div>
-    </div>
+    @foreach(var field in Model)
+    {
+        <div name="fio" class="d-flex">
+             <div name="labelfio" class="d-inline grey1">@field.Name</div>
+             <div name="fieldfio" class="d-inline grey2">@field.Value</div>
+         </div>
+    }
+    
 </div>
 
 <div name="buttons" class="d-flex">
     <div class="btn"><a asp-area="" asp-controller="Employees" asp-action="DownloadGeneration">Предпросмотр</a></div>
-    <div class="btn" style="margin-left: 40px"><a asp-area="" asp-controller="Employees" asp-action="ChangeStatus">Изменить статус заявки</a></div>
+    <div class="btn" style="margin-left: 40px">@Html.ActionLink("Изменить статус заявки", "ChangeStatus", "Employees", new { request_id = @ViewData["req_id"] }, null)</div>
+    
 </div>

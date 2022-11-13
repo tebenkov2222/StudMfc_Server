@@ -18,26 +18,26 @@ namespace ISTU_MFC.Controllers
     public class StudentsController : Controller
     {
         private readonly ILogger<StudentsController> _logger;
-        private UserContext db;
         private readonly IRepository _repository;
 
-        public StudentsController(ILogger<StudentsController> logger, UserContext context, IRepository repository)
+        public StudentsController(ILogger<StudentsController> logger, IRepository repository)
         {
             _logger = logger;
-            db = context;
             _repository = repository;
         }
 
         [Authorize(Roles = "Student")]
         public IActionResult Home()
         {
-            return View();
+            var model = _repository.GetDevisionsList(_repository.UserId);
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]
         public IActionResult Notifications()
         {
-            return View();
+            var model = _repository.GetTableMessages(_repository.UserId);
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]
@@ -48,9 +48,11 @@ namespace ISTU_MFC.Controllers
         }
 
         [Authorize(Roles = "Student")]
-        public IActionResult About()
+        public IActionResult About(string sub_id, string info)
         {
-            return View();
+            ViewData["Information"] = info;
+            var model = _repository.GetSubdivisionInfo(Int32.Parse(sub_id));
+            return View(model);
         }
 
         [Authorize(Roles = "Student")]

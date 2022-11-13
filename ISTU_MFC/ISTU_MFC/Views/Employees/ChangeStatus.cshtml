@@ -1,7 +1,35 @@
-﻿@model dynamic
+﻿@model string
 
 @{
     Layout = "_LayoutEmployees";
     ViewData["Title"] = "ChangeStatus";
 }
 
+<h3>Изменение статуса заявки</h3>
+
+<div name="id" class="d-flex">
+<div>ID заявки: </div>
+<div name="request_id" value = @ViewData["request_id"]> @ViewData["request_id"] </div>
+</div>
+
+<div name="form" class="login-form">
+    <form method="post" name="ChangeStatus" class="form-horizontal">
+        <fieldset name="status" class="form-group">
+            <label for="status">Статус заявки:</label>
+            <select name="status" required="required">
+                <option value="">Выберите значение</option>
+                <option value="closed">Закрыта</option>
+                <option value="processed">Обработана</option>
+            </select>
+        </fieldset>
+    
+        <fieldset name="message" class="form-group">
+            <label for="message">Сообщение</label>
+            <textarea name="message"></textarea> 
+        </fieldset>
+    
+        <fieldset name="buttons" class="form-group">
+            <button class="btn" type="submit">Изменить статус</button>
+        </fieldset>
+    </form>
+</div>

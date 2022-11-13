@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model List<ModelsData.SubdivisionModel>
 
 @{
     Layout = "_Layout";
@@ -8,5 +8,9 @@
 <h2 class="d-flex justify-content-center">Главная страница</h2>
 
 <div class="d-flex justify-content-center">
-    <div class="btn"><a asp-area="" asp-controller="Students" asp-action="About">Деканат</a></div>
+    @foreach (var sub in Model)
+    {
+        <div class="btn" >@Html.ActionLink(@sub.Name, "About", "Students", new { sub_id = @sub.Id, info = @sub.Information}, null)</div>
+    }
+    
 </div>

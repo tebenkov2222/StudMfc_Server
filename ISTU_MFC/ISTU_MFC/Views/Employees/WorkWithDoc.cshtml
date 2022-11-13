@@ -1,4 +1,6 @@
-﻿@model dynamic
+﻿@model List<ModelsData.RequestModel>
+
+
 
 @{
     Layout = "_LayoutEmployees";
@@ -12,11 +14,30 @@
 
 <div name="ServiseConstructor" class="btn left-margin"><a asp-area="" asp-controller="Employees" asp-action="ServiceConstructor">Конструктор услуг</a></div>
 
+<div name="SearchFilter">
+    <form method="post" style="margin-bottom: 20px;">
+        <fieldset name="search" style="margin-top: 20px;">
+            <input type="text" name="query" placeholder="Поиск по номеру заявок" />
+        </fieldset>
+
+        <fieldset name="filter" style="margin-top: 20px;">
+            <label for="status">Фильтр заявок:</label>
+            <select name="status">
+                <option value="1"></option>
+                <option value="2"></option>
+            </select>
+        </fieldset>
+        
+        <fieldset name="buttons" style="margin-top: 20px;">
+            <button class="btn" type="submit">Применить</button>
+        </fieldset>
+    </form>
+</div>
 <div name="Archive" class="btn left-margin"><a>Архив</a></div>
 
 <div name="ServiceCollection" class="btn left-margin"><a>Список услуг</a></div>
 
-<@*div name="SearchFilter" class="d-flex justify-content-start site-header-top-search">
+@*div name="SearchFilter" class="d-flex justify-content-start site-header-top-search">
     <form>
         <input type="text" class="input" name="query" placeholder="Поиск по номеру заявок">
         <button type="submit"></button>
@@ -24,17 +45,13 @@
 </div>*@
 
 <div name="Services" class="services white-grey">
-    <div name="service1" class="service black-grey">
-        <button type="submit" class="btn-primary" name = "Action" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px" value = "1" asp-area="" asp-controller="Employees" asp-action = "Action">TESTOVOE GOVNO</button>
-    </div>
-    <div name="service2" class="service black-grey">
-        <button type="button" class="btn-primary" name = "Action" style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px" value = "2" asp-area="" asp-controller="Employees"  asp-action = "Action">GOVNO V2</button>
-    </div>
-    <div name="service3" class="service black-grey">
-        <button class="btn-primary" name = "Action"  style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px" value = "2" asp-area="" asp-controller="Employees"  asp-action = "Action">GOVNO V2</button>
-    </div>
-    <div name="service4" class="service black-grey">
-        <button style="max-height: 50px; min-height: 50px; max-width: 50px; min-width: 50px" asp-route-value="" value = "2" asp-area="" asp-controller="Employees"  asp-action = "Action">GOVNO V2</button>
-    </div>
-    
+    <form method="post">
+        
+        @foreach (var req in Model)
+        {
+            <div class="service black-grey d-flex" style="color: black;">
+                @Html.ActionLink(@$"{req.Id} {req.Caption}", "RequestGenerator", "Employees", new { req_id = @req.Id }, null)
+            </div>
+        }
+    </form>
 </div>

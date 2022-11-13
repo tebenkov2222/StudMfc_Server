@@ -55,10 +55,93 @@ namespace Repository
         {
             return _db.GetStudentInfo(userId);
         }
-
         public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
         {
             throw new NotImplementedException();
+        }
+        public List<RequestModel> GetRequests(int userId)
+        {
+            var res = _db.GetTableAvailableRequestsForEmployees(userId);
+            var answ = new List<RequestModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new RequestModel()
+                {
+                    Caption = res[i][1],
+                    Id = res[i][0]
+                });
+            }
+            return answ;
+        }
+
+        public List<FieldsModel> GetRequestFeelds(int requestId)
+        {
+            return _db.GetRequestFeelds(requestId);
+        }
+
+        public StudentProfileModel GetStudentByRequest(int requestId)
+        {
+            var user_id = _db.GetStudentByRequest(requestId);
+            return GetStudentProfileModel(user_id);
+        }
+
+        public void ChangeRequestState(int requestId, int user_id, string state)
+        {
+            _db.ChangeRequestState(requestId, user_id, state);
+        }
+
+        public void CreateMessage(int requestId, int employee_id, string message)
+        {
+            _db.CreateMessage(requestId, employee_id, message);
+        }
+
+        public List<MessageModel> GetTableMessages(int userId)
+        {
+            var res = _db.GetTableMessages(userId);
+            var answ = new List<MessageModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new MessageModel()
+                {
+                    Date = res[i][1],
+                    Text = res[i][2],
+                    RequestId = res[i][3],
+                    Status = res[i][4]
+                });
+            }
+            return answ;
+        }
+
+        public List<SubdivisionModel> GetDevisionsList(int userId)
+        {
+            var res = _db.GetTableSubdivisionsInfoForStudent(userId);
+            var answ = new List<SubdivisionModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new SubdivisionModel()
+                {
+                    Id = res[i][1],
+                    Information = res[i][3],
+                    Name = res[i][2]
+                });
+            }
+
+            return answ;
+        }
+
+        public List<Servises> GetSubdivisionInfo(int sun_id)
+        {
+            var res = _db.GetServisesBySubdevision(sun_id);
+            var answ = new List<Servises>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new Servises()
+                {
+                    Name = res[i][1],
+                    Id = res[i][0]
+                });
+            }
+            return answ;
         }
     }
 }
