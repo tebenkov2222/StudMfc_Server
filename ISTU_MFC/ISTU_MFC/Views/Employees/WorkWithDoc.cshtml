@@ -6,6 +6,7 @@
     Layout = "_LayoutEmployees";
     ViewData["Title"] = "Home";
 }
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <header style="height:50px">
 
@@ -17,12 +18,12 @@
 
 <div name="ServiceCollection" class="btn left-margin"><a>Список услуг</a></div>
 
-<div name="SearchFilter" class="d-flex justify-content-start site-header-top-search">
+<@*div name="SearchFilter" class="d-flex justify-content-start site-header-top-search">
     <form>
         <input type="text" class="input" name="query" placeholder="Поиск по номеру заявок">
         <button type="submit"></button>
     </form>
-</div>
+</div>*@
 
 <div name="Services" class="services white-grey">
     <form method="post">
