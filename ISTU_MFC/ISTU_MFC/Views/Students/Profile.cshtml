@@ -8,21 +8,17 @@
 
 <h2 class="d-flex justify-content-center">Профиль</h2>
 
-<div class="d-flex justify-content-sm-between">
-    <div name="profile" class="d-inline">
-        <div name="fml">ФИО: @Model.Family @Model.Name @Model.SecondName</div>
-        <div name="fml">Номер студенческого билета: @Model.StudId </div>
-        <div name="fml">Номер группы: @Model.Group </div>
-        <div name="acc_lvl">Базовый аккаунт</div>
-        <div name="docs" class="docs">
-            <p class="pdocs">Предоставленные документы:</p>
-            <p class="pdocs">Паспорт</p>
-            <p class="pdocs">СНИЛС</p>
-            <p class="pdocs">ИНН</p>
-            <p class="pdocs">Фотография</p>
-        </div>
+<div name="about_student" class="grey2" style="padding: 30px 20px; margin: 0px 0px;">
+    <div name="fio" class="d-flex">
+        <div name="labelfio" class="d-inline grey1">ФИО</div>
+        <div name="fieldfio" class="d-inline grey2">@Model.Family @Model.Name @Model.SecondName</div>
     </div>
-    <div id="FAQ" class="d-inline black-grey">
-        <p class="d-flex justify-content-center">Часто задаваемые вопросы</p>
+    <div name="fio" class="d-flex">
+        <div name="labelfio" class="d-inline grey1">Группа</div>
+        <div name="fieldfio" class="d-inline grey2">@Model.Group</div>
+    </div>
+    <div name="fio" class="d-flex">
+        <div name="labelfio" class="d-inline grey1">Номер студенческого билета</div>
+        <div name="fieldfio" class="d-inline grey2">@Model.StudId</div>
     </div>
 </div>
