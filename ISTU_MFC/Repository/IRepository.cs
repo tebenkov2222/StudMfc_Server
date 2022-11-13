@@ -12,6 +12,8 @@ namespace Repository
         bool CheckByEmployees(int idUser);
         public StudentProfileModel GetStudentProfileModel(int userId);
         public List<RequestModel> GetRequests(int userId);
+        public List<FieldsModel> GetRequestFeelds(int requestId);
+        public StudentProfileModel GetStudentByRequest(int requestId);
     }
     
     

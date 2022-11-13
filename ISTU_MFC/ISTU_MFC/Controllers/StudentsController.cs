@@ -18,13 +18,11 @@ namespace ISTU_MFC.Controllers
     public class StudentsController : Controller
     {
         private readonly ILogger<StudentsController> _logger;
-        private UserContext db;
         private readonly IRepository _repository;
 
-        public StudentsController(ILogger<StudentsController> logger, UserContext context, IRepository repository)
+        public StudentsController(ILogger<StudentsController> logger, IRepository repository)
         {
             _logger = logger;
-            db = context;
             _repository = repository;
         }
 

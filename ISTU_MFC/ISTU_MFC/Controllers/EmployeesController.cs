@@ -20,14 +20,14 @@ namespace ISTU_MFC.Controllers
             _logger = logger;
             _repository = repository;
         }
-
+        
         [Authorize(Roles = "Employee")]
         public IActionResult WorkWithDoc()
         {
             var requests = _repository.GetRequests(_repository.UserId);
             return View(requests);
         }
-
+        
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
         {
@@ -41,9 +41,15 @@ namespace ISTU_MFC.Controllers
         }
 
         [Authorize(Roles = "Employee")]
-        public IActionResult RequestGenerator()
+        public IActionResult RequestGenerator(string req_id)
         {
-            return View();
+            ViewData["req_id"] = req_id;
+            var user = _repository.GetStudentByRequest(Int32.Parse(req_id));
+            ViewData["name"] = $"{user.Family} {user.Name} {user.SecondName}";
+            ViewData["group"] = user.Group;
+            ViewData["studId"] = user.StudId;
+            var model = _repository.GetRequestFeelds(Int32.Parse(req_id));
+            return View(model);
         }
 
         [Authorize(Roles = "Employee")]
