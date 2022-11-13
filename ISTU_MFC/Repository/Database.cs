@@ -46,7 +46,6 @@ namespace Repository
             using var query = new QueryTool(_db);
             return query.QueryWithTable($"SELECT * FROM students_info WHERE user_id = {userId}");
         }
-
         public List<FieldsModel> GetRequestFeelds(int requestId)
         {
             using var query = new QueryTool(_db);
@@ -70,8 +69,15 @@ namespace Repository
             var res = query.QueryWithTable($"SELECT user_id FROM students WHERE stud_id = (SELECT stud_id FROM requests WHERE id = {requestId})");
             return Int32.Parse(res[1][0]);
         }
-        
+
+
         public void Disconnect()
+        {
+        }
+
+        //   document_link
+        // "ссылка на документ"
+        public Dictionary<string, string> GetLinkToDocument(int requestId)
         {
             
         }
