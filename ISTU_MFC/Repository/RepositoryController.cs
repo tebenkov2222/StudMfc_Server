@@ -46,8 +46,8 @@ namespace Repository
                 Family = studentInfo[1][2],
                 Name = studentInfo[1][3],
                 SecondName = studentInfo[1][4],
-                Group = studentInfo[1][1],
-                StudId = studentInfo[1][5]
+                Group = studentInfo[1][5],
+                StudId = studentInfo[1][1]
             };
         }
 
