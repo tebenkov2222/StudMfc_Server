@@ -85,5 +85,12 @@ namespace ISTU_MFC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        
+        [Authorize(Roles = "Employee")]
+        public IActionResult Notifications()
+        {
+            var model = _repository.GetTableMessages(_repository.UserId);
+            return View(model);
+        }
     }
 }

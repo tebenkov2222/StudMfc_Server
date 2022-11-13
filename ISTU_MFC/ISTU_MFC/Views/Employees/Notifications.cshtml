@@ -1,0 +1,22 @@
+﻿@using System.Xml
+@model List<ModelsData.MessageModel>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Notifications";
+}
+
+<h2 class="d-flex justify-content-center">Уведомления</h2>
+
+<div class="d-flex justify-content-sm-between w-75">
+    <p class="d-inline">Архив</p>
+    <p class="d-inline">Прочитать всё</p>
+</div>
+
+<div id="notifications" class="form-group">
+    @foreach (var noty in Model)
+    {
+        <p class="d-inline">@noty.RequestId @noty.Text,</p>
+        <p class="d-inline">@noty.Date @noty.Status,</p>
+    }
+</div>
