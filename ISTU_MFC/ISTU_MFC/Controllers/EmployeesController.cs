@@ -23,12 +23,12 @@ namespace ISTU_MFC.Controllers
         }
         
         [Authorize(Roles = "Employee")]
+        [HttpGet]
         public IActionResult WorkWithDoc()
         {
             var requests = _repository.GetRequests(_repository.UserId);
             return View(requests);
         }
-        
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
         {

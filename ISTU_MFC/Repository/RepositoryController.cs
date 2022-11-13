@@ -55,7 +55,10 @@ namespace Repository
         {
             return _db.GetStudentInfo(userId);
         }
-
+        public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
+        {
+            throw new NotImplementedException();
+        }
         public List<RequestModel> GetRequests(int userId)
         {
             var res = _db.GetTableAvailableRequestsForEmployees(userId);
