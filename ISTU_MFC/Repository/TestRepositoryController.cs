@@ -45,7 +45,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int requestId)
+        public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int studentUserId)
         {
             throw new NotImplementedException();
         }
@@ -90,6 +90,16 @@ namespace Repository
         }
 
         public StudentProfileModel GetStudentByRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InformationAboutRequestModel GetInformationAboutRequestByStudent(int studentUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InformationAboutRequestModel GetInformationAboutRequestByRequest(int requestId)
         {
             throw new NotImplementedException();
         }

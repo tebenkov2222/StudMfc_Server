@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Documents.Fields
 {
@@ -39,9 +40,13 @@ namespace Documents.Fields
         {
             return Path[nameField];
         }
-        public string GetName(string nameField)
+        public string GetNameView(string nameField)
         {
             return Names[nameField];
+        }
+        public string GetNameField(string nameField)
+        {
+            return Names.First(t => t.Value == nameField).Key;
         }
     }
 }

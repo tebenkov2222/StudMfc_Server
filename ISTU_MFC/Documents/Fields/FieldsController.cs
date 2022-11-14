@@ -23,7 +23,7 @@ namespace Documents.Fields
             return _path.GetPath(nameField);
         }
 
-        public IDictionary<string,string> GetValueFields(IEnumerable<string> fields, int requestId)
+        public IDictionary<string,string> GetValueFields(IEnumerable<string> fields, int studentId)
         {
             IDictionary<string, string> result = new Dictionary<string, string>(); // fieldName by Value
             IDictionary<string, string[]> databaseDictionary = new Dictionary<string, string[]>(); // fieldName by Path
@@ -44,7 +44,7 @@ namespace Documents.Fields
 
                 if (databaseDictionary.Count() > 0)
                 {
-                    var valueFields = _repository.GetValueFieldsByPath(databaseDictionary, requestId);
+                    var valueFields = _repository.GetValueFieldsByPath(databaseDictionary, studentId);
                     foreach (var field in valueFields)
                     {
                         result[field.Key] = field.Value;
@@ -55,13 +55,27 @@ namespace Documents.Fields
             return result;
         }
 
-        public List<FieldsModel> GetFieldsOnView(IList<FieldsModel> fieldsModels)
+        public List<FieldsModel> GetFieldsOnViewByNames(IList<FieldsModel> fieldsModels)
         {
             var result = new List<FieldsModel>();
             foreach (var field in fieldsModels)
             {
                 var fieldsModel = new FieldsModel();
-                fieldsModel.Name = _path.GetName(field.Name);
+                fieldsModel.Name = _path.GetNameView(field.Name);
+                fieldsModel.Value = field.Value;
+                fieldsModel.Malually_fiiled = field.Malually_fiiled;
+                result.Add(fieldsModel);
+            }
+
+            return result;
+        }
+        public List<FieldsModel> GetFieldsNameByView(IList<FieldsModel> fieldsModels)
+        {
+            var result = new List<FieldsModel>();
+            foreach (var field in fieldsModels)
+            {
+                var fieldsModel = new FieldsModel();
+                fieldsModel.Name = _path.GetNameField(field.Name);
                 fieldsModel.Value = field.Value;
                 fieldsModel.Malually_fiiled = field.Malually_fiiled;
                 result.Add(fieldsModel);
@@ -85,6 +99,11 @@ namespace Documents.Fields
             var list = path.ToList();
             list.Remove(path[0]);
             return list.ToArray();
-        } 
+        }
+
+        public string GetFieldName(FieldsModel field)
+        {
+            return _path.GetNameView(field.Name);
+        }
     }
 }

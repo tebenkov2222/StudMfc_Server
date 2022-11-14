@@ -7,6 +7,6 @@ namespace ISTU_MFC.Models
     {
         public string Serv_id { get; set; }
         public string Serv_name { get; set; }
-        public List<FieldsModel> Fields { get; set; }
+        public Dictionary<string,FieldsModel> Fields { get; set; }
     }
 }

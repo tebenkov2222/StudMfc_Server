@@ -16,8 +16,8 @@
         @foreach (var field in Model.Fields)
         {
             <fieldset name="FirstName" class="form-group">
-                <label for="FirstName">@field.Name</label>
-                <input name="Name" value="@field.Value" readonly="readonly"/>
+                <label for="FirstName">@field.Key</label>
+                <input name="Name" value="@field.Value.Value" readonly="readonly"/>
             </fieldset>
         }
         <fieldset class="form-group">

@@ -1,4 +1,5 @@
-﻿@model dynamic
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ISTU_MFC.ViewModels.DownloadGenerationViewModel
 
 @{
     Layout = "_LayoutEmployees";
@@ -16,5 +17,5 @@
 
 <div name="buttons" class="d-flex">
     <div class="btn">@Html.ActionLink("Скачать", "Download", 
-                         "Employees", new {}, null)</div>
+                         "Employees", new {documentPath = @Model.PathToDownloadDocument}, null)</div>
 </div>

@@ -68,7 +68,7 @@ namespace Repository
         {
             return _db.GetStudentInfo(userId);
         }
-        public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int requestId)
+        public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int studentUserId)
         {
             IDictionary<string, string> result = new Dictionary<string, string>(); // fieldName, fieldValue
             var packets = new Dictionary<string, Dictionary<string, string>>(); //packetName, <fieldName, packetFieldPath>)
@@ -84,17 +84,16 @@ namespace Repository
                 packets[packetName].Add(field.Key, field.Value[1]);
             }
 
-            foreach (var keyValuePair in packets.Select(packet => GetFieldValuesByPacket(packet.Key, packet.Value, requestId)).SelectMany(fieldValuesByPacket => fieldValuesByPacket))
+            foreach (var keyValuePair in packets.Select(packet => GetFieldValuesByPacket(packet.Key, packet.Value, studentUserId)).SelectMany(fieldValuesByPacket => fieldValuesByPacket))
             {
                 result.Add(keyValuePair);
             }
             return result;
         }
 
-        private Dictionary<string, string> GetFieldValuesByPacket(string packetName, Dictionary<string, string> fieldNameByPacketFieldPath, int requestId)
+        private Dictionary<string, string> GetFieldValuesByPacket(string packetName, Dictionary<string, string> fieldNameByPacketFieldPath, int studentId)
         {
             var result = new Dictionary<string, string>();
-            var studentId = _db.GetStudentByRequest(requestId);
             switch (packetName)
             {
                 case "StudentData":
@@ -106,7 +105,8 @@ namespace Repository
                     }
                     break;
                 case "RequestInfo":
-                    var informationAboutRequest = GetInformationAboutRequest(requestId);
+                    
+                    var informationAboutRequest = GetInformationAboutRequestByStudent(studentId);
                     foreach (var field in fieldNameByPacketFieldPath)
                     {
                         var valueByName = informationAboutRequest.GetValueByName(field.Value);
@@ -156,8 +156,37 @@ namespace Repository
             return GetStudentProfileModel(user_id);
         }
 
-        public InformationAboutRequestModel GetInformationAboutRequest(int requestId)
+        public InformationAboutRequestModel GetInformationAboutRequestByStudent(int studentUserId)
         {   
+            var informationAboutRequest = _db.GetInformationAboutStudent(studentUserId);
+            return new InformationAboutRequestModel()
+            {
+                //RequestId = Int32.Parse(informationAboutRequest["request_id"]),
+                //StudentUserId = Int32.Parse(informationAboutRequest["student_user_id"]),
+                //StudentId = Int32.Parse(informationAboutRequest["stud_id"]),
+                StudentFamily = informationAboutRequest["student_family"],
+                StudentName = informationAboutRequest["student_name"],
+                StudentSecondName = informationAboutRequest["student_secondname"],
+                GroupNumber = informationAboutRequest["group_number"],
+                //EmployeeUserId = Int32.Parse(informationAboutRequest["employee_user_id"]),
+                EmployeeFamily = informationAboutRequest["employee_family"],
+                EmployeeName = informationAboutRequest["employee_name"],
+                EmployeeSecondName = informationAboutRequest["employee_secondname"],
+                NameService = informationAboutRequest["name_service"],
+                SubdivisionName = informationAboutRequest["subdivision_name"],
+                InstituteName = informationAboutRequest["institute_name"],
+                DirectorFamily = informationAboutRequest["director_family"],
+                DirectorName = informationAboutRequest["director_name"],
+                DirectorSecondName = informationAboutRequest["director_secondname"],
+                ChiefFamily = informationAboutRequest["chief_family"],
+                ChiefName = informationAboutRequest["chief_name"],
+                ChiefSecondName = informationAboutRequest["chief_secondname"],
+                CreateDate = informationAboutRequest["create_date"],
+            };
+        }
+
+        public InformationAboutRequestModel GetInformationAboutRequestByRequest(int requestId)
+        {
             var informationAboutRequest = _db.GetInformationAboutRequest(requestId);
             return new InformationAboutRequestModel()
             {
@@ -257,10 +286,8 @@ namespace Repository
         public void CreateRequestWithFields(int servId, List<FieldsModel> fields)
         {
             var res = _db.InsertAndGetRequestId(UserId, servId);
-            /*foreach (var field in fields)
-            {
-                _db.InsertField(Int32.Parse(res[1][0]), field.Name, field.Value, field.Malually_fiiled);
-            }*/
+            var requestId = Int32.Parse(res[1][0]);
+            SetValueFieldsOnRequest(requestId, fields);
         }
         
         public void ChangeRequestStateByFirst(int requestId, int user_id)

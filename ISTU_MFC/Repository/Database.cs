@@ -91,6 +91,12 @@ namespace Repository
             return query.QueryWithDictionary
                 ($"SELECT * FROM information_about_requests WHERE request_id = {requestId}");
         }
+        public Dictionary<string, string> GetInformationAboutStudent(int studentUserId)
+        {
+            using var query = new QueryTool(_db);   
+            return query.QueryWithDictionary
+                ($"SELECT * FROM information_about_requests WHERE student_user_id = {studentUserId}");
+        }
         
         public List<FieldsModel> GetRequestFeelds(int requestId)
         {

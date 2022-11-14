@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Documents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
@@ -69,13 +70,31 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult RegService(int servId, string name)
         {
-            var res = _repository.GetRequestFeelds(6);
+            var documentsController = new DocumentsController(_repository); // вот работаем с документами
+            //открываем шаблон
+            var template = documentsController.
+                OpenDocumentAsTemplateByName("inputTest");
+            // получаются поля для заполнения документа
+            var fieldNames = template.GetFieldNames(); 
+            //получаем значения для заполнения полей
+            var valueFields = documentsController.FieldsController.GetValueFields(fieldNames, _repository.UserId);
+            // составление листа с модельками для отправки в бд
+            var fields = valueFields.Select(field => new FieldsModel() { Name = field.Key, Value = field.Value, Malually_fiiled = false}).ToList();
+            var fieldsOnView = new Dictionary<string,FieldsModel>(); // documentsController.FieldsController.GetFieldsOnViewByNames(fields);
+            foreach (var field in fields)
+            {
+                var fieldName = documentsController.FieldsController.GetFieldName(field);
+                fieldsOnView[fieldName] = field;
+            }
+            //_repository.CreateRequestWithFields(servId,fields);
+            //закрываем шаблон
+            template.Close();
             
             return View(new UserRegModel()
             {
                 Serv_id = servId.ToString(),
                 Serv_name = name,
-                Fields = res
+                Fields = fieldsOnView
             });
         }
 
@@ -91,7 +110,15 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult RegService(UserRegModel model)
         {
-            _repository.CreateRequestWithFields(Int32.Parse(model.Serv_id), model.Fields);
+            var documentsController = new DocumentsController(_repository); 
+            var template = documentsController.OpenDocumentAsTemplateByName("inputTest");
+            var fieldNames = template.GetFieldNames();
+            var valueFields = documentsController.FieldsController.GetValueFields(fieldNames, _repository.UserId);
+            var fields = valueFields.Select(field => new FieldsModel() { Name = field.Key, Value = field.Value, Malually_fiiled = false}).ToList();
+            template.Close();
+            
+            //var results = model.Fields.Select(t => t.Value).ToList();
+            _repository.CreateRequestWithFields(Int32.Parse(model.Serv_id), fields);
             return RedirectToAction("Home");
         }
     }
