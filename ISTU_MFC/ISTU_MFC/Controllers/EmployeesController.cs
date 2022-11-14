@@ -55,7 +55,7 @@ namespace ISTU_MFC.Controllers
             ViewData["group"] = user.Group;
             ViewData["studId"] = user.StudId;
             var model = _repository.GetRequestFeelds(Int32.Parse(req_id));
-            _repository.ChangeRequestState(Int32.Parse(req_id), _repository.UserId , "processed");
+            _repository.ChangeRequestStateByFirst(Int32.Parse(req_id), _repository.UserId);
             return View(model);
         }
 
@@ -77,9 +77,18 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult ChangeStatus(ChangeStatusModel model)
         {
+            var statuses = new Dictionary<string, string>()
+            {
+                { "not processed", "Не обработана" },
+                { "processing", "В работе" },
+                { "processed", "Обработана" },
+                { "closed", "Закрыта" }
+            };
             _repository.ChangeRequestState(Int32.Parse(model.request_id), _repository.UserId , model.status);
+            if (model.message != "")
+                model.message = $"Статус завки изменен на \"{statuses[model.status]}\"";
             _repository.CreateMessage(Int32.Parse(model.request_id), _repository.UserId, model.message);
-            return View();
+            return RedirectToAction("RequestGenerator", new{req_id = model.request_id});
         }
         
         

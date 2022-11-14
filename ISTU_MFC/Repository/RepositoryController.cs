@@ -162,5 +162,10 @@ namespace Repository
                 _db.InsertField(Int32.Parse(res[1][0]), field.Name, field.Value, field.Malually_fiiled);
             }
         }
+        
+        public void ChangeRequestStateByFirst(int requestId, int user_id)
+        {
+            _db.ChangeRequestStateByFirst(requestId, user_id);
+        }
     }
 }
