@@ -35,6 +35,21 @@ namespace Repository
             };
         }
 
+        public void SetValueFieldsOnRequest(int requestId, List<FieldsModel> fields)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetValueFieldsOnRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
         public string[][] GetStudentInfo(int userId)
         {
             throw new System.NotImplementedException();
@@ -49,7 +64,7 @@ namespace Repository
             {"NPSurnameDean", "В.В.Путин"},
             {"DepartamentStudent", "Программная Инженерия"},
         };
-        public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
+        public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath)
         {
             IDictionary<string, string> result = new Dictionary<string, string>();
             foreach (var field in nameFieldByPath)   
@@ -57,6 +72,11 @@ namespace Repository
                 result.Add(field.Key,_testValueFields[field.Key]);
             }
             return result;
+        }
+
+        public IDictionary<string, string> GetValueFieldsByIdRequest(int requestId)
+        {
+            throw new NotImplementedException();
         }
 
         public List<RequestModel> GetRequests(int userId)
@@ -70,6 +90,11 @@ namespace Repository
         }
 
         public StudentProfileModel GetStudentByRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InformationAboutRequestModel GetInformationAboutRequest(int requestId)
         {
             throw new NotImplementedException();
         }

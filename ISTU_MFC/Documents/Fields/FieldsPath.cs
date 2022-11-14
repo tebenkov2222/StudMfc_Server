@@ -5,6 +5,7 @@ namespace Documents.Fields
     public class FieldsPath
     {
         public Dictionary<string, string> Path;
+        public Dictionary<string, string> Names;
 
         public FieldsPath()
         {
@@ -14,16 +15,33 @@ namespace Documents.Fields
                 { "SurnameStudentField", "Database/StudentData/Family" },
                 { "PatronymicStudentField", "Database/StudentData/SecondName" },
                 { "GroupStudentField", "Database/StudentData/Group" },
-                { "NPSurnameDean", "Database/Departament/NPSurnameDean" },
-                { "DepartamentStudent", "Database/Departament/Departament" },
+                { "StudIdStudentField", "Database/StudentData/StudId" },
+                { "DepartamentStudent", "Database/StudentData/Department" },
+                { "NPSurnameDean", "Database/RequestInfo/NPSurnameDean" },
                 { "INN", "User/INN" },
                 { "Date", "System/Date" },
             };
+            Names = new Dictionary<string, string>()
+            {
+                { "NameStudentField", "Имя студента" },
+                { "SurnameStudentField", "Фамилия студента" },
+                { "PatronymicStudentField", "Отчество студентов" },
+                { "GroupStudentField", "Группа студента" },
+                { "StudIdStudentField", "Номер студенческого " },
+                { "DepartamentStudent", "Институт, где учится студент" },
+                { "NPSurnameDean", "Директор института" },
+                { "INN", "Инн" },
+                { "Date", "Дата" },
+            };
         }
 
-        public string GetValue(string nameField)
+        public string GetPath(string nameField)
         {
             return Path[nameField];
+        }
+        public string GetName(string nameField)
+        {
+            return Names[nameField];
         }
     }
 }

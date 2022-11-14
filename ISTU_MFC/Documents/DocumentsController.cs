@@ -44,9 +44,13 @@ namespace Documents
             File.Copy(documentTemplate.PatchToFile, pathTo, true);
             return new DocumentTemplate (pathTo, isEditable);
         }
-        public DocumentTemplate CopyToTempAndOpenDocument(DocumentTemplate documentTemplate, string name, bool isEditable = false)
+        public DocumentTemplate CopyToTempAndOpenDocument(DocumentTemplate documentTemplate, string nameNewFile, bool isEditable = false)
         {
-            return CopyAndOpenDocument(documentTemplate, GetPathByName(_settings.TempPath, name), isEditable);
+            return CopyAndOpenDocument(documentTemplate, GetPathByName(_settings.TempPath, nameNewFile), isEditable);
+        }
+        public DocumentTemplate CopyToTempAndOpenDocument(string nameTemplateFile, string nameNewFile, bool isEditable = false)
+        {
+            return CopyToTempAndOpenDocument(OpenDocumentAsTemplateByName(nameTemplateFile), nameNewFile, isEditable);
         }
 
         public string GetPathByName(string directory, string docName, string extention = "docx")

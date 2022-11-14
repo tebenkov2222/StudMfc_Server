@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using ModelsData;
 using Repository;
 
 namespace Documents.Fields
@@ -19,10 +20,10 @@ namespace Documents.Fields
 
         public string GetPathToField(string nameField)
         {
-            return _path.GetValue(nameField);
+            return _path.GetPath(nameField);
         }
 
-        public IDictionary<string,string> GetValueFields(IEnumerable<string> fields)
+        public IDictionary<string,string> GetValueFields(IEnumerable<string> fields, int requestId)
         {
             IDictionary<string, string> result = new Dictionary<string, string>(); // fieldName by Value
             IDictionary<string, string[]> databaseDictionary = new Dictionary<string, string[]>(); // fieldName by Path
@@ -43,12 +44,27 @@ namespace Documents.Fields
 
                 if (databaseDictionary.Count() > 0)
                 {
-                    var valueFields = _repository.GetValueFields(databaseDictionary);
+                    var valueFields = _repository.GetValueFieldsByPath(databaseDictionary, requestId);
                     foreach (var field in valueFields)
                     {
                         result[field.Key] = field.Value;
                     }
                 }
+            }
+
+            return result;
+        }
+
+        public List<FieldsModel> GetFieldsOnView(IList<FieldsModel> fieldsModels)
+        {
+            var result = new List<FieldsModel>();
+            foreach (var field in fieldsModels)
+            {
+                var fieldsModel = new FieldsModel();
+                fieldsModel.Name = _path.GetName(field.Name);
+                fieldsModel.Value = field.Value;
+                fieldsModel.Malually_fiiled = field.Malually_fiiled;
+                result.Add(fieldsModel);
             }
 
             return result;
