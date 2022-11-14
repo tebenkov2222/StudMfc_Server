@@ -1,45 +1,27 @@
-﻿@model ModelsData.StudentProfileModel
+﻿@model UserRegModel
 
 @{
     Layout = "_Layout";
     ViewData["Title"] = "RegServise";
 }
 
-<h4 name="NameOfServise" class="d-flex justify-content-center">@ViewData["name"]</h4>
-
+<h4 name="Serv_name" class="d-flex justify-content-center">@Model.Serv_name</h4>
 <div name="form" class="login-form">
     <form method="post" name="auth" class="form-horizontal">
+        <input name="Serv_id" value="@Model.Serv_id" type="hidden"/>
+        <input name="Serv_name" value="@Model.Serv_name" type="hidden"/>
         <fieldset name="caption" class="form-group">
             <h5>Личная информация</h5>
         </fieldset>
-        
-        <fieldset name="FirstName" class="form-group">
-            <label for="FirstName">Имя</label>
-            <div name="FirstName">@Model.Name</div>
-        </fieldset>
-        
-        <fieldset name="SurName" class="form-group">
-            <label for="SurName">Фамилия</label>
-            <div name="SurName">@Model.Family</div>
-        </fieldset>
-        
-        <fieldset name="SecondName" class="form-group">
-            <label for="SecondName">Отчество</label>
-            <div name="SecondName">@Model.SecondName</div>
-        </fieldset>
-        
-        <fieldset name="Group" class="form-group">
-            <label for="Group">Номер группы</label>
-            <div name="Group">@Model.Group</div>
-        </fieldset>
-        
-        <fieldset name="StudId" class="form-group">
-            <label for="StudId">Номер студенческого</label>
-            <div name="StudId">@Model.StudId</div>
-        </fieldset>
-
+        @foreach (var field in Model.Fields)
+        {
+            <fieldset name="FirstName" class="form-group">
+                <label for="FirstName">@field.Name</label>
+                <input name="Name" value="@field.Value" readonly="readonly"/>
+            </fieldset>
+        }
         <fieldset class="form-group">
-            <input type="button" name="send" value="Отправить" class="btn"/>
+            <input type="submit" name="inwith" value="Отправить" class="btn"/>
         </fieldset>
     </form>
 </div>
