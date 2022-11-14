@@ -76,7 +76,18 @@ namespace Repository
 
         public List<FieldsModel> GetRequestFeelds(int requestId)
         {
-            return _db.GetRequestFeelds(requestId);
+            var res = _db.GetRequestFeelds(requestId);
+            var list = new List<FieldsModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                list.Add(new FieldsModel()
+                {
+                    Name = res[i][0],
+                    Value = res[i][1],
+                    Malually_fiiled = bool.Parse(res[i][2])
+                });
+            }
+            return list;
         }
 
         public StudentProfileModel GetStudentByRequest(int requestId)

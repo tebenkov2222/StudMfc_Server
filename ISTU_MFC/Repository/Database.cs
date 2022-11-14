@@ -92,21 +92,10 @@ namespace Repository
                 ($"SELECT * FROM information_about_requests WHERE request_id = {requestId}");
         }
         
-        public List<FieldsModel> GetRequestFeelds(int requestId)
+        public string[][] GetRequestFeelds(int requestId)
         {
             using var query = new QueryTool(_db);
-            var res = query.QueryWithTable($"SELECT name, value, manually_filled FROM fields WHERE request_id = {requestId}");
-            var list = new List<FieldsModel>();
-            for (int i = 1; i < res.Length; i++)
-            {
-                list.Add(new FieldsModel()
-                {
-                    Name = res[i][0],
-                    Value = res[i][1],
-                    Malually_fiiled = bool.Parse(res[i][2])
-                });
-            }
-            return list;
+            return query.QueryWithTable($"SELECT name, value, manually_filled FROM fields WHERE request_id = {requestId}");
         }
         
         public int GetStudentByRequest(int requestId)
