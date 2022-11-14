@@ -83,8 +83,8 @@ namespace ISTU_MFC.Controllers
             copyToTempAndOpenDocument.Close();
             var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
                 copyToTempAndOpenDocument,
-                documentsController.GetPathByName("wwwroot\\images", copyToTempAndOpenDocument.Name, "ipg"));
-            var relativePath = $"~/images/{copyToTempAndOpenDocument.Name}.jpg";
+                documentsController.GetPathByName("wwwroot\\images", copyToTempAndOpenDocument.Name, "jpg"));
+            var relativePath = $"~/wwwroot/images/{copyToTempAndOpenDocument.Name}.jpg";
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
             viewModel.PathToPreviewImage = relativePath;
