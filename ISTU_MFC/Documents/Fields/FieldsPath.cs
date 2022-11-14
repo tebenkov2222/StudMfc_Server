@@ -18,7 +18,7 @@ namespace Documents.Fields
                 { "GroupStudentField", "Database/StudentData/Group" },
                 { "StudIdStudentField", "Database/StudentData/StudId" },
                 { "DepartamentStudent", "Database/StudentData/Department" },
-                { "NPSurnameDean", "Database/RequestInfo/NPSurnameDean" },
+                { "NPSurnameDean", "Database/DirectorInstitute/NPSurnameDean" },
                 { "INN", "User/INN" },
                 { "Date", "System/Date" },
             };

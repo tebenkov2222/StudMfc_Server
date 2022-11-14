@@ -64,11 +64,11 @@ namespace Repository
 
         //   document_link
         // "ссылка на документ"
-        public Dictionary<string, string> GetLinkToDocument(int requestId)
+        public string GetLinkToDocumentByRequestId(int requestId)
         {
             using var query = new QueryTool(_db);
             return query.QueryWithDictionary
-                ($"SELECT document_link FROM references_to_documents WHERE request_id = {requestId};");
+                ($"SELECT document_link FROM references_to_documents WHERE request_id = {requestId};")["document_link"];
         }
         
         //   name,    value,   manually_filled
@@ -96,6 +96,12 @@ namespace Repository
             using var query = new QueryTool(_db);   
             return query.QueryWithDictionary
                 ($"SELECT * FROM information_about_requests WHERE student_user_id = {studentUserId}");
+        }
+        public Dictionary<string, string> GetDirectorInstituteByStudent(int studentUserId)
+        {
+            using var query = new QueryTool(_db);   
+            return query.QueryWithDictionary
+                ($"SELECT * FROM directors_of_institutes_for_each_user WHERE user_id = {studentUserId}");
         }
         
         public List<FieldsModel> GetRequestFeelds(int requestId)
@@ -181,6 +187,13 @@ namespace Repository
         {
             using var query = new QueryTool(_db);
             query.QueryWithoutTable($"UPDATE requests SET employee_id = (SELECT employee_id FROM employees WHERE user_id = {user_id}), status = 'processing' WHERE id = {requestId} AND status = 'not processed'");
+        }
+
+        public string GetLinkToDocumentByServiceId(int serviceId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithDictionary
+                ($"SELECT document_link FROM services WHERE id = {serviceId};")["document_link"];
         }
     }
 }

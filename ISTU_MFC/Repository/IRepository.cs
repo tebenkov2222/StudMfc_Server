@@ -15,11 +15,13 @@ namespace Repository
         public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int studentUserId);
         public IDictionary<string, string> GetValueFieldsByIdRequest(int requestId);
         public List<RequestModel> GetRequests(int userId);
-        
+        public string GetLinkToDocumentByRequestId(int requestId);
+        public string GetLinkToDocumentByServiceId(int serviceId);
         public List<FieldsModel> GetRequestFeelds(int requestId);
         public StudentProfileModel GetStudentByRequest(int requestId);
         InformationAboutRequestModel GetInformationAboutRequestByStudent(int studentUserId);
         InformationAboutRequestModel GetInformationAboutRequestByRequest(int requestId);
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId);
         public void ChangeRequestState(int requestId, int user_id, string state);
         public void CreateMessage(int requestId, int employee_id, string message);
         public List<MessageModel> GetTableMessages(int userId);

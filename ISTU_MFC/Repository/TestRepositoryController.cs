@@ -84,6 +84,16 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public string GetLinkToDocumentByRequestId(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetLinkToDocumentByServiceId(int serviceId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<FieldsModel> GetRequestFeelds(int requestId)
         {
             throw new NotImplementedException();
@@ -100,6 +110,11 @@ namespace Repository
         }
 
         public InformationAboutRequestModel GetInformationAboutRequestByRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId)
         {
             throw new NotImplementedException();
         }

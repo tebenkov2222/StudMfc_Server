@@ -5,7 +5,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\images" />
+      <Folder Include="File\Output" />
+      <Folder Include="File\Temp" />
+      <Folder Include="wwwroot\images\Temp" />
+      <Folder Include="wwwroot\temp" />
     </ItemGroup>
 
     <ItemGroup>

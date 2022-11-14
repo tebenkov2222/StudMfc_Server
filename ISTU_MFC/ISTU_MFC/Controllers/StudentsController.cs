@@ -72,8 +72,10 @@ namespace ISTU_MFC.Controllers
         {
             var documentsController = new DocumentsController(_repository); // вот работаем с документами
             //открываем шаблон
+            var linkToDocument = _repository.GetLinkToDocumentByServiceId(servId);
+
             var template = documentsController.
-                OpenDocumentAsTemplateByName("inputTest");
+                OpenDocumentAsTemplateByName(linkToDocument);
             // получаются поля для заполнения документа
             var fieldNames = template.GetFieldNames(); 
             //получаем значения для заполнения полей
@@ -111,7 +113,9 @@ namespace ISTU_MFC.Controllers
         public IActionResult RegService(UserRegModel model)
         {
             var documentsController = new DocumentsController(_repository); 
-            var template = documentsController.OpenDocumentAsTemplateByName("inputTest");
+            var linkToDocument = _repository.GetLinkToDocumentByServiceId(Int32.Parse(model.Serv_id));
+
+            var template = documentsController.OpenDocumentAsTemplateByName(linkToDocument);
             var fieldNames = template.GetFieldNames();
             var valueFields = documentsController.FieldsController.GetValueFields(fieldNames, _repository.UserId);
             var fields = valueFields.Select(field => new FieldsModel() { Name = field.Key, Value = field.Value, Malually_fiiled = false}).ToList();

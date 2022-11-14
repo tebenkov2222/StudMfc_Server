@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Documents;
+using Documents.Documents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
@@ -67,8 +68,9 @@ namespace ISTU_MFC.Controllers
         {
 // вот работаем с документами
             var documentsController = new DocumentsController(_repository);
+            var linkToDocument = _repository.GetLinkToDocumentByRequestId(request_id);
             var copyToTempAndOpenDocument = documentsController.
-                CopyToTempAndOpenDocument("inputTest", "inputTest" + $"_temp{DateTime.Now.ToString("dd-MM-yy hh-mm-ss")}", true);
+                CopyToTempAndOpenDocument(linkToDocument, linkToDocument + $"_temp{DateTime.Now.ToString("dd-MM-yy_hh-mm-ss")}", true);
             var valueFields = _repository.GetValueFieldsByIdRequest(request_id);
             copyToTempAndOpenDocument.SetFieldValues(valueFields);
 
@@ -79,10 +81,13 @@ namespace ISTU_MFC.Controllers
 
             copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
             copyToTempAndOpenDocument.Close();
-            var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(copyToTempAndOpenDocument);
+            var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
+                copyToTempAndOpenDocument,
+                documentsController.GetPathByName("wwwroot\\images", copyToTempAndOpenDocument.Name, "ipg"));
+            var relativePath = $"~/images/{copyToTempAndOpenDocument.Name}.jpg";
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
-            viewModel.PathToPreviewImage = generateAndSaveImage;
+            viewModel.PathToPreviewImage = relativePath;
             return View(viewModel);
         }
 

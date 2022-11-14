@@ -18,4 +18,14 @@
       <ProjectReference Include="..\..\..\StudMfc_Server\ISTU_MFC\Repository\Repository.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions">
+        <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\5.0.17\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Http">
+        <HintPath>c:\program files\dotnet\shared\Microsoft.AspNetCore.App\5.0.17\Microsoft.AspNetCore.Http.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Http.Abstractions" />
+    </ItemGroup>
+
 </Project>

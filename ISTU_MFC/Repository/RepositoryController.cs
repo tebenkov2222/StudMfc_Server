@@ -104,9 +104,9 @@ namespace Repository
                         result[field.Key] = valueByName;
                     }
                     break;
-                case "RequestInfo":
+                case "DirectorInstitute":
                     
-                    var informationAboutRequest = GetInformationAboutRequestByStudent(studentId);
+                    var informationAboutRequest = GetDirectorInstituteByStudent(studentId);
                     foreach (var field in fieldNameByPacketFieldPath)
                     {
                         var valueByName = informationAboutRequest.GetValueByName(field.Value);
@@ -143,6 +143,16 @@ namespace Repository
                 });
             }
             return answ;
+        }
+
+        public string GetLinkToDocumentByRequestId(int requestId)
+        {
+            return _db.GetLinkToDocumentByRequestId(requestId);
+        }
+
+        public string GetLinkToDocumentByServiceId(int serviceId)
+        {
+            return _db.GetLinkToDocumentByServiceId(serviceId);
         }
 
         public List<FieldsModel> GetRequestFeelds(int requestId)
@@ -211,6 +221,18 @@ namespace Repository
                 ChiefName = informationAboutRequest["chief_name"],
                 ChiefSecondName = informationAboutRequest["chief_secondname"],
                 CreateDate = informationAboutRequest["create_date"],
+            };
+        }
+
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId)
+        {
+            var directorInstituteByStudent = _db.GetDirectorInstituteByStudent(studentUserId);
+
+            return new DirectorInstituteModel()
+            {
+                Name = directorInstituteByStudent["name"],
+                Family = directorInstituteByStudent["family"],
+                SecondName = directorInstituteByStudent["secondName"],
             };
         }
 

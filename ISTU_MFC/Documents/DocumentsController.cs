@@ -14,7 +14,7 @@ namespace Documents
 
         public DocumentViewer DocumentViewer => _documentViewer;
         private readonly IRepository _repository;
-        private readonly DocumentsSettings _settings = DocumentsSettings.LocalHartmann;
+        private readonly DocumentsSettings _settings = DocumentsSettings.Directory;
 
         public DocumentsSettings Settings => _settings;
         private FieldsController _fieldsController;

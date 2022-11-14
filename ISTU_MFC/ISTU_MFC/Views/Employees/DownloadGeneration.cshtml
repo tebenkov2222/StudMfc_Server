@@ -15,7 +15,10 @@
         
 </form>
 
+<img src= @Model.PathToPreviewImage alt="Preview Photo" />
+
 <div name="buttons" class="d-flex">
+    
     <div class="btn">@Html.ActionLink("Скачать", "Download", 
                          "Employees", new {documentPath = @Model.PathToDownloadDocument}, null)</div>
 </div>
