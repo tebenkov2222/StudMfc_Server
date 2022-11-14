@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Documents;
+using Documents.Documents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
@@ -54,7 +56,9 @@ namespace ISTU_MFC.Controllers
             ViewData["name"] = $"{user.Family} {user.Name} {user.SecondName}";
             ViewData["group"] = user.Group;
             ViewData["studId"] = user.StudId;
-            var model = _repository.GetRequestFeelds(Int32.Parse(req_id));
+            var documentsController = new DocumentsController(_repository);
+            var model =documentsController.FieldsController.GetFieldsOnViewByNames(_repository.GetRequestFeelds(Int32.Parse(req_id)));
+            
             _repository.ChangeRequestStateByFirst(Int32.Parse(req_id), _repository.UserId);
             return View(model);
         }
@@ -62,7 +66,29 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult DownloadGeneration(int request_id)
         {
-            return View();
+// вот работаем с документами
+            var documentsController = new DocumentsController(_repository);
+            var linkToDocument = _repository.GetLinkToDocumentByRequestId(request_id);
+            var copyToTempAndOpenDocument = documentsController.
+                CopyToTempAndOpenDocument(linkToDocument, linkToDocument + $"_temp{DateTime.Now.ToString("dd-MM-yy_hh-mm-ss")}", true);
+            var valueFields = _repository.GetValueFieldsByIdRequest(request_id);
+            copyToTempAndOpenDocument.SetFieldValues(valueFields);
+
+            var requestModel = _repository.GetInformationAboutRequestByRequest(request_id);
+            var docName =
+                $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}";
+            var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
+
+            copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
+            copyToTempAndOpenDocument.Close();
+            var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
+                copyToTempAndOpenDocument,
+                documentsController.GetPathByName("wwwroot\\images", copyToTempAndOpenDocument.Name, "ipg"));
+            var relativePath = $"~/images/{copyToTempAndOpenDocument.Name}.jpg";
+            var viewModel = new DownloadGenerationViewModel();
+            viewModel.PathToDownloadDocument = pathToDownloadDocument;
+            viewModel.PathToPreviewImage = relativePath;
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -107,12 +133,13 @@ namespace ISTU_MFC.Controllers
             return View(model);
         }
         
-        public IActionResult Download()
+        public IActionResult Download(string documentPath)
         {
-            string file_path = Path.Combine(_appEnvironment.ContentRootPath, "File/Test.txt");
-            string file_type = "application/txt";
-            string file_name = "Test.txt";
-            return PhysicalFile(file_path, file_type, file_name);
+            //documentPath.Replace('\\', '/');
+            string filePath = documentPath;
+            string fileType = "application/docx";
+            string fileName = documentPath.Split('\\').Last();
+            return PhysicalFile(filePath, fileType,fileName);
         }
     }
 }

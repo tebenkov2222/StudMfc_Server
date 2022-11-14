@@ -35,6 +35,21 @@ namespace Repository
             };
         }
 
+        public void SetValueFieldsOnRequest(int requestId, List<FieldsModel> fields)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetValueFieldsOnRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int studentUserId)
+        {
+            throw new NotImplementedException();
+        }
+
         public string[][] GetStudentInfo(int userId)
         {
             throw new System.NotImplementedException();
@@ -49,7 +64,7 @@ namespace Repository
             {"NPSurnameDean", "В.В.Путин"},
             {"DepartamentStudent", "Программная Инженерия"},
         };
-        public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
+        public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath)
         {
             IDictionary<string, string> result = new Dictionary<string, string>();
             foreach (var field in nameFieldByPath)   
@@ -59,7 +74,22 @@ namespace Repository
             return result;
         }
 
+        public IDictionary<string, string> GetValueFieldsByIdRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<RequestModel> GetRequests(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetLinkToDocumentByRequestId(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetLinkToDocumentByServiceId(int serviceId)
         {
             throw new NotImplementedException();
         }
@@ -70,6 +100,26 @@ namespace Repository
         }
 
         public StudentProfileModel GetStudentByRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InformationAboutRequestModel GetInformationAboutRequestByStudent(int studentUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InformationAboutRequestModel GetInformationAboutRequestByRequest(int requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InformationAboutRequestModel GetInformationAboutRequest(int requestId)
         {
             throw new NotImplementedException();
         }

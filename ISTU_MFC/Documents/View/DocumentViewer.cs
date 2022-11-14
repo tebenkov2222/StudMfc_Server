@@ -28,9 +28,22 @@ namespace Documents.View
             Document document = new Document();
             document.LoadFromFile(documentReference.PatchToFile);
             Image image = document.SaveToImages(0, ImageType.Metafile);
-            var pathByName = _controller.GetPathByName(_controller.Settings.TempPath,documentReference.Name,"jpg");
-            image.Save(pathByName);
-            return pathByName;
+            var pathByName = _controller.GetPathByName(_controller.Settings.TempPath,
+                documentReference.Name, "jpg");
+            document.Close();
+            var path = pathByName;
+            image.Save(path);
+            return path;
+        }
+        public string GenerateAndSaveImage(DocumentBase documentReference, string pathToSave)
+        {
+            Document document = new Document();
+            document.LoadFromFile(documentReference.PatchToFile);
+            Image image = document.SaveToImages(0, ImageType.Metafile);
+            document.Close();
+            var path = pathToSave;
+            image.Save(path);
+            return path;
         }
         //DocGeneration:2
         /*public void GenerateAndSaveImage(DocumentBase documentReference)
