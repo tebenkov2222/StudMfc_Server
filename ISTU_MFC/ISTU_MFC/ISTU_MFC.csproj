@@ -7,7 +7,6 @@
     <ItemGroup>
       <Folder Include="File\Output" />
       <Folder Include="File\Temp" />
-      <Folder Include="wwwroot\images\Temp" />
       <Folder Include="wwwroot\temp" />
     </ItemGroup>
 
@@ -21,6 +20,22 @@
     <ItemGroup>
       <ProjectReference Include="..\Documents\Documents.csproj" />
       <ProjectReference Include="..\Repository\Repository.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="wwwroot\images\Temp\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="wwwroot\images\Temp\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="wwwroot\images\Temp\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="wwwroot\images\Temp\**" />
     </ItemGroup>
 
 </Project>

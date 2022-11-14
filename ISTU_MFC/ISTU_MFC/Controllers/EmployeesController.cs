@@ -88,6 +88,7 @@ namespace ISTU_MFC.Controllers
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
             viewModel.PathToPreviewImage = relativePath;
+            viewModel.RequestId = request_id;
             return View(viewModel);
         }
 
