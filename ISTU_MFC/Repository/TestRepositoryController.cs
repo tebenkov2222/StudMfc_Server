@@ -45,7 +45,9 @@ namespace Repository
             {"NameStudentField", "Иван"},
             {"SurnameStudentField", "Иванов"},
             {"PatronymicStudentField", "Иванович"},
-            {"GroupStudentField", "Нет нахой"}
+            {"GroupStudentField", "Нет нахой"},
+            {"NPSurnameDean", "В.В.Путин"},
+            {"DepartamentStudent", "Программная Инженерия"},
         };
         public IDictionary<string, string> GetValueFields(IDictionary<string, string[]> nameFieldByPath)
         {

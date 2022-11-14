@@ -7,7 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Aspose.Words" Version="22.11.0" />
       <PackageReference Include="DocumentFormat.OpenXml" Version="2.18.0" />
+      <PackageReference Include="GroupDocs.Conversion" Version="22.10.0" />
+      <PackageReference Include="OpenXmlPowerTools" Version="4.5.3.2" />
+      <PackageReference Include="Spire.Doc" Version="10.11.0" />
     </ItemGroup>
 
     <ItemGroup>

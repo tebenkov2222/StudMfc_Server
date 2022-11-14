@@ -14,7 +14,9 @@ namespace Documents.Fields
                 { "SurnameStudentField", "Database/StudentData/Family" },
                 { "PatronymicStudentField", "Database/StudentData/SecondName" },
                 { "GroupStudentField", "Database/StudentData/Group" },
-                { "INN", "Database/Fields/INN" },
+                { "NPSurnameDean", "Database/Departament/NPSurnameDean" },
+                { "DepartamentStudent", "Database/Departament/Departament" },
+                { "INN", "User/INN" },
                 { "Date", "System/Date" },
             };
         }

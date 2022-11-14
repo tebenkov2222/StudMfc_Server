@@ -3,21 +3,27 @@ using System.IO;
 using DocumentFormat.OpenXml.Office2013.Excel;
 using Documents.Documents;
 using Documents.Fields;
+using Documents.View;
 using Repository;
 
 namespace Documents
 {
     public class DocumentsController
     {
+        private DocumentViewer _documentViewer;
+
+        public DocumentViewer DocumentViewer => _documentViewer;
         private readonly IRepository _repository;
         private readonly DocumentsSettings _settings = DocumentsSettings.LocalHartmann;
 
+        public DocumentsSettings Settings => _settings;
         private FieldsController _fieldsController;
 
         public FieldsController FieldsController => _fieldsController;
         public DocumentsController(IRepository repository)
         {
             _repository = repository;
+            _documentViewer = new DocumentViewer(this);
             _fieldsController = new FieldsController(repository);
         }
         //public void 

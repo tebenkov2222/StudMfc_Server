@@ -7,12 +7,14 @@ namespace Documents.Fields
     public class FieldsController
     {
         private readonly IRepository _repository;
+        private readonly SystemFieldsController _systemFieldsController;
         private readonly FieldsPath _path;
 
         public FieldsController(IRepository repository)
         {
             _repository = repository;
             _path = new FieldsPath();
+            _systemFieldsController = new SystemFieldsController();
         }
 
         public string GetPathToField(string nameField)
@@ -31,10 +33,11 @@ namespace Documents.Fields
                 switch (pathByNameField[0])
                 {
                     case "Database":
-                        databaseDictionary.Add(fieldName, GenerateLocalPath(pathByNameField));
+                        databaseDictionary[fieldName] =  GenerateLocalPath(pathByNameField);
                         break;
                     case "System":
-                        
+                        var valueFields = _systemFieldsController.GetValueFields(fieldName);
+                        result[fieldName] = valueFields;
                         break;
                 }
 
