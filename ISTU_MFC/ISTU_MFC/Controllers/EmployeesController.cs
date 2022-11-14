@@ -111,7 +111,7 @@ namespace ISTU_MFC.Controllers
                 { "closed", "Закрыта" }
             };
             _repository.ChangeRequestState(Int32.Parse(model.request_id), _repository.UserId , model.status);
-            if (model.message != "")
+            if (model.message == "")
                 model.message = $"Статус заявки изменен на \"{statuses[model.status]}\"";
             _repository.CreateMessage(Int32.Parse(model.request_id), _repository.UserId, model.message);
             return RedirectToAction("RequestGenerator", new{req_id = model.request_id});
