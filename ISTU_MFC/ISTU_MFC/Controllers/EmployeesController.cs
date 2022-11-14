@@ -84,7 +84,7 @@ namespace ISTU_MFC.Controllers
             var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
                 copyToTempAndOpenDocument,
                 documentsController.GetPathByName("wwwroot\\images", copyToTempAndOpenDocument.Name, "jpg"));
-            var relativePath = $"~/wwwroot/images/{copyToTempAndOpenDocument.Name}.jpg";
+            var relativePath = $"~/images/{copyToTempAndOpenDocument.Name}.jpg";
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
             viewModel.PathToPreviewImage = relativePath;

@@ -65,25 +65,57 @@ namespace Documents.Documents
 
         public IEnumerable<FindTextData> FindTextByFirstEntry(string pattern)
         {
-           return GetTexts().Where(t => t.Text.LastIndexOf(pattern) != -1)
+           return GetAllText().Where(t => t.Text.LastIndexOf(pattern) != -1)
                 .Select(t => new FindTextData(ref t, t.Text.LastIndexOf(pattern), t.Text.Length -1));
         }
         public IEnumerable<FindTextData> FindTextByFirstAndLatestEntry(string startPattern, string endPattern)
         {
-            var enumerable = GetTexts().Where(t => t.Text.LastIndexOf(startPattern) != -1 && t.Text.LastIndexOf(endPattern) != -1); ;
+            var enumerable = GetAllText().Where(t => t.Text.LastIndexOf(startPattern) != -1 && t.Text.LastIndexOf(endPattern) != -1); ;
             return enumerable.Select(t => new FindTextData(ref t, t.Text.LastIndexOf(startPattern),t.Text.LastIndexOf(endPattern) + endPattern.Length));
         }
-        protected IEnumerable<Paragraph> GetParagraphs()
+        public IEnumerable<Paragraph> GetParagraphs()
         {
             return _body.Elements<Paragraph>();
         }
-        protected IEnumerable<Run> GetRuns()
+        public IEnumerable<Table> GetTable()
+        {
+            return _body.Elements<Table>();
+        }
+        public IEnumerable<TableRow> GetTableRow()
+        {
+            return GetTable().SelectMany(t => t.Elements<TableRow>());
+        }
+        public IEnumerable<TableCell> GetTableCell()
+        {
+            return GetTableRow().SelectMany(t => t.Elements<TableCell>());
+        }
+        public IEnumerable<Paragraph> GetParagraphsOnTable()
+        {
+            return GetTableCell().SelectMany(t => t.Elements<Paragraph>());
+        }
+        public IEnumerable<Run> GetRunsOnTable()
+        {
+            return GetParagraphsOnTable().SelectMany(t => t.Elements<Run>());
+        }
+        public IEnumerable<Text> GetTextOnTable()
+        {
+            return GetRunsOnTable().SelectMany(t => t.Elements<Text>());
+        }
+        public IEnumerable<Run> GetRuns()
         {
             return GetParagraphs().SelectMany(t => t.Elements<Run>());
         }
-        protected IEnumerable<Text> GetTexts()
+        public IEnumerable<Text> GetTexts()
         {
             return GetRuns().SelectMany(t => t.Elements<Text>());
+        }
+
+        public IEnumerable<Text> GetAllText()
+        {
+            var textsOnTable = GetTextOnTable().ToList();
+            var texts = GetTexts().ToList();
+            texts.AddRange(textsOnTable);
+            return texts;
         }
     }
 }
