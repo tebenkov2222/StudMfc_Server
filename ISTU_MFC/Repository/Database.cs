@@ -170,5 +170,11 @@ namespace Repository
             ("INSERT INTO fields (request_id, name, value, manually_filled) " +
              $"Values ({requestId}, '{name}', '{value}', {manuallyFilled});");
         }
+        
+        public void ChangeRequestStateByFirst(int requestId, int user_id)
+        {
+            using var query = new QueryTool(_db);
+            query.QueryWithoutTable($"UPDATE requests SET employee_id = (SELECT employee_id FROM employees WHERE user_id = {user_id}), status = 'processing' WHERE id = {requestId} AND status = 'not processed'");
+        }
     }
 }
