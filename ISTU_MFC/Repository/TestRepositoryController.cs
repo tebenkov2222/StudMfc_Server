@@ -106,5 +106,10 @@ namespace Repository
         {
             throw new NotImplementedException();
         }
+
+        public void CreateRequestWithFields(int servId, List<FieldsModel> fields)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

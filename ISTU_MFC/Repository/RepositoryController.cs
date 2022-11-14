@@ -157,10 +157,10 @@ namespace Repository
         public void CreateRequestWithFields(int servId, List<FieldsModel> fields)
         {
             var res = _db.InsertAndGetRequestId(UserId, servId);
-            foreach (var field in fields)
+            /*foreach (var field in fields)
             {
                 _db.InsertField(Int32.Parse(res[1][0]), field.Name, field.Value, field.Malually_fiiled);
-            }
+            }*/
         }
         
         public void ChangeRequestStateByFirst(int requestId, int user_id)
