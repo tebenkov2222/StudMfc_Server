@@ -54,12 +54,12 @@ namespace Repository
         //   1223	    "Материальная помошь"
         //  443355	    "Материальная помошь"
         //  335544	    "Академический отпуск"
-        public string[][] GetTableAvailableRequestsForEmployees(int userId) 
+        public string[][] GetTableAvailableRequestsForEmployees(int userId, string status = "closed") 
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable
-                ("SELECT request_id, name_service FROM list_of_requests_for_employees " + 
-                 $"WHERE employee_id IS null AND user_id = {userId};");
+            ("SELECT request_id, name_service FROM list_of_requests_for_employees " + 
+             $"WHERE status <> '{status}' AND user_id = {userId};");
         }
 
         //   document_link
@@ -146,6 +146,29 @@ namespace Repository
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable($"SELECT services_id, name FROM services_info_by_subdivisions WHERE subdivision_id = {subId}");
+        }
+
+        public string[][] GetServisesInfo(int servId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT name, information FROM services_info_by_subdivisions WHERE services_id = {servId}");
+        }
+        
+        public string[][] InsertAndGetRequestId(int userId, int subdivisionService)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ("INSERT INTO requests (stud_id, subdivision_service_id)"+
+             $" VALUES ((SELECT stud_id FROM students WHERE user_id = {userId}), "+
+             $" {subdivisionService}) returning id AS request_id");
+        }
+
+        public int InsertField(int requestId, string name, string value, bool manuallyFilled = false)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithoutTable
+            ("INSERT INTO fields (request_id, name, value, manually_filled) " +
+             $"Values ({requestId}, '{name}', '{value}', {manuallyFilled});");
         }
     }
 }

@@ -44,14 +44,14 @@
     </form>
 </div>*@
 
-<div name="Services" class="services white-grey">
-    <form method="post">
+    <div name="Services" class="services white-grey">
+        <form method="post">
         
-        @foreach (var req in Model)
-        {
-            <div class="service black-grey d-flex" style="color: black;">
-                @Html.ActionLink(@$"{req.Id} {req.Caption}", "RequestGenerator", "Employees", new { req_id = @req.Id }, null)
-            </div>
-        }
-    </form>
-</div>
+            @foreach (var req in Model)
+            {
+                <div class="service black-grey d-flex" style="color: black;">
+                    @Html.ActionLink(@$"{req.Id} {req.Caption}", "RequestGenerator", "Employees", new { req_id = @req.Id }, null)
+                </div>
+            }
+        </form>
+    </div> 

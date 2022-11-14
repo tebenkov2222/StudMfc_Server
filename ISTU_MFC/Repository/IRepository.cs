@@ -20,6 +20,7 @@ namespace Repository
         public List<MessageModel> GetTableMessages(int userId);
         public List<SubdivisionModel> GetDevisionsList(int userId);
         public List<Servises> GetSubdivisionInfo(int sun_id);
+        public ServiseModel GetServisesInfo(int servId);
     }
     
     

@@ -46,8 +46,8 @@ namespace Repository
                 Family = studentInfo[1][2],
                 Name = studentInfo[1][3],
                 SecondName = studentInfo[1][4],
-                Group = studentInfo[1][1],
-                StudId = studentInfo[1][5]
+                Group = studentInfo[1][5],
+                StudId = studentInfo[1][1]
             };
         }
 
@@ -142,6 +142,25 @@ namespace Repository
                 });
             }
             return answ;
+        }
+
+        public ServiseModel GetServisesInfo(int servId)
+        {
+            var res = _db.GetServisesInfo(servId);
+            return new ServiseModel()
+            {
+                Name = res[1][0],
+                Info = res[1][1]
+            };
+        }
+
+        public void CreateRequestWithFields(int servId, List<FieldsModel> fields)
+        {
+            var res = _db.InsertAndGetRequestId(UserId, servId);
+            foreach (var field in fields)
+            {
+                _db.InsertField(Int32.Parse(res[1][0]), field.Name, field.Value, field.Malually_fiiled);
+            }
         }
     }
 }

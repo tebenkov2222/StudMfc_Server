@@ -50,7 +50,7 @@ namespace ISTU_MFC.Controllers
             ViewData["group"] = user.Group;
             ViewData["studId"] = user.StudId;
             var model = _repository.GetRequestFeelds(Int32.Parse(req_id));
-            _repository.ChangeRequestState(Int32.Parse(req_id), _repository.UserId , "processing");
+            _repository.ChangeRequestState(Int32.Parse(req_id), _repository.UserId , "processed");
             return View(model);
         }
 
