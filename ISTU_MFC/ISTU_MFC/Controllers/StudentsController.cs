@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using ISTU_MFC.Models;
 using ISTU_MFC.ViewModels;
+using Microsoft.AspNetCore.Hosting;
+using ModelsData;
 using Repository;
 
 
@@ -66,16 +69,30 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult RegService(int servId, string name)
         {
-            var model = _repository.GetStudentProfileModel(_repository.UserId);
-            ViewData["name"] = name;
-            return View(model);
+            var res = _repository.GetRequestFeelds(6);
+            
+            return View(new UserRegModel()
+            {
+                Serv_id = servId.ToString(),
+                Serv_name = name,
+                Fields = res
+            });
         }
 
+        [HttpGet]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         [Authorize(Roles = "Student")]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        public IActionResult RegService(UserRegModel model)
+        {
+            _repository.CreateRequestWithFields(Int32.Parse(model.Serv_id), model.Fields);
+            return RedirectToAction("Home");
         }
     }
 }

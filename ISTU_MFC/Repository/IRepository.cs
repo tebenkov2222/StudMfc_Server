@@ -24,6 +24,8 @@ namespace Repository
         public List<SubdivisionModel> GetDevisionsList(int userId);
         public List<Servises> GetSubdivisionInfo(int sun_id);
         public ServiseModel GetServisesInfo(int servId);
+        public void ChangeRequestStateByFirst(int requestId, int user_id);
+        public void CreateRequestWithFields(int servId, List<FieldsModel> fields);
     }
     
     

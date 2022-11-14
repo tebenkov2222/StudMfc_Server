@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
 using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Repository;
 
 namespace ISTU_MFC.Controllers
@@ -16,10 +18,13 @@ namespace ISTU_MFC.Controllers
     {
         private readonly ILogger<EmployeesController> _logger;
         private readonly IRepository _repository;
-        public EmployeesController(ILogger<EmployeesController> logger, IRepository repository)
+        private readonly IWebHostEnvironment _appEnvironment;
+        
+        public EmployeesController(ILogger<EmployeesController> logger, IRepository repository, IWebHostEnvironment appEnvironment)
         {
             _logger = logger;
             _repository = repository;
+            _appEnvironment = appEnvironment;
         }
         
         [Authorize(Roles = "Employee")]
@@ -50,12 +55,12 @@ namespace ISTU_MFC.Controllers
             ViewData["group"] = user.Group;
             ViewData["studId"] = user.StudId;
             var model = _repository.GetRequestFeelds(Int32.Parse(req_id));
-            _repository.ChangeRequestState(Int32.Parse(req_id), _repository.UserId , "processed");
+            _repository.ChangeRequestStateByFirst(Int32.Parse(req_id), _repository.UserId);
             return View(model);
         }
 
         [Authorize(Roles = "Employee")]
-        public IActionResult DownloadGeneration()
+        public IActionResult DownloadGeneration(int request_id)
         {
             return View();
         }
@@ -72,9 +77,18 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult ChangeStatus(ChangeStatusModel model)
         {
+            var statuses = new Dictionary<string, string>()
+            {
+                { "not processed", "Не обработана" },
+                { "processing", "В работе" },
+                { "processed", "Обработана" },
+                { "closed", "Закрыта" }
+            };
             _repository.ChangeRequestState(Int32.Parse(model.request_id), _repository.UserId , model.status);
+            if (model.message != "")
+                model.message = $"Статус заявки изменен на \"{statuses[model.status]}\"";
             _repository.CreateMessage(Int32.Parse(model.request_id), _repository.UserId, model.message);
-            return View();
+            return RedirectToAction("RequestGenerator", new{req_id = model.request_id});
         }
         
         
@@ -91,6 +105,14 @@ namespace ISTU_MFC.Controllers
         {
             var model = _repository.GetTableMessages(_repository.UserId);
             return View(model);
+        }
+        
+        public IActionResult Download()
+        {
+            string file_path = Path.Combine(_appEnvironment.ContentRootPath, "File/Test.txt");
+            string file_type = "application/txt";
+            string file_name = "Test.txt";
+            return PhysicalFile(file_path, file_type, file_name);
         }
     }
 }
