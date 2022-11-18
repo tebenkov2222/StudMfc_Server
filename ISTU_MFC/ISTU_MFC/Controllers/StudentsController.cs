@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Aspose.Words;
 using Documents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -54,8 +55,12 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult About(string sub_id, string info)
         {
-            ViewData["Information"] = info;
-            var model = _repository.GetSubdivisionInfo(Int32.Parse(sub_id));
+            var model = new AboutModel()
+            {
+                Sub_Id = sub_id,
+                Info = info,
+                Servises = _repository.GetSubdivisionInfo(Int32.Parse(sub_id))
+            };
             return View(model);
         }
 
@@ -63,7 +68,7 @@ namespace ISTU_MFC.Controllers
         public IActionResult Servise(int servId)
         {
             var model = _repository.GetServisesInfo(servId);
-            ViewData["id"] = servId;
+            model.Id = servId;
             return View(model);
         }
 

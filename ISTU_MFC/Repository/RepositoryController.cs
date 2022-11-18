@@ -291,16 +291,16 @@ namespace Repository
             return answ;
         }
 
-        public List<Servises> GetSubdivisionInfo(int sun_id)
+        public List<ServiseModel> GetSubdivisionInfo(int sun_id)
         {
             var res = _db.GetServisesBySubdevision(sun_id);
-            var answ = new List<Servises>();
+            var answ = new List<ServiseModel>();
             for (int i = 1; i < res.Length; i++)
             {
-                answ.Add(new Servises()
+                answ.Add(new ServiseModel()
                 {
                     Name = res[i][1],
-                    Id = res[i][0]
+                    Id = Int32.Parse(res[i][0])
                 });
             }
             return answ;

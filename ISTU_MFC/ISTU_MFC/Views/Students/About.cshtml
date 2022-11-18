@@ -1,4 +1,4 @@
-﻿@model List<ModelsData.Servises>
+﻿@model AboutModel
 
 @{
     Layout = "_Layout";
@@ -7,12 +7,12 @@
 
 <h4 class="d-flex justify-content-center">О деканате</h4>
 
-<p name="hours-of-work">@ViewData["Information"] </p>
+<p name="hours-of-work">@Model.Info </p>
 
 <p>Предоставляемые услуги:</p>
 
 <div name="servises">
-    @foreach (var item in Model)
+    @foreach (var item in Model.Servises)
     {
         <p name="servise1">@Html.ActionLink(@item.Name, "Servise", "Students", new { servId = @item.Id }, null)</p>
     }

@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model ISTU_MFC.ViewModels.ChangeStatusModel
 
 @{
     Layout = "_LayoutEmployees";
@@ -9,7 +9,7 @@
 
 <div name="id" class="d-flex">
 <div>ID заявки: </div>
-<div name="request_id" value = @ViewData["request_id"]> @ViewData["request_id"] </div>
+<div name="request_id" value = @Model.request_id> @Model.request_id </div>
 </div>
 
 <div name="form" class="login-form">
@@ -17,7 +17,7 @@
         <fieldset name="status" class="form-group">
             <label for="status">Статус заявки:</label>
             <select name="status" required="required">
-                <option value="">Выберите значение</option>
+                <option value="processing">В работе</option>
                 <option value="closed">Закрыта</option>
                 <option value="processed">Обработана</option>
             </select>
