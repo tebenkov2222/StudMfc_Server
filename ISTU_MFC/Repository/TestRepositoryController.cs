@@ -144,7 +144,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public List<Servises> GetSubdivisionInfo(int sun_id)
+        public List<ServiseModel> GetSubdivisionInfo(int sun_id)
         {
             throw new NotImplementedException();
         }

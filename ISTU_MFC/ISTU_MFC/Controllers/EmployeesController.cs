@@ -51,21 +51,26 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult RequestGenerator(string req_id)
         {
-            ViewData["req_id"] = req_id;
             var user = _repository.GetStudentByRequest(Int32.Parse(req_id));
-            ViewData["name"] = $"{user.Family} {user.Name} {user.SecondName}";
-            ViewData["group"] = user.Group;
-            ViewData["studId"] = user.StudId;
             var documentsController = new DocumentsController(_repository);
-            var model =documentsController.FieldsController.GetFieldsOnViewByNames(_repository.GetRequestFeelds(Int32.Parse(req_id)));
+            var model = new RequestGeneratorModel()
+            {
+                Req_id = req_id,
+                Name = $"{user.Family} {user.Name} {user.SecondName}",
+                Group = user.Group,
+                StudId = user.StudId,
+                Fields = documentsController.FieldsController.GetFieldsOnViewByNames(
+                    _repository.GetRequestFeelds(Int32.Parse(req_id)))
+            };
             
             _repository.ChangeRequestStateByFirst(Int32.Parse(req_id), _repository.UserId);
             return View(model);
         }
 
         [Authorize(Roles = "Employee")]
-        public IActionResult DownloadGeneration(int request_id)
+        public IActionResult DownloadGeneration(string req_id)
         {
+            var request_id = Int32.Parse(req_id);
 // вот работаем с документами
             var documentsController = new DocumentsController(_repository);
             var linkToDocument = _repository.GetLinkToDocumentByRequestId(request_id);
@@ -94,10 +99,12 @@ namespace ISTU_MFC.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Employee")]
-        public IActionResult ChangeStatus(string request_id)
+        public IActionResult ChangeStatus(string req_id)
         {
-            ViewData["request_id"] = request_id;
-            return View();
+            return View(new ChangeStatusModel()
+            {
+                request_id = req_id
+            });
         }
         
         [HttpPost]
