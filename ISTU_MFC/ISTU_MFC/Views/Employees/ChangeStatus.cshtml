@@ -7,13 +7,15 @@
 
 <h3>Изменение статуса заявки</h3>
 
+
 <div name="id" class="d-flex">
-<div>ID заявки: </div>
-<div name="request_id" value = @Model.request_id> @Model.request_id </div>
+    <div>ID заявки: </div>
+    <div name="request_id">@Model.request_id</div>
 </div>
 
 <div name="form" class="login-form">
     <form method="post" name="ChangeStatus" class="form-horizontal">
+        <input name="request_id" value=@Model.request_id type="hidden" />
         <fieldset name="status" class="form-group">
             <label for="status">Статус заявки:</label>
             <select name="status" required="required">
@@ -22,14 +24,14 @@
                 <option value="processed">Обработана</option>
             </select>
         </fieldset>
-    
+
         <fieldset name="message" class="form-group">
             <label for="message">Сообщение</label>
-            <textarea name="message"></textarea> 
+            <textarea name="message"></textarea>
         </fieldset>
-    
+
         <fieldset name="buttons" class="form-group">
-            <button class="btn" type="submit">Изменить статус</button>
+            <input class="btn" type="submit">Изменить статус</input>
         </fieldset>
     </form>
 </div>
