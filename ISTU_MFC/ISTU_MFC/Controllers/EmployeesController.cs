@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Documents;
 using Documents.Documents;
@@ -33,7 +34,8 @@ namespace ISTU_MFC.Controllers
         [HttpGet]
         public IActionResult WorkWithDoc()
         {
-            var requests = _repository.GetRequests(_repository.UserId);
+            var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+            var requests = _repository.GetRequests(userId);
             return View(requests);
         }
         [Authorize(Roles = "Employee")]
@@ -63,7 +65,8 @@ namespace ISTU_MFC.Controllers
                     _repository.GetRequestFeelds(Int32.Parse(req_id)))
             };
             
-            _repository.ChangeRequestStateByFirst(Int32.Parse(req_id), _repository.UserId);
+            var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+            _repository.ChangeRequestStateByFirst(Int32.Parse(req_id), userId);
             return View(model);
         }
 
@@ -118,10 +121,11 @@ namespace ISTU_MFC.Controllers
                 { "processed", "Обработана" },
                 { "closed", "Закрыта" }
             };
-            _repository.ChangeRequestState(Int32.Parse(model.request_id), _repository.UserId , model.status);
+            var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+            _repository.ChangeRequestState(Int32.Parse(model.request_id), userId , model.status);
             if (model.message == "")
                 model.message = $"Статус заявки изменен на \"{statuses[model.status]}\"";
-            _repository.CreateMessage(Int32.Parse(model.request_id), _repository.UserId, model.message);
+            _repository.CreateMessage(Int32.Parse(model.request_id), userId, model.message);
             return RedirectToAction("RequestGenerator", new{req_id = model.request_id});
         }
         
@@ -137,7 +141,8 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult Notifications()
         {
-            var model = _repository.GetTableMessages(_repository.UserId);
+            var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+            var model = _repository.GetTableMessages(userId);
             return View(model);
         }
         

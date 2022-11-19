@@ -6,7 +6,6 @@ namespace Repository
 {
     public interface IRepository
     {
-        public int UserId { get; set; }
         void WriteMessage(string message);
         bool CheckByStudent(int idUser);
         bool CheckByEmployees(int idUser);
@@ -29,7 +28,7 @@ namespace Repository
         public List<ServiseModel> GetSubdivisionInfo(int sub_id);
         public ServiseModel GetServisesInfo(int servId);
         public void ChangeRequestStateByFirst(int requestId, int user_id);
-        public void CreateRequestWithFields(int servId, List<FieldsModel> fields);
+        public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId);
     }
     
     

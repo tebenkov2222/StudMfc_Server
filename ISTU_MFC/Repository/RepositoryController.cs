@@ -11,7 +11,6 @@ namespace Repository
         private Database _db;
 
         public Database Database => _db;
-        public int UserId { get; set; }
 
         public RepositoryController()
         {
@@ -316,9 +315,9 @@ namespace Repository
             };
         }
 
-        public void CreateRequestWithFields(int servId, List<FieldsModel> fields)
+        public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId)
         {
-            var res = _db.InsertAndGetRequestId(UserId, servId);
+            var res = _db.InsertAndGetRequestId(userId, servId);
             var requestId = Int32.Parse(res[1][0]);
             SetValueFieldsOnRequest(requestId, fields);
         }
