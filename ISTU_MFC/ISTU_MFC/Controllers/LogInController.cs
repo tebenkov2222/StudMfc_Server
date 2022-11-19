@@ -37,11 +37,13 @@ namespace ISTU_MFC.Controllers
 
         public IActionResult Home()
         {
-            if (_repository.UserId == 0)
+            var logedin = HttpContext.User.Claims;
+            if (logedin.Count()==0)
                 return RedirectToAction("Login");
             else
             {
-                bool isStudent = _repository.CheckByStudent(_repository.UserId);
+                var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+                bool isStudent = _repository.CheckByStudent(userId);
                 if (isStudent)
                     return RedirectToAction("Home", "Students");
                 else
@@ -64,7 +66,6 @@ namespace ISTU_MFC.Controllers
                 User user = await db.Users.FirstOrDefaultAsync(u => u.login == model.login && u.password == model.password);
                 if (user != null)
                 {
-                    _repository.UserId = user.Id;
                     bool isStudent = _repository.CheckByStudent(user.Id);
                     await Authenticate(user.Id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
                     if(isStudent)
@@ -84,7 +85,7 @@ namespace ISTU_MFC.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, userName),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, userRole)
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, userRole),
             };
             // создаем объект ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
@@ -95,7 +96,6 @@ namespace ISTU_MFC.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            _repository.UserId = 0;
             return RedirectToAction("Login", "Login");
         }
     }

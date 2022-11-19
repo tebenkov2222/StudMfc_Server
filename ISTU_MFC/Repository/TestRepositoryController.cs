@@ -6,7 +6,6 @@ namespace Repository
 {
     public class TestRepositoryController: IRepository
     {
-        public int UserId { get; set; }
         private bool _isStudent = false;
         public void WriteMessage(string message)
         {
@@ -155,6 +154,11 @@ namespace Repository
         }
 
         public void ChangeRequestStateByFirst(int requestId, int user_id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId)
         {
             throw new NotImplementedException();
         }

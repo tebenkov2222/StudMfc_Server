@@ -14,6 +14,8 @@ using ISTU_MFC.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ISTU_MFC
 {
@@ -31,7 +33,7 @@ namespace ISTU_MFC
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<UserContext>(options => options.UseNpgsql(connection));
-            services.AddSingleton<IRepository, RepositoryController>();
+            services.AddScoped<IRepository, RepositoryController>();
             services.AddControllersWithViews();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => //CookieAuthenticationOptions
