@@ -1,0 +1,27 @@
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+
+COPY *.sln .
+COPY Dosuments/*.csproj ./Dosuments/
+COPY Repository/*.csproj ./Repository/
+COPY ISTU_MFC/*.csproj ./ISTU_MFC/
+COPY ModelsData/*.csproj ./ModelsData/
+
+RUN dotnet restore
+
+COPY Dosuments/. ./Dosuments/
+COPY Repository/. ./Repository/
+COPY ISTU_MFC/. ./ISTU_MFC/
+COPY ModelsData/. ./ModelsData/
+
+WORKDIR /app
+FROM build AS publish
+RUN dotnet publish -c Release -o out
+
+FROM base AS final
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ISTU_MFC.dll"]
