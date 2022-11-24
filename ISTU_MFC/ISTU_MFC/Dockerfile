@@ -4,20 +4,23 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-WORKDIR /src
-COPY ["ISTU_MFC/ISTU_MFC.csproj", "ISTU_MFC/"]
-COPY ["Repository/Repository.csproj", "Repository/"]
-COPY ["ModelsData/ModelsData.csproj", "ModelsData/"]
-COPY ["Documents/Documents.csproj", "Documents/"]
-RUN dotnet restore "ISTU_MFC/ISTU_MFC.csproj"
-COPY . .
-WORKDIR "/src/ISTU_MFC"
-RUN dotnet build "ISTU_MFC.csproj" -c Release -o /app/build
 
+COPY Documents/*.csproj ./Documents/
+COPY Repository/*.csproj ./Repository/
+COPY ISTU_MFC/*.csproj ./ISTU_MFC/
+COPY ModelsData/*.csproj ./ModelsData/
+
+RUN dotnet restore
+
+COPY Documents/. ./Documents/
+COPY Repository/. ./Repository/
+COPY ISTU_MFC/. ./ISTU_MFC/
+COPY ModelsData/. ./ModelsData/
+
+WORKDIR /app
 FROM build AS publish
-RUN dotnet publish "ISTU_MFC.csproj" -c Release -o /app/publish
+RUN dotnet publish -c Release -o out
 
 FROM base AS final
-WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ISTU_MFC.dll"]
