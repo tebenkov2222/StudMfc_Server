@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["ISTU_MFC.csproj", "ISTU_MFC/"]
+COPY ["ISTU_MFC_ISTU_MFC.csproj", "ISTU_MFC/"]
 COPY ["Repository/Repository.csproj", "Repository/"]
 COPY ["ModelsData/ModelsData.csproj", "ModelsData/"]
 COPY ["Documents/Documents.csproj", "Documents/"]
