@@ -11,9 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
 using ISTU_MFC.ViewModels;
+using ISTU_MFC.ModelsData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Repository;
+using ISTU_MFC.Repository;
 
 namespace ISTU_MFC.Controllers
 {

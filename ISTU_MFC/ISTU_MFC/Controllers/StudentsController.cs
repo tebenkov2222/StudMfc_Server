@@ -16,8 +16,8 @@ using ISTU_MFC.Models;
 using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using ModelsData;
-using Repository;
+using ISTU_MFC.ModelsData;
+using ISTU_MFC.Repository;
 
 
 namespace ISTU_MFC.Controllers

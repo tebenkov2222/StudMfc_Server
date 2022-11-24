@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using ModelsData;
+using ISTU_MFC.ModelsData;
 
-namespace Repository
+namespace ISTU_MFC.Repository
 {
     public class TestRepositoryController: IRepository
     {

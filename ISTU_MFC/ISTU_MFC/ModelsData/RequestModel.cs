@@ -1,4 +1,4 @@
-namespace ModelsData
+namespace ISTU_MFC.ModelsData
 {
     public class RequestModel
     {

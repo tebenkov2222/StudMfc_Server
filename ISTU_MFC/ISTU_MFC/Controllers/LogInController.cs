@@ -11,7 +11,7 @@ using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Repository;
+using ISTU_MFC.Repository;
 
 namespace ISTU_MFC.Controllers
 {

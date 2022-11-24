@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using ModelsData;
-using Repository;
+using ISTU_MFC.ModelsData;
+using ISTU_MFC.Repository;
 
 namespace Documents.Fields
 {

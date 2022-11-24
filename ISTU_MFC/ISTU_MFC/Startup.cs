@@ -13,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 using ISTU_MFC.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Repository;
+using ISTU_MFC.Repository;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 

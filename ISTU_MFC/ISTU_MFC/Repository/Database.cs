@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using ModelsData;
+using ISTU_MFC.ModelsData;
 using Npgsql;
 
-namespace Repository
+namespace ISTU_MFC.Repository
 {
     public class Database
     {

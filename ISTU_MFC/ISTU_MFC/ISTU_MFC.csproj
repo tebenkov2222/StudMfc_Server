@@ -12,15 +12,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Aspose.Words" Version="22.11.0" />
+      <PackageReference Include="DocumentFormat.OpenXml" Version="2.18.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.17" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Documents\Documents.csproj" />
-      <ProjectReference Include="..\Repository\Repository.csproj" />
+      <PackageReference Include="OpenXmlPowerTools" Version="4.5.3.2" />
+      <PackageReference Include="Spire.Doc" Version="10.11.0" />
     </ItemGroup>
 
     <ItemGroup>

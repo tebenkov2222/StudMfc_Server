@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ModelsData;
+using ISTU_MFC.ModelsData;
 
-namespace Repository
+namespace ISTU_MFC.Repository
 {
     public class RepositoryController: IRepository
     {

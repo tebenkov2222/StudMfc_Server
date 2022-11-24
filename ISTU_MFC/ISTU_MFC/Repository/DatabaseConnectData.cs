@@ -1,4 +1,4 @@
-namespace Repository
+namespace ISTU_MFC.Repository
 {
     public class DatabaseConnectData
     {

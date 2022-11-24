@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace ModelsData
+namespace ISTU_MFC.ModelsData
 {
     public class InformationAboutRequestModel
     {

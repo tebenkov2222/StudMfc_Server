@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Npgsql;
 
-namespace Repository
+namespace ISTU_MFC.Repository
 {
     public sealed class QueryTool : IDisposable
     {
