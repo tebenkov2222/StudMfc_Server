@@ -4,10 +4,11 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-COPY ["ISTU_MFC.csproj", "ISTU_MFC/"]
-COPY ["D:/C#/StudMfc_Server/ISTU_MFC/Repository/Repository.csproj", "Repository/"]
-COPY ["D:/C#/StudMfc_Server/ISTU_MFC/ModelsData/ModelsData.csproj", "ModelsData/"]
-COPY ["D:/C#/StudMfc_Server/ISTU_MFC/Documents/Documents.csproj", "Documents/"]
+WORKDIR /src
+COPY ["ISTU_MFC/ISTU_MFC.csproj", "ISTU_MFC/"]
+COPY ["Repository/Repository.csproj", "Repository/"]
+COPY ["ModelsData/ModelsData.csproj", "ModelsData/"]
+COPY ["Documents/Documents.csproj", "Documents/"]
 RUN dotnet restore "ISTU_MFC/ISTU_MFC.csproj"
 COPY . .
 WORKDIR "/src/ISTU_MFC"
