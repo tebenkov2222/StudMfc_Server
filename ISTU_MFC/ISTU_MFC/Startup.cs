@@ -51,7 +51,7 @@ namespace ISTU_MFC
         {
             Documents.Documents.DocumentsSettings.SetDirectoryByEnvironment(env.ContentRootPath);
             if (env.IsDevelopment())
-            {
+            { 
                 app.UseDeveloperExceptionPage();
             }
             else
