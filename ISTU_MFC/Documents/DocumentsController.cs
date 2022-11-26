@@ -55,7 +55,8 @@ namespace Documents
 
         public string GetPathByName(string directory, string docName, string extention = "docx")
         {
-            return $"{_settings.RootPath}\\{directory}\\{docName}.{extention}";
+            return Path.Combine(_settings.RootPath, directory, $"{docName}.{extention}");
+            return $"{_settings.RootPath}/{directory}/{docName}.{extention}";
         }
     }
 }
