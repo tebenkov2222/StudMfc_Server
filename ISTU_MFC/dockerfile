@@ -3,5 +3,6 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+COPY ISTU_MFC/File ./File
 COPY ISTU_MFC/bin/Release/net5.0/linux-x64/publish .
 ENTRYPOINT ["dotnet", "ISTU_MFC.dll"]

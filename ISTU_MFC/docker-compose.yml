@@ -5,7 +5,5 @@ services:
     container_name: istumfc
     image: tebenkov2222/mfcistu:0.1
     restart: always  
-    volumes:
-      - ./ISTU_MFC/File/:/app/File/
     ports:
       - 80:80
