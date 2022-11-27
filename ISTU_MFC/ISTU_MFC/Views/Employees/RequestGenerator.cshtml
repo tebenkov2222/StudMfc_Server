@@ -41,9 +41,14 @@
 </div>
 
 <div name="buttons" class="d-flex">
-    <div class="btn">@Html.ActionLink("Предпросмотр", "DownloadGeneration", 
-                         "Employees", new { req_id = @Model.Req_id }, null)</div>
-    <div class="btn" style="margin-left: 40px">@Html.ActionLink("Изменить статус заявки", "ChangeStatus", 
-                                                   "Employees", new { req_id = @Model.Req_id }, null)</div>
-    
+    <form method="post" name="GoToDownloadGeneration">
+        <input name="Type" value="DownloadGeneration", type="hidden"/>
+        <input name="Req_Id" value="@Model.Req_id", type="hidden"/>
+        <input name="btn" class="btn" type="submit" value="Предпросмотр"/>
+    </form>
+    <form method="post" name="GoToDownloadGeneration">
+        <input name="Type" value="ChangeStatus", type="hidden"/>
+        <input name="Req_Id" value="@Model.Req_id", type="hidden"/>
+        <input name="btn" class="btn" type="submit" value="Изменить статус заявки" style="margin-left: 40px"/>
+    </form>
 </div>

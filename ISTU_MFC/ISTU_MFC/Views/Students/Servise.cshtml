@@ -12,7 +12,10 @@
 </div>
 
 <div class="d-flex justify-content-between">
-    <div name="RegService" class="btn">@Html.ActionLink("Запросить услугу", "RegService", 
-                                               "Students", new { servId = @Model.Id, name = @Model.Name }, null)</div>
+    <form method="post" name="ServRequest">
+        <input name="Id" value="@Model.Id" type="hidden"/>
+        <input name="Name" value="@Model.Name" type="hidden"/>
+        <input name="RegService" value="Запросить услугу" class="btn" type="submit"/>
+    </form>
     <div name="DownloadBlank" class="btn"><a>Скачать бланк заявления</a></div>
 </div>

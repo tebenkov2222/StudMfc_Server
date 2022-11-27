@@ -13,6 +13,7 @@ using ISTU_MFC.Models;
 using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using ModelsData;
 using Repository;
 
 namespace ISTU_MFC.Controllers
@@ -38,6 +39,20 @@ namespace ISTU_MFC.Controllers
             var requests = _repository.GetRequests(userId);
             return View(requests);
         }
+
+        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public IActionResult WorkWithDoc(EmployeeWorkWithDocPost model)
+        {
+            //с одной страницы может быть несколько постзапросов, для этого нужно делать переадресацию по его типу
+            if(model.Type == "ChooseRequest")
+                return RedirectToAction("RequestGenerator", new { req_id = model.Id });
+            else if(model.Type == "ServiceConstructor")
+                return RedirectToAction("ServiceConstructor", "Employees");
+            else//дальше надо cделать фильтры
+                return RedirectToAction("Error", "Employees");
+        }
+        
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
         {
@@ -50,6 +65,7 @@ namespace ISTU_MFC.Controllers
             return View();
         }
 
+        [HttpGet]
         [Authorize(Roles = "Employee")]
         public IActionResult RequestGenerator(string req_id)
         {
@@ -70,6 +86,19 @@ namespace ISTU_MFC.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public IActionResult RequestGenerator(EmployeeRequestGeneratorPost model)
+        {
+            //с одной страницы может быть несколько постзапросов, для этого нужно делать переадресацию по его типу
+            if (model.Type == "DownloadGeneration")
+                return RedirectToAction("DownloadGeneration", new { req_id = model.Req_Id });
+            else
+                return RedirectToAction("ChangeStatus", new { req_id = model.Req_Id });
+            
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Employee")]
         public IActionResult DownloadGeneration(string req_id)
         {
@@ -98,6 +127,13 @@ namespace ISTU_MFC.Controllers
             viewModel.PathToPreviewImage = relativePath;
             viewModel.RequestId = request_id;
             return View(viewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public IActionResult DownloadGeneration(EmployeeDownloadGenerationPost model)
+        {
+            return RedirectToAction("Download", new {documentPath=model.DocumentPath});
         }
 
         [HttpGet]
