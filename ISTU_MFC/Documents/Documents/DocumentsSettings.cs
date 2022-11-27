@@ -1,8 +1,3 @@
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using ModelsData;
-
 namespace Documents.Documents
 {
     public class DocumentsSettings
@@ -24,13 +19,13 @@ namespace Documents.Documents
 
         public static DocumentsSettings SetDirectoryByEnvironment(string environmentPath)
         {
-            var replace = environmentPath.Replace('/','\\');
+            var replace = environmentPath.Replace('\\','/');
             Directory = new DocumentsSettings()
             {
                 RootPath = replace,
-                TempPath = "File\\Temp",
-                InputPath = "File\\Input",
-                OutputPath = "File\\Output"
+                TempPath = "File/Temp",
+                InputPath = "File/Input",
+                OutputPath = "File/Output"
             };
             return Directory;
         }

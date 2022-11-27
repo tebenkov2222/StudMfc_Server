@@ -1,0 +1,8 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+COPY ISTU_MFC/File ./File
+COPY ISTU_MFC/bin/Release/net5.0/linux-x64/publish .
+ENTRYPOINT ["dotnet", "ISTU_MFC.dll"]

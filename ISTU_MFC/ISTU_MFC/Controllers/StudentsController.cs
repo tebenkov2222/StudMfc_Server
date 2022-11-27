@@ -33,12 +33,19 @@ namespace ISTU_MFC.Controllers
             _repository = repository;
         }
 
+        [HttpGet]
         [Authorize(Roles = "Student")]
         public IActionResult Home()
         {
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
             var model = _repository.GetDevisionsList(userId);
             return View(model);
+        }
+        
+        [HttpPost]
+        public IActionResult Home(StudentHomePost model)
+        {
+            return RedirectToAction("About", new{sub_id = model.Sub_id, info = model.Info});
         }
 
         [Authorize(Roles = "Student")]
@@ -69,6 +76,7 @@ namespace ISTU_MFC.Controllers
             return View(model);
         }
 
+        [HttpGet]
         [Authorize(Roles = "Student")]
         public IActionResult Servise(int servId)
         {
@@ -76,6 +84,14 @@ namespace ISTU_MFC.Controllers
             model.Id = servId;
             return View(model);
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        public IActionResult Servise(ServiseModel model)
+        {
+            return RedirectToAction("RegService", new { servId = model.Id, name = model.Name });
+        }
+        
 
         [Authorize(Roles = "Student")]
         public IActionResult RegService(int servId, string name)
