@@ -7,10 +7,14 @@
 
 <h2 class="d-flex justify-content-center">Главная страница</h2>
 
+
 <div class="d-flex justify-content-center">
     @foreach (var sub in Model)
     {
-        <div class="btn" >@Html.ActionLink(@sub.Name, "About", "Students", new { sub_id = @sub.Id, info = @sub.Information}, null)</div>
+        <form method="post" name="ChoosingSubServise">
+            <input name="Sub_id" value="@sub.Id" type="hidden"/>
+            <input name="Info" value="@sub.Information" type="hidden"/>
+            <input class="btn" type="submit" value="@sub.Name"/> 
+        </form>
     }
-    
 </div>
