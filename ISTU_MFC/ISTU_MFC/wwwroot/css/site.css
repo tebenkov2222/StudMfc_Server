@@ -71,33 +71,8 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
-.left-logo-text {
-    height: 40px;
-    font-size: 18pt;
-}
-
-.right-logos {
-    height: 40px;
-}
-
 .colored {
     background-color: #D9D9D9;
-}
-
-.left {
-    left: 0;
-}
-
-.right {
-    right: 0;
-}
-
-.top {
-    top: 0;
-}
-
-.bottom {
-    bottom: 0;
 }
 
 .docs {
@@ -149,7 +124,7 @@ body {
 }
 
 .services {
-    padding: 20px 20px 20px 40px;
+    padding: 20px 20px 10px 20px;
     border-radius: 3px;
     border: none;
     max-width: 1080px;
@@ -161,7 +136,7 @@ body {
     border: none;
     max-width: 1080px;
     justify-content: center;
-    padding: 20px 0px;
+    padding: 20px;
     font-size: 20px;
 }
 
@@ -187,4 +162,79 @@ body {
     min-height: 60px;
     min-width: 250px;
     color: #7a7a7a;
+}
+@media (min-width: 650px) {
+    .stud_data {
+        display: flex;
+        align-items: center;
+    }
+    .label_stud_data {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .field_stud_data {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+    .grey2 {
+        background-color: #F0F0F0;
+        padding: 10px 20px;
+        margin-left: 25px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 1px solid black;
+        min-height: 60px;
+        min-width: 250px;
+        color: #7a7a7a;
+    }
+    .id {
+        margin-left: 20px;
+    }
+    .request_buttons {
+        display: flex;
+    }
+    .request_buttons .shit {
+        margin-left: 40px;
+    }
+}
+@media (max-width: 650px) {
+    .stud_data {
+        display: block;
+        align-items: center;
+    }
+    .label_stud_data {
+        display: block;
+        justify-content: center;
+        align-items: center;
+    }
+    .field_stud_data {
+        display: block;
+        justify-content: start;
+        align-items: center;
+    }
+    .grey2 {
+        background-color: #F0F0F0;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        margin-left: 0;
+        border-radius: 10px;
+        border: 1px solid black;
+        min-height: 60px;
+        min-width: 250px;
+        color: #7a7a7a;
+    }
+    .id {
+        margin-left: 0px;
+    }
+    .request_buttons {
+        display: block;
+    }
+    .request_buttons > form {
+        margin-bottom: 20px;
+    }
+    .request_buttons .shit {
+        margin-left: 0;
+    }
 }
