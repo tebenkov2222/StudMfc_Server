@@ -8,10 +8,6 @@
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<header style="height:50px">
-
-</header>
-
 <form method="post" name="ChooseRequest">
     <input name="Type" value="ServiceConstructor" type="hidden"/>
     <input name="button" class="btn left-margin" type="submit" value="Конструктор услуг"/>
@@ -51,10 +47,10 @@
 <div name="Services" class="services white-grey">
     @foreach (var req in Model)
      {
-         <form method="post" name="ChooseRequest">
+         <form method="post" name="ChooseRequest" class="d-flex justify-content-center">
              <input name="Type" value="ChooseRequest" type="hidden"/>
              <input name="Id" value="@req.Id" type="hidden"/>
-             <input class="service black-grey d-flex" style="color: black;" type="submit" value="@req.Id @req.Caption"/>
+             <input class="service black-grey" type="submit" value="@req.Id @req.Caption"/>
          </form>
     }
 </div> 
