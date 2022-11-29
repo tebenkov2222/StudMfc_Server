@@ -29,6 +29,9 @@ namespace Repository
         public ServiseModel GetServisesInfo(int servId);
         public void ChangeRequestStateByFirst(int requestId, int user_id);
         public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId);
+        public void ChangeMessagesStatus(int user_id);
+        public List<RequestModel> GetFiltredRequests(int userId, string status);
+        public List<RequestModel> GetNamedRequests(int userId, string family);
     }
     
     

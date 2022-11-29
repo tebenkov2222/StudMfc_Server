@@ -49,8 +49,23 @@ namespace ISTU_MFC.Controllers
                 return RedirectToAction("RequestGenerator", new { req_id = model.Id });
             else if(model.Type == "ServiceConstructor")
                 return RedirectToAction("ServiceConstructor", "Employees");
-            else//дальше надо cделать фильтры
-                return RedirectToAction("Error", "Employees");
+            else
+            {
+                if (model.Status != null)
+                {
+                    var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+                    var requests = _repository.GetFiltredRequests(userId, model.Status);
+                    return View(requests);
+                }
+                else if (model.Family != null)
+                {
+                    var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+                    var requests = _repository.GetNamedRequests(userId, model.Family);
+                    return View(requests);
+                }
+                else 
+                    return RedirectToAction("WorkWithDoc", "Employees");
+            }
         }
         
         [Authorize(Roles = "Employee")]

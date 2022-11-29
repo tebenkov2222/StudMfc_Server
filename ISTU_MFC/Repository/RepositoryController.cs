@@ -138,7 +138,9 @@ namespace Repository
                 answ.Add(new RequestModel()
                 {
                     Caption = res[i][1],
-                    Id = res[i][0]
+                    Id = res[i][0],
+                    FamylyNS = res[i][2] + "." + res[i][3][0] + "." + res[i][4][0],
+                    CreationDate = res[i][5].Split()[0]
                 });
             }
             return answ;
@@ -325,6 +327,44 @@ namespace Repository
         public void ChangeRequestStateByFirst(int requestId, int user_id)
         {
             _db.ChangeRequestStateByFirst(requestId, user_id);
+        }
+
+        public void ChangeMessagesStatus(int user_id)
+        {
+            _db.ChangeMessagesStatus(user_id);
+        }
+        
+        public List<RequestModel> GetFiltredRequests(int userId, string status)
+        {
+            var res = _db.GetTableFiltredRequestsForEmployees(userId, status);
+            var answ = new List<RequestModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new RequestModel()
+                {
+                    Caption = res[i][1],
+                    Id = res[i][0],
+                    FamylyNS = res[i][2] + "." + res[i][3][0] + "." + res[i][4][0],
+                    CreationDate = res[i][5].Split()[0]
+                });
+            }
+            return answ;
+        }
+        public List<RequestModel> GetNamedRequests(int userId, string family)
+        {
+            var res = _db.GetTableNamedRequestsForEmployees(userId, family);
+            var answ = new List<RequestModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new RequestModel()
+                {
+                    Caption = res[i][1],
+                    Id = res[i][0],
+                    FamylyNS = res[i][2] + "." + res[i][3][0] + "." + res[i][4][0],
+                    CreationDate = res[i][5].Split()[0]
+                });
+            }
+            return answ;
         }
     }
 }

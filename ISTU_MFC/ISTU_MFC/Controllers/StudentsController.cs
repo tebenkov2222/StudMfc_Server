@@ -48,12 +48,23 @@ namespace ISTU_MFC.Controllers
             return RedirectToAction("About", new{sub_id = model.Sub_id, info = model.Info});
         }
 
+        [HttpGet]
         [Authorize(Roles = "Student")]
         public IActionResult Notifications()
         {
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
             var model = _repository.GetTableMessages(userId);
             return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Student")]
+        public IActionResult Notifications(AboutModel model)//прининимает случайную модель, нужно для того, чтобы
+        //была разница в объявлении функции
+        {
+            var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+            _repository.ChangeMessagesStatus(userId);
+            return RedirectToAction("Notifications");
         }
 
         [Authorize(Roles = "Student")]

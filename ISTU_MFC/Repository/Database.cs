@@ -58,8 +58,8 @@ namespace Repository
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable
-            ("SELECT request_id, name_service FROM list_of_requests_for_employees " + 
-             $"WHERE status <> '{status}' AND user_id = {userId};");
+            ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " + 
+             " FROM list_of_requests_for_employees " + $"WHERE status <> '{status}' AND user_id = {userId};");
         }
 
         //   document_link
@@ -183,6 +183,29 @@ namespace Repository
             using var query = new QueryTool(_db);
             return query.QueryWithDictionary
                 ($"SELECT document_link FROM services WHERE id = {serviceId};")["document_link"];
+        }
+        
+        public void ChangeMessagesStatus(int user_id)
+        {
+            using var query = new QueryTool(_db);
+            query.QueryWithoutTable("UPDATE messages SET status = 'viewed'"+
+                                    $" WHERE stud_id = (SELECT stud_id FROM students WHERE user_id = {user_id})");
+        }
+        
+        public string[][] GetTableFiltredRequestsForEmployees(int userId, string status) 
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " + 
+             " FROM list_of_requests_for_employees " + $"WHERE status = '{status}' AND user_id = {userId};");
+        }
+        
+        public string[][] GetTableNamedRequestsForEmployees(int userId, string family) 
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " + 
+             " FROM list_of_requests_for_employees " + $"WHERE stud_family = '{family}' AND user_id = {userId};");
         }
     }
 }
