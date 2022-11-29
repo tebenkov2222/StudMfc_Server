@@ -7,7 +7,11 @@
 
 <h4 class="d-flex justify-content-center">О деканате</h4>
 
-<p name="hours-of-work">@Model.Info </p>
+@foreach (var str in Model.Info.Split("<!>"))
+{
+    <p name="hours-of-work">@str </p>
+}
+
 
 <p>Предоставляемые услуги:</p>
 

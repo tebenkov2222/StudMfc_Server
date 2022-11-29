@@ -8,7 +8,11 @@
 <h4 name="NameOfServise" class="d-flex justify-content-center">@Model.Name</h4>
 
 <div>
-    <p>@Model.Info</p>
+    @foreach (var str in @Model.Info.Split("<!>"))
+    {
+        <p>@str</p>
+    }
+    
 </div>
 
 <div class="d-flex justify-content-between">
