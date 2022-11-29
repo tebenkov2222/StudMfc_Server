@@ -83,7 +83,7 @@ namespace Repository
         }
         
         // Переписал только имена столбцов! Очень большая таблица получилась.
-        // request_id   student_family  student_name    student_secondName  employee_family  employee_name
+        // request_id  student_use_id student_family  student_name    student_secondName  employee_family  employee_name
         // employee_secondName name_service subdivision_name create_date execution_date closing_date status
         public Dictionary<string, string> GetInformationAboutRequest(int requestId)
         {
@@ -91,6 +91,14 @@ namespace Repository
             return query.QueryWithDictionary
                 ($"SELECT * FROM information_about_requests WHERE request_id = {requestId}");
         }
+        
+        public string[][] GetInformationAboutRequestForUser(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+                ($"SELECT * FROM information_about_requests WHERE student_use_id = {userId}");
+        }
+        
         public Dictionary<string, string> GetInformationAboutStudent(int studentUserId)
         {
             using var query = new QueryTool(_db);   
