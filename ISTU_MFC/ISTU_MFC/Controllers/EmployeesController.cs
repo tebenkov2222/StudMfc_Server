@@ -205,5 +205,10 @@ namespace ISTU_MFC.Controllers
             string fileName = documentPath.Split('\\').Last();
             return PhysicalFile(filePath, fileType,fileName);
         }
+
+        public IActionResult ServiceList()
+        {
+            return View();
+        }
     }
 }

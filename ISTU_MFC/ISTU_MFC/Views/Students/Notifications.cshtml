@@ -14,12 +14,22 @@
     </form>
 </div>
 
-<div name="notifications" class="black-grey" style="padding: 20px 20px 10px 20px">
+<div name="notifications" class="black-grey notifications">
     @foreach (var noty in Model)
     {
-        <div name="notif" class="d-flex justify-content-around" style="background-color: white; border-radius: 30px; margin-bottom: 10px;">
+        <div name="notif" class="d-flex justify-content-around" style="background-color: white; border-radius: 50px; margin-bottom: 10px;">
             <div>
-                @noty.RequestId, @noty.Status
+                @{
+                    if (noty.Status == "not viewed")
+                    {
+                        <i style="color: red;" class="far fa-circle"></i>
+                    }
+                    else
+                    {
+                        <i style="color: green;" class="fas fa-circle"></i>
+                    }
+                }
+                @noty.RequestId
             </div>
             <div>
                 @noty.Text
