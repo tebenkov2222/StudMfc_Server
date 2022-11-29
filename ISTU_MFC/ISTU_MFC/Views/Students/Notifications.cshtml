@@ -14,10 +14,10 @@
     </form>
 </div>
 
-<div name="notifications" class="black-grey" style="padding: 10px 20px 0px 20px">
+<div name="notifications" class="black-grey" style="padding: 20px 20px 10px 20px">
     @foreach (var noty in Model)
     {
-        <div name="notif" class="d-flex justify-content-around" style="background-color: white; border-radius: 30px; margin-bottom: 20px;">
+        <div name="notif" class="d-flex justify-content-around" style="background-color: white; border-radius: 30px; margin-bottom: 10px;">
             <div>
                 @noty.RequestId, @noty.Status
             </div>

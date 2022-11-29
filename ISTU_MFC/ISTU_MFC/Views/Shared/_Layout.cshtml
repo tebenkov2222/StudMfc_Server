@@ -8,33 +8,25 @@
     <link rel="stylesheet" href="~/css/site.css"/>
 </head>
 <body>
-    <div class="left-logo-text position-absolute left top">
-        <div class="d-inline">
-            <a asp-area="" asp-controller="Students" asp-action="Home"><img src="~/images/IstuLogo.png" alt="лого" width="40px" height="40px" /></a>
-        </div>
-        <a asp-area="" asp-controller="Students" asp-action="Home"><p class="d-inline align-content-center" style="color:black;">МФЦ ИжГТУ</p></a>
+<header class="d-flex justify-content-between align-items-center colored" style="margin-bottom: 50px;height: 50px">
+    <div class="d-flex justify-content-start align-items-center">
+        <a asp-area="" asp-controller="Students" asp-action="Home"><img src="~/images/IstuLogo.png" alt="лого" width="40px" height="40px"/></a>
+        <a asp-area="" asp-controller="Students" asp-action="Home" style="font-size:20pt; color:black;">МФЦ ИжГТУ</a>
     </div>
-    <div class="right-logos position-absolute right top">
-        <div class="d-inline">
-            <a asp-area="" asp-controller="Students" asp-action="Notifications"><img src="~/images/NotifLogo.png" alt="увед" width="40px" height="40px" /></a>
-        </div>
-        <div class="d-inline">
-            <a asp-area="" asp-controller="Students" asp-action="Profile"><img src="~/images/PersonLogo.png" alt="лич" width="40px" height="40px" /></a>
-        </div>
-        <div class="d-inline">
-            <a asp-area="" asp-controller="LogIn" asp-action="Logout"><img src="~/images/ExitLogo.png" alt="выход" width="40px" height="40px" /></a>
-</div>
+    <div class="d-flex justify-content-end">
+        <a asp-area="" asp-controller="Students" asp-action="Notifications"><img src="~/images/NotifLogo.png" alt="увед" width="40px" height="40px"/></a>
+        <a asp-area="" asp-controller="Students" asp-action="Profile"><img src="~/images/PersonLogo.png" alt="лич" width="40px" height="40px"/></a>
+        <a asp-area="" asp-controller="LogIn" asp-action="Logout"><img src="~/images/ExitLogo.png" alt="выход" width="40px" height="40px"/></a>
     </div>
-    <div class="colored"></div>
-
-<header>
-    
 </header>
+
+
 <div class="container">
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
 </div>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
