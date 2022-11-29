@@ -168,6 +168,16 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public List<RequestModel> GetFiltredRequests(int userId, string status)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<RequestModel> GetNamedRequests(int userId, string family)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CreateRequestWithFields(int servId, List<FieldsModel> fields)
         {
             throw new NotImplementedException();
