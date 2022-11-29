@@ -1,17 +1,19 @@
 ﻿@model List<ModelsData.RequestModel>
 
-
-
 @{
     Layout = "_LayoutEmployees";
     ViewData["Title"] = "Home";
 }
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<form method="post" name="ChooseRequest">
-    <input name="Type" value="ServiceConstructor" type="hidden"/>
-    <input name="button" class="btn left-margin" type="submit" value="Конструктор услуг"/>
-</form>
+<div class="d-flex">
+    <form method="post" name="ChooseRequest">
+        <input name="Type" value="ServiceConstructor" type="hidden"/>
+        <input name="button" class="btn" type="submit" value="Конструктор услуг"/>
+    </form>
+    <div name="ServiceCollection" class="btn left-margin"><a asp-area="" asp-controller="Employees" asp-action="ServiceList">Список услуг</a></div>
+</div>
+
 
 <div name="SearchFilter">
     <form method="post" style="margin-bottom: 20px;">
@@ -36,18 +38,8 @@
         </fieldset>
     </form>
 </div>
-<div name="Archive" class="btn left-margin"><a>Архив</a></div>
 
-<div name="ServiceCollection" class="btn left-margin"><a>Список услуг</a></div>
-
-@*div name="SearchFilter" class="d-flex justify-content-start site-header-top-search">
-    <form>
-        <input type="text" class="input" name="query" placeholder="Поиск по номеру заявок">
-        <button type="submit"></button>
-    </form>
-</div>*@
-
-<div name="Services" class="services white-grey">
+<div name="Services" class="services white-grey" >
     @foreach (var req in Model)
      {
          <form method="post" name="ChooseRequest" class="d-flex justify-content-center" >
