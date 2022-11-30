@@ -207,5 +207,14 @@ namespace Repository
             ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " + 
              " FROM list_of_requests_for_employees " + $"WHERE stud_family = '{family}' AND user_id = {userId};");
         }
+        
+        public string[][] GetTableRequestsForStudent(int userId) 
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ("SELECT request_id, name_service, status, employee_family, employee_name, employee_secondname, create_date " + 
+             " FROM information_about_requests " + $"WHERE student_user_id = '{userId}';");
+        }
+        
     }
 }

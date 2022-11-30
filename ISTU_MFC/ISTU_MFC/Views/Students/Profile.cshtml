@@ -21,4 +21,9 @@
         <div name="labelstudnum" class="grey1 label_stud_data">Номер студенческого билета</div>
         <div name="fieldstudnum" class="grey2 field_stud_data">@Model.StudId</div>
     </div>
+    
 </div>
+@foreach (var req in Model.Requests)
+          {
+              <div class="grey2 field_stud_data" style="color: black; width:100%">@req.Id @req.Caption @req.State @req.FamylyNS @req.CreationDate</div>
+          }

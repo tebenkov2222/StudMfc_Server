@@ -6,5 +6,6 @@ namespace ModelsData
         public string Id { get; set; }
         public string FamylyNS { get; set; }
         public string CreationDate { get; set; }
+        public string State{ get; set; }
     }
 }
