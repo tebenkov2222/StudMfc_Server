@@ -387,5 +387,21 @@ namespace Repository
             }
             return answ;
         }
+        public List<RequestModel> GetNumberedRequests(int userId, int number)
+        {
+            var res = _db.GetTableNumberedRequestsForEmployees(userId, number);
+            var answ = new List<RequestModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new RequestModel()
+                {
+                    Caption = res[i][1],
+                    Id = res[i][0],
+                    FamylyNS = res[i][2] + "." + res[i][3][0] + "." + res[i][4][0],
+                    CreationDate = res[i][5].Split()[0]
+                });
+            }
+            return answ;
+        }
     }
 }
