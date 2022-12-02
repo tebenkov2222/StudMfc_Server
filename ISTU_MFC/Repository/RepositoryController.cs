@@ -69,9 +69,10 @@ namespace Repository
                     Id = requsts[i][0],
                     Caption = requsts[i][1],
                     State = statuses[requsts[i][2]],
-                    FamylyNS = requsts[i][3] + " " + requsts[i][4][0] + "." + requsts[i][5][0] + ".",
                     CreationDate = requsts[i][6].Split()[0]
                 });
+                if (requsts[i][3] != "")
+                    result.Requests[i].FamylyNS = requsts[i][3] + " " + requsts[i][4][0] + "." + requsts[i][5][0] + ".";
             }
             return result;
         }
@@ -402,6 +403,17 @@ namespace Repository
                 });
             }
             return answ;
+        }
+
+        public bool CheckUserExistence(int userId)
+        {
+            var res = _db.CheckUserExistence(userId);
+            return res[1][0] == "1";
+        }
+
+        public void CreateStudent(StudentModelForAddToDB student)
+        {
+            _db.CreateStudent(student);
         }
     }
 }

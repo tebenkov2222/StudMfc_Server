@@ -4,7 +4,7 @@ namespace ISTU_MFC.Models
 {
     public class UserContext: DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<user> users { get; set; }
         public UserContext(DbContextOptions<UserContext> options)
             : base(options)
         {
