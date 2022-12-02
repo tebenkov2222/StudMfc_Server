@@ -72,7 +72,7 @@ namespace Repository
                     CreationDate = requsts[i][6].Split()[0]
                 });
                 if (requsts[i][3] != "")
-                    result.Requests[i].FamylyNS = requsts[i][3] + " " + requsts[i][4][0] + "." + requsts[i][5][0] + ".";
+                    result.Requests[i-1].FamylyNS = requsts[i][3] + " " + requsts[i][4][0] + "." + requsts[i][5][0] + ".";
             }
             return result;
         }
