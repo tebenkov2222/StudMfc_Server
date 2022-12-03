@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace ModelsData
 {
@@ -44,11 +45,32 @@ namespace ModelsData
 
         public void SetDate(string input)
         {
-            var dateTime = DateTime.ParseExact(input,
+            var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+            Console.WriteLine($"IsLinux = {isLinux}");
+            Console.WriteLine($"Date Time Input = {input}");
+            input = input.Replace(".", "/");
+            Console.WriteLine($"Date Time Input After Replace = [{input}]");
+            var inputTime = "";
+            var strings = input.Split(" ");
+            var date = strings[0].Split("/");
+            var newDate = $"{date[1]}/{date[0]}/{date[2]}";
+            
+            Console.WriteLine($"Date Time Input After Costyl = [{inputTime}]");
+            DateTime dateTime;
+            if (isLinux)
+            {
+                inputTime = $"{date[1]}.{date[0]}.{date[2]} {strings[1]}";
+            }
+            else
+            {
+                inputTime = $"{date[0]}.{date[1]}.{date[2]} {strings[1]}";
+
+            }
+            Console.WriteLine($"Date Time Input After Costyl = [{inputTime}]");
+            dateTime = DateTime.ParseExact(inputTime,
                 "dd.MM.yyyy HH:mm:ss",
                 CultureInfo.InvariantCulture);
             CreateDateDAte = dateTime;
-            
         }
 
         public string GetValueByName(string nameField)

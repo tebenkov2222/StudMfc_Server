@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using ModelsData;
 using Repository;
+using Spire.Pdf.Exporting.XPS.Schema;
+using Path = System.IO.Path;
 
 namespace ISTU_MFC.Controllers
 {
@@ -128,19 +130,26 @@ namespace ISTU_MFC.Controllers
 
             var requestModel = _repository.GetInformationAboutRequestByRequest(request_id);
             var docName =
-                $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}";
+                $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}_{DateTime.Now.ToString("dd-MM-yy_hh-mm-ss")}";
             var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
 
             copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
             copyToTempAndOpenDocument.Close();
-            var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
+            copyToTempAndOpenDocument.Document.Dispose();
+            
+            /*var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
                 copyToTempAndOpenDocument,
-                documentsController.GetPathByName("wwwroot\\images", copyToTempAndOpenDocument.Name, "jpg"));
-            var relativePath = $"~/images/{copyToTempAndOpenDocument.Name}.jpg";
+                documentsController.GetPathByName ( Path.Combine("wwwroot", "images"), copyToTempAndOpenDocument.Name, "jpg"));
+            */
+            //var relativePath = $"~/images/{copyToTempAndOpenDocument.Name}.jpg";
+            var combine = Path.Combine("~", "images",copyToTempAndOpenDocument.Name);
+            var relativePath = $"{combine}.jpg";
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
             viewModel.PathToPreviewImage = relativePath;
             viewModel.RequestId = request_id;
+            copyToTempAndOpenDocument.Dispose();
+            copyToTempAndOpenDocument.Document.Dispose();
             return View(viewModel);
         }
 
@@ -202,7 +211,8 @@ namespace ISTU_MFC.Controllers
             //documentPath.Replace('\\', '/');
             string filePath = documentPath;
             string fileType = "application/docx";
-            string fileName = documentPath.Split('\\').Last();
+            string fileName = "Document";
+            
             return PhysicalFile(filePath, fileType,fileName);
         }
 

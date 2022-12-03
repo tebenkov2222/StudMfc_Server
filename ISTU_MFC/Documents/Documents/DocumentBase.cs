@@ -16,6 +16,8 @@ namespace Documents.Documents
 
         protected bool _isEditable;
         protected WordprocessingDocument _document;
+
+        public WordprocessingDocument Document => _document;
         protected Body _body => _document.MainDocumentPart?.Document.Body;
         protected bool _isOpened;
         public string PatchToFile => _patchToFile;

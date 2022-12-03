@@ -5,4 +5,9 @@ EXPOSE 443
 
 COPY ISTU_MFC/File ./File
 COPY ISTU_MFC/bin/Release/net5.0/linux-x64/publish .
+# install fontconfig
+RUN apt-get update; apt-get install -y fontconfig
+
+# refresh system font cache
+RUN fc-cache -f -v
 ENTRYPOINT ["dotnet", "ISTU_MFC.dll"]

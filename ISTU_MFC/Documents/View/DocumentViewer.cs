@@ -37,12 +37,12 @@ namespace Documents.View
         }
         public string GenerateAndSaveImage(DocumentBase documentReference, string pathToSave)
         {
-            Document document = new Document();
-            document.LoadFromFile(documentReference.PatchToFile);
-            Image image = document.SaveToImages(0, ImageType.Metafile);
-            document.Close();
+            //Document document = new Document();
+            //document.LoadFromFile(documentReference.PatchToFile);
+            //Image image = document.SaveToImages(0, ImageType.Metafile);
+            //document.Close();
             var path = pathToSave;
-            image.Save(path);
+            //image.Save(path);
             return path;
         }
         //DocGeneration:2
