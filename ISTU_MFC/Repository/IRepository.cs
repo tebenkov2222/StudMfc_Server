@@ -32,6 +32,9 @@ namespace Repository
         public void ChangeMessagesStatus(int user_id);
         public List<RequestModel> GetFiltredRequests(int userId, string status);
         public List<RequestModel> GetNamedRequests(int userId, string family);
+        public List<RequestModel> GetNumberedRequests(int userId, int number);
+        public bool CheckUserExistence(int userId);
+        public void CreateStudent(StudentModelForAddToDB student);
     }
     
     

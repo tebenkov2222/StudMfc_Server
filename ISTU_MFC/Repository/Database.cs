@@ -207,5 +207,38 @@ namespace Repository
             ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " + 
              " FROM list_of_requests_for_employees " + $"WHERE stud_family = '{family}' AND user_id = {userId};");
         }
+        
+        public string[][] GetTableNumberedRequestsForEmployees(int userId, int number) 
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " + 
+             " FROM list_of_requests_for_employees " + $"WHERE request_id = {number} AND user_id = {userId};");
+        }
+        
+        public string[][] GetTableRequestsForStudent(int userId) 
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ("SELECT request_id, name_service, status, employee_family, employee_name, employee_secondname, create_date " + 
+             " FROM information_about_requests " + $"WHERE student_user_id = '{userId}';");
+        }
+        
+        public string[][] CheckUserExistence(int userId) 
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ($"SELECT count(*) FROM users WHERE Id = '{userId}';");
+        }
+
+        public void CreateStudent(StudentModelForAddToDB student)
+        {
+            using var query = new QueryTool(_db);
+            var res =  query.QueryWithTable
+                ("INSERT INTO users (id, family, name, secondname) " +
+                 $"Values ({student.id}, '{student.fio_full.family}', '{student.fio_full.name}', '{student.fio_full.patronymic}');"+
+                 "INSERT INTO students (stud_id, user_id, group_number_id) " +
+                 $"Values ({student.student[0].id}, '{student.id}', (SELECT id FROM groups WHERE group_number = '{student.student[0].group}'));");
+        }
     }
 }
