@@ -259,7 +259,7 @@ namespace Repository
         private int GetIdDepartment(string department)
         {
             using var query = new QueryTool(_db);
-            var result = query.QueryWithTable($"SELECT id FROM departments WHERE name = '{department}';");
+            var result = query.QueryWithTable($"SELECT id FROM departments WHERE name ~ '{department}';");
             if (result.Length == 0 || result[1].Length == 0) throw new Exception("Department not found");
             return int.Parse(result[1][0]);
         }
@@ -267,8 +267,8 @@ namespace Repository
         private int GetIdGroup(string group)
         {
             using var query = new QueryTool(_db);
-            var result = query.QueryWithTable($"SELECT id FROM groups WHERE group_number = '{group}';");
-            if (result.Length == 0 || result[1].Length == 0) return -1;
+            var result = query.QueryWithTable($"SELECT id FROM groups WHERE group_number ~ '{group}';");
+            if (result.Length <= 1 || result[1].Length == 0) return -1;
             return int.Parse(result[1][0]);
         }
 
