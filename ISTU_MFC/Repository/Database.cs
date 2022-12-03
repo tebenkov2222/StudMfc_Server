@@ -249,18 +249,16 @@ namespace Repository
                 groupId = GetIdGroup(student.student[0].group);
             }
             using var query = new QueryTool(_db);
-            query.QueryWithoutTable
-                ("INSERT INTO users (id, family, name, secondname) " +
-                 $"Values ({student.id}, '{student.fio_full.family}', '{student.fio_full.name}', '{student.fio_full.patronymic}');" +
-                 "INSERT INTO students (stud_id, user_id, group_number_id) " +
-                 $"Values ({student.student[0].id}, '{student.id}', '{groupId}');");
+            query.QueryWithoutTable($"CALL create_student({student.id},{student.student[0].id}," +
+                                    $"'{student.fio_full.family}','{student.fio_full.name}'," +
+                                    $"'{student.fio_full.patronymic}',{departmentId},{groupId});");
         }
 
         private int GetIdDepartment(string department)
         {
             using var query = new QueryTool(_db);
             var result = query.QueryWithTable($"SELECT id FROM departments WHERE name ~ '{department}';");
-            if (result.Length == 0 || result[1].Length == 0) throw new Exception("Department not found");
+            if (result.Length == 0 || result[1].Length == 0) throw new Exception("<<<Department not found>>>");
             return int.Parse(result[1][0]);
         }
 
@@ -278,6 +276,5 @@ namespace Repository
             query.QueryWithTable("INSERT INTO groups (group_number, department_id)" +
                                     $"VALUES ('{groupNumber}', {departmentId});");
         }
-        
     }
 }
