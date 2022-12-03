@@ -178,6 +178,21 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public List<RequestModel> GetNumberedRequests(int userId, int number)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckUserExistence(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CreateStudent(StudentModelForAddToDB student)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CreateRequestWithFields(int servId, List<FieldsModel> fields)
         {
             throw new NotImplementedException();

@@ -57,6 +57,12 @@ namespace ISTU_MFC.Controllers
                     var requests = _repository.GetFiltredRequests(userId, model.Status);
                     return View(requests);
                 }
+                else if (model.Number != null)
+                {
+                    var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+                    var requests = _repository.GetNumberedRequests(userId, Int32.Parse(model.Number));
+                    return View(requests);
+                }
                 else if (model.Family != null)
                 {
                     var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);

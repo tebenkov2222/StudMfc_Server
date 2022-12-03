@@ -6,5 +6,6 @@ namespace ISTU_MFC.Models
         public string Id { get; set; }
         public string Status { get; set; }
         public string Family { get; set; }
+        public string Number { get; set; }
     }
 }

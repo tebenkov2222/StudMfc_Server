@@ -43,7 +43,7 @@ namespace Repository
         public StudentProfileModel GetStudentProfileModel(int userId)
         {
             var studentInfo = _db.GetStudentInfo(userId);
-            return new StudentProfileModel()
+            var result = new StudentProfileModel()
             {
                 Family = studentInfo[1][2],
                 Name = studentInfo[1][3],
@@ -51,8 +51,30 @@ namespace Repository
                 Group = studentInfo[1][5],
                 StudId = studentInfo[1][1],
                 Department = studentInfo[1][7],
-                Faculty = studentInfo[1][6]
+                Faculty = studentInfo[1][6],
+                Requests = new List<RequestModel>()
             };
+            var requsts = _db.GetTableRequestsForStudent(userId);
+            var statuses = new Dictionary<string, string>()
+            {
+                { "not processed", "Не обработана" },
+                { "processing", "В работе" },
+                { "processed", "Обработана" },
+                { "closed", "Закрыта" }
+            };
+            for (int i = 1; i < requsts.Length; i++)
+            {
+                result.Requests.Add(new RequestModel()
+                {
+                    Id = requsts[i][0],
+                    Caption = requsts[i][1],
+                    State = statuses[requsts[i][2]],
+                    CreationDate = requsts[i][6].Split()[0]
+                });
+                if (requsts[i][3] != "")
+                    result.Requests[i-1].FamylyNS = requsts[i][3] + " " + requsts[i][4][0] + "." + requsts[i][5][0] + ".";
+            }
+            return result;
         }
 
         public void SetValueFieldsOnRequest(int requestId, List<FieldsModel> fields)
@@ -139,7 +161,7 @@ namespace Repository
                 {
                     Caption = res[i][1],
                     Id = res[i][0],
-                    FamylyNS = res[i][2] + "." + res[i][3][0] + "." + res[i][4][0],
+                    FamylyNS = res[i][2] + " " + res[i][3][0] + "." + res[i][4][0] + ".",
                     CreationDate = res[i][5].Split()[0]
                 });
             }
@@ -365,6 +387,33 @@ namespace Repository
                 });
             }
             return answ;
+        }
+        public List<RequestModel> GetNumberedRequests(int userId, int number)
+        {
+            var res = _db.GetTableNumberedRequestsForEmployees(userId, number);
+            var answ = new List<RequestModel>();
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.Add(new RequestModel()
+                {
+                    Caption = res[i][1],
+                    Id = res[i][0],
+                    FamylyNS = res[i][2] + "." + res[i][3][0] + "." + res[i][4][0],
+                    CreationDate = res[i][5].Split()[0]
+                });
+            }
+            return answ;
+        }
+
+        public bool CheckUserExistence(int userId)
+        {
+            var res = _db.CheckUserExistence(userId);
+            return res[1][0] == "1";
+        }
+
+        public void CreateStudent(StudentModelForAddToDB student)
+        {
+            _db.CreateStudent(student);
         }
     }
 }

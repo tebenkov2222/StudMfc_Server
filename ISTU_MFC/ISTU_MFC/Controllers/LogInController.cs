@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.EMMA;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
 using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ModelsData;
 using Repository;
 
 namespace ISTU_MFC.Controllers
@@ -60,19 +67,62 @@ namespace ISTU_MFC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            
             if (ModelState.IsValid)
             {
-                User user = await db.Users.FirstOrDefaultAsync(u => u.login == model.login && u.password == model.password);
-                if (user != null)
+                HttpClient client = new HttpClient();
+                LoginModel loginData = new LoginModel()
                 {
-                    bool isStudent = _repository.CheckByStudent(user.Id);
-                    await Authenticate(user.Id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
+                    email = model.email,
+                    password = model.password
+                };
+                string jsonRequest = JsonSerializer.Serialize(loginData);
+                using HttpContent content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                using HttpResponseMessage response = await client.PostAsync("https://istu.ru/api/mobile/login", content).ConfigureAwait(false);
+                string response_result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                LoginModel result = null;
+                try
+                {
+                    result = JsonSerializer.Deserialize<LoginModel>(response_result);
+                }
+                catch
+                {
+                    result = new LoginModel()
+                    {
+                        message = "Unauthorized"
+                    };
+                }
+
+                if (result.message == null)
+                {
+                    if (!_repository.CheckUserExistence(result.user_id))
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Get, "https://istu.ru/api/mobile/user");
+                        request.Headers.Authorization = new AuthenticationHeaderValue(result.token_type, result.access_token);
+                        HttpResponseMessage response_1 = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+                        
+                        var apiString = await response_1.Content.ReadAsStringAsync();
+                        var student = JsonSerializer.Deserialize<StudentModelForAddToDB>(apiString);
+                        _repository.CreateStudent(student);
+                    }
+                    bool isStudent = _repository.CheckByStudent(result.user_id);
+                    await Authenticate(result.user_id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
                     if(isStudent)
                         return RedirectToAction("Home", "Students");
                     else
                         return RedirectToAction("WorkWithDoc", "Employees");
-                    
+                }
+                else
+                { 
+                    user user = await db.users.FirstOrDefaultAsync(u => u.login == model.email && u.password == model.password);
+                    if (user != null)
+                    {
+                        bool isStudent = _repository.CheckByStudent(user.id);
+                        await Authenticate(user.id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
+                        if(isStudent)
+                            return RedirectToAction("Home", "Students");
+                        else
+                            return RedirectToAction("WorkWithDoc", "Employees");
+                    } 
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
