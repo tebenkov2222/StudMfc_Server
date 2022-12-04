@@ -415,5 +415,55 @@ namespace Repository
         {
             _db.CreateStudent(student);
         }
+        
+        public ServisesSubdivisonModel GetSubdivisionServises(int userid)
+        {
+            int subid = _db.GetSubdivisonByEmployee(userid);
+            var res = _db.GetAllServicesBySubdivision(subid);
+            var answ = new ServisesSubdivisonModel()
+            {
+                Awalible = new List<ServiseModel>(),
+                ForAdd = new List<ServiseModel>()
+            };
+            for (int i = 1; i < res.Length; i++)
+            {
+                answ.SubdivisionId = subid.ToString();
+                if (res[i][4]!="")
+                {
+                    answ.Awalible.Add(new ServiseModel()
+                    {
+                        Name = res[i][1],
+                        Id = Int32.Parse(res[i][0]),
+                        Status = res[i][5]
+                    });
+                }
+                else
+                {
+                    answ.ForAdd.Add(new ServiseModel()
+                    {
+                        Name = res[i][1],
+                        Id = Int32.Parse(res[i][0]),
+                        Info = res[i][2],
+                        DocumentLink = res[i][3]
+                    });
+                }
+                
+            }
+            return answ;
+        }
+
+        public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status)
+        {
+            _db.ChangeSubdivisonsServiseStatus(serviceId, subdivisonId, status);
+        }
+
+        public void InsertSubdivisonsServise(int serviceId, int subdivisonId)
+        {
+            _db.InsertSubdivisonsServise(serviceId, subdivisonId);
+        }
+        public void DeleteSubdivisonsServise(int serviceId, int subdivisonId)
+        {
+            _db.DeleteSubdivisonsServise(serviceId, subdivisonId);
+        }
     }
 }

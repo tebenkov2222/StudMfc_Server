@@ -42,6 +42,13 @@ namespace Repository
             return bool.Parse(query.QueryWithTable
                 ($"SELECT (SELECT Count(*) FROM employees WHERE user_id = {userId}) = 1")[1][0]);
         }
+        
+        public int GetSubdivisonByEmployee(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return Int32.Parse(query.QueryWithTable
+                ($"SELECT subdivision_id FROM employees WHERE user_id = {userId}")[1][0]);
+        }
 
         public string[][] GetTableAvailableRequestsForEmployees(int userId, string status = "closed")
         {
@@ -184,6 +191,15 @@ namespace Repository
             return query.QueryWithTable
                 ($"SELECT services_id, name FROM services_info_by_subdivisions WHERE subdivision_id = {subId};");
         }
+        
+        public string[][] GetAllServicesBySubdivision(int subId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+                ("SELECT ser.id, ser.name, ser.information, ser.document_link, ss.subdivision_id, ss.status "+
+                 " FROM services ser LEFT OUTER JOIN (SELECT * FROM subdivisions_services "+
+                 $" WHERE subdivision_id = {subId})AS ss ON ser.id = ss.service_id ;");
+        }
 
         public string[][] GetServicesInfo(int servId)
         {
@@ -221,6 +237,13 @@ namespace Repository
         {
             using var query = new QueryTool(_db);
             query.QueryWithoutTable($"CALL change_status_message({userId});");
+        }
+        
+        public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status)
+        {
+            using var query = new QueryTool(_db);
+            query.QueryWithoutTable($"UPDATE subdivisions_services SET status = '{status}' "+
+                                    $" WHERE service_id = {serviceId} AND subdivision_id = {subdivisonId}");
         }
 
         public void RequestRejection(int requestId)
@@ -263,7 +286,21 @@ namespace Repository
              $"'{student.fio_full.patronymic}','{student.student[0].department}'," +
              $"'{student.student[0].group}');");
         }
+        
+        public void InsertSubdivisonsServise(int serviceId, int subdivisonId)
+        {
+            using var query = new QueryTool(_db);
+            var res = query.QueryWithTable
+            ("INSERT INTO subdivisions_services (service_id, subdivision_id)" +
+             $" VALUES ({serviceId}, {subdivisonId})");
+        }
 
         #endregion
+        public void DeleteSubdivisonsServise(int serviceId, int subdivisonId)
+        {
+            using var query = new QueryTool(_db);
+            var res = query.QueryWithTable
+            ($"DELETE FROM subdivisions_services WHERE service_id = {serviceId} AND subdivision_id = {subdivisonId};");
+        }
     }
 }

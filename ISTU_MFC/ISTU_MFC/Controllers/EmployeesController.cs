@@ -214,6 +214,7 @@ namespace ISTU_MFC.Controllers
             return View(model);
         }
         
+        [Authorize(Roles = "Employee")]
         public IActionResult Download(string documentPath)
         {
             //documentPath.Replace('\\', '/');
@@ -225,9 +226,37 @@ namespace ISTU_MFC.Controllers
             return PhysicalFile(filePath, fileType,fileName);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Employee")]
         public IActionResult ServiceList()
         {
-            return View();
+            var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+            var model = _repository.GetSubdivisionServises(userId);
+            model.Awalible.Reverse();
+            model.ForAdd.Reverse();
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public IActionResult ServiceList(ServiseListPostModel Model)
+        {
+            switch (Model.Type)
+            {
+                case "Add":
+                    _repository.InsertSubdivisonsServise(Int32.Parse(Model.Id),
+                        Int32.Parse(Model.SubdivisonId));
+                    break;
+                case "Delete":
+                    _repository.DeleteSubdivisonsServise(Int32.Parse(Model.Id),
+                        Int32.Parse(Model.SubdivisonId));
+                    break;
+                default:
+                    _repository.ChangeSubdivisonsServiseStatus(Int32.Parse(Model.Id), 
+                        Int32.Parse(Model.SubdivisonId), Model.Type);
+                    break;
+            }
+            return RedirectToAction("ServiceList");
         }
     }
 }
