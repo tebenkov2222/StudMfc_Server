@@ -208,8 +208,7 @@ namespace Repository
         public void ChangeRequestState(int requestId, int userId, string status)
         {
             using var query = new QueryTool(_db);
-            query.QueryWithoutTable
-                ($"CALL change_request_status({requestId},{userId},'{status}');");
+            query.QueryWithoutTable($"CALL change_request_status({requestId},{userId},'{status}');");
         }
 
         public void ChangeRequestStateByFirst(int requestId, int userId)
@@ -222,6 +221,12 @@ namespace Repository
         {
             using var query = new QueryTool(_db);
             query.QueryWithoutTable($"CALL change_status_message({userId});");
+        }
+
+        public void RequestRejection(int requestId)
+        {
+            using var query = new QueryTool(_db);
+            query.QueryWithoutTable($"CALL request_rejection({requestId});");
         }
 
         #endregion
