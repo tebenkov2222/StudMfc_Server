@@ -93,7 +93,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public List<FieldsModel> GetRequestFeelds(int requestId)
+        public List<FieldsModel> GetRequestFields(int requestId)
         {
             throw new NotImplementedException();
         }
@@ -123,12 +123,12 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public void ChangeRequestState(int requestId, int user_id, string state)
+        public void ChangeRequestStatus(int requestId, int userId, string state)
         {
             throw new NotImplementedException();
         }
 
-        public void CreateMessage(int requestId, int employee_id, string message)
+        public void CreateMessage(int requestId, int userId, string message)
         {
             throw new NotImplementedException();
         }
@@ -138,22 +138,22 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public List<SubdivisionModel> GetDevisionsList(int userId)
+        public List<SubdivisionModel> GetDivisionsList(int userId)
         {
             throw new NotImplementedException();
         }
 
-        public List<ServiseModel> GetSubdivisionInfo(int sun_id)
+        public List<ServiseModel> GetSubdivisionInfo(int sunId)
         {
             throw new NotImplementedException();
         }
 
-        public ServiseModel GetServisesInfo(int servId)
+        public ServiseModel GetServicesInfo(int servId)
         {
             throw new NotImplementedException();
         }
 
-        public void ChangeRequestStateByFirst(int requestId, int user_id)
+        public void ChangeRequestStateByFirst(int requestId, int userId)
         {
             throw new NotImplementedException();
         }
@@ -168,7 +168,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public List<RequestModel> GetFiltredRequests(int userId, string status)
+        public List<RequestModel> GetFilteredRequests(int userId, string status)
         {
             throw new NotImplementedException();
         }

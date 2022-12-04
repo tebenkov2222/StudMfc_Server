@@ -142,7 +142,7 @@ namespace Repository
         public IDictionary<string, string> GetValueFieldsByIdRequest(int requestId)
         {
             var result = new Dictionary<string, string>();
-            var tableFields = GetRequestFeelds(requestId);
+            var tableFields = GetRequestFields(requestId);
             foreach (var field in tableFields)
             {
                 result[field.Name] = field.Value;
@@ -178,9 +178,9 @@ namespace Repository
             return _db.GetLinkToDocumentByServiceId(serviceId);
         }
 
-        public List<FieldsModel> GetRequestFeelds(int requestId)
+        public List<FieldsModel> GetRequestFields(int requestId)
         {
-            var res = _db.GetRequestFeelds(requestId);
+            var res = _db.GetRequestFields(requestId);
             var list = new List<FieldsModel>();
             for (int i = 1; i < res.Length; i++)
             {
@@ -196,8 +196,8 @@ namespace Repository
 
         public StudentProfileModel GetStudentByRequest(int requestId)
         {
-            var user_id = _db.GetStudentByRequest(requestId);
-            return GetStudentProfileModel(user_id);
+            var userId = _db.GetStudentByRequest(requestId);
+            return GetStudentProfileModel(userId);
         }
 
         public InformationAboutRequestModel GetInformationAboutRequestByStudent(int studentUserId)
@@ -270,14 +270,14 @@ namespace Repository
             };
         }
 
-        public void ChangeRequestState(int requestId, int user_id, string state)
+        public void ChangeRequestStatus(int requestId, int userId, string state)
         {
-            _db.ChangeRequestState(requestId, user_id, state);
+            _db.ChangeRequestState(requestId, userId, state);
         }
 
-        public void CreateMessage(int requestId, int employee_id, string message)
+        public void CreateMessage(int requestId, int userId, string message)
         {
-            _db.CreateMessage(requestId, employee_id, message);
+            _db.CreateMessage(requestId, userId, message);
         }
 
         public List<MessageModel> GetTableMessages(int userId)
@@ -297,7 +297,7 @@ namespace Repository
             return answ;
         }
 
-        public List<SubdivisionModel> GetDevisionsList(int userId)
+        public List<SubdivisionModel> GetDivisionsList(int userId)
         {
             var res = _db.GetTableSubdivisionsInfoForStudent(userId);
             var answ = new List<SubdivisionModel>();
@@ -314,9 +314,9 @@ namespace Repository
             return answ;
         }
 
-        public List<ServiseModel> GetSubdivisionInfo(int sun_id)
+        public List<ServiseModel> GetSubdivisionInfo(int sunId)
         {
-            var res = _db.GetServisesBySubdevision(sun_id);
+            var res = _db.GetServicesBySubdivision(sunId);
             var answ = new List<ServiseModel>();
             for (int i = 1; i < res.Length; i++)
             {
@@ -329,9 +329,9 @@ namespace Repository
             return answ;
         }
 
-        public ServiseModel GetServisesInfo(int servId)
+        public ServiseModel GetServicesInfo(int servId)
         {
-            var res = _db.GetServisesInfo(servId);
+            var res = _db.GetServicesInfo(servId);
             return new ServiseModel()
             {
                 Name = res[1][0],
@@ -341,24 +341,24 @@ namespace Repository
 
         public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId)
         {
-            var res = _db.InsertAndGetRequestId(userId, servId);
+            var res = _db.InsertRequest(userId, servId);
             var requestId = Int32.Parse(res[1][0]);
             SetValueFieldsOnRequest(requestId, fields);
         }
         
-        public void ChangeRequestStateByFirst(int requestId, int user_id)
+        public void ChangeRequestStateByFirst(int requestId, int userId)
         {
-            _db.ChangeRequestStateByFirst(requestId, user_id);
+            _db.ChangeRequestStateByFirst(requestId, userId);
         }
 
-        public void ChangeMessagesStatus(int user_id)
+        public void ChangeMessagesStatus(int userId)
         {
-            _db.ChangeMessagesStatus(user_id);
+            _db.ChangeMessagesStatus(userId);
         }
         
-        public List<RequestModel> GetFiltredRequests(int userId, string status)
+        public List<RequestModel> GetFilteredRequests(int userId, string status)
         {
-            var res = _db.GetTableFiltredRequestsForEmployees(userId, status);
+            var res = _db.GetTableFilteredRequestsForEmployees(userId, status);
             var answ = new List<RequestModel>();
             for (int i = 1; i < res.Length; i++)
             {

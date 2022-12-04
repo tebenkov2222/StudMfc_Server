@@ -56,7 +56,7 @@ namespace ISTU_MFC.Controllers
                 if (model.Status != null)
                 {
                     var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-                    var requests = _repository.GetFiltredRequests(userId, model.Status);
+                    var requests = _repository.GetFilteredRequests(userId, model.Status);
                     return View(requests);
                 }
                 else if (model.Number != null)
@@ -101,7 +101,7 @@ namespace ISTU_MFC.Controllers
                 Group = user.Group,
                 StudId = user.StudId,
                 Fields = documentsController.FieldsController.GetFieldsOnViewByNames(
-                    _repository.GetRequestFeelds(Int32.Parse(req_id)))
+                    _repository.GetRequestFields(Int32.Parse(req_id)))
             };
             
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
@@ -190,7 +190,7 @@ namespace ISTU_MFC.Controllers
                 { "closed", "Закрыта" }
             };
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-            _repository.ChangeRequestState(Int32.Parse(model.request_id), userId , model.status);
+            _repository.ChangeRequestStatus(Int32.Parse(model.request_id), userId , model.status);
             if (model.message == "")
                 model.message = $"Статус заявки изменен на \"{statuses[model.status]}\"";
             _repository.CreateMessage(Int32.Parse(model.request_id), userId, model.message);

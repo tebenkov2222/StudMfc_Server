@@ -21,5 +21,6 @@ namespace ModelsData
     {
         public int id { get; set; }
         public string group { get; set; }
+        public string department { get; set; }
     }
 }
