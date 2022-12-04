@@ -1,6 +1,42 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ModelsData.ServisesSubdivisonModel
+
 @{
     ViewData["Title"] = "ServiceList";
     Layout = "_LayoutEmployees";
 }
 
+
+
+@foreach (var serv in Model.Awalible)
+{
+    <div>@serv.Id @serv.Name @serv.Status</div>
+    <form method="post">
+        <input type="hidden" name="Type" value="Enabled"/>
+        <input type="hidden" name="Id" value="@serv.Id"/>
+        <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+        <input name="button" class="btn" type="submit" value="Включить"/>
+    </form>
+    <form method="post">
+        <input type="hidden" name="Type" value="Disabled"/>
+        <input type="hidden" name="Id" value="@serv.Id"/>
+        <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+        <input name="button" class="btn" type="submit" value="Выключить"/>
+    </form>
+    <form method="post">
+        <input type="hidden" name="Type" value="Delete"/>
+        <input type="hidden" name="Id" value="@serv.Id"/>
+        <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+        <input name="button" class="btn" type="submit" value="Удалить"/>
+    </form>
+}
+@foreach (var serv in Model.ForAdd)
+{
+    <div>@serv.Id @serv.Name @serv.Info @serv.DocumentLink</div>
+    <form method="post">
+        <input type="hidden" name="Type" value="Add"/>
+        <input type="hidden" name="Id" value="@serv.Id"/>
+        <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+        <input name="button" class="btn" type="submit" value="Добавить"/>
+    </form>
+}
