@@ -193,22 +193,22 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public ServisesSubdivisonModel GetSubdivisionServises(int userid)
+        public ServisesSubdivisonModel GetSubdivisionServices(int userid)
         {
             throw new NotImplementedException();
         }
 
-        public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status)
+        public void ChangeSubdivisionsServiceStatus(int serviceId, int subdivisionId, string status)
         {
             throw new NotImplementedException();
         }
 
-        public void InsertSubdivisonsServise(int serviceId, int subdivisonId)
+        public void InsertSubdivisionsService(int serviceId, int subdivisonId)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteSubdivisonsServise(int serviceId, int subdivisonId)
+        public void DeleteSubdivisionsService(int serviceId, int subdivisonId)
         {
             throw new NotImplementedException();
         }

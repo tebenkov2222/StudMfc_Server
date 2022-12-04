@@ -35,10 +35,10 @@ namespace Repository
         public List<RequestModel> GetNumberedRequests(int userId, int number);
         public bool CheckUserExistence(int userId);
         public void CreateStudent(StudentModelForAddToDB student);
-        public ServisesSubdivisonModel GetSubdivisionServises(int userid);
-        public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status);
-        public void InsertSubdivisonsServise(int serviceId, int subdivisonId);
-        public void DeleteSubdivisonsServise(int serviceId, int subdivisonId);
+        public ServisesSubdivisonModel GetSubdivisionServices(int userid);
+        public void ChangeSubdivisionsServiceStatus(int serviceId, int subdivisionId, string status);
+        public void InsertSubdivisionsService(int serviceId, int subdivisonId);
+        public void DeleteSubdivisionsService(int serviceId, int subdivisonId);
     }
     
     

@@ -407,8 +407,7 @@ namespace Repository
 
         public bool CheckUserExistence(int userId)
         {
-            var res = _db.CheckUserExistence(userId);
-            return res[1][0] == "1";
+            return _db.CheckUserExistence(userId);
         }
 
         public void CreateStudent(StudentModelForAddToDB student)
@@ -416,9 +415,9 @@ namespace Repository
             _db.CreateStudent(student);
         }
         
-        public ServisesSubdivisonModel GetSubdivisionServises(int userid)
+        public ServisesSubdivisonModel GetSubdivisionServices(int userid)
         {
-            int subid = _db.GetSubdivisonByEmployee(userid);
+            int subid = _db.GetSubdivisionByEmployee(userid);
             var res = _db.GetAllServicesBySubdivision(subid);
             var answ = new ServisesSubdivisonModel()
             {
@@ -452,18 +451,18 @@ namespace Repository
             return answ;
         }
 
-        public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status)
+        public void ChangeSubdivisionsServiceStatus(int serviceId, int subdivisionId, string status)
         {
-            _db.ChangeSubdivisonsServiseStatus(serviceId, subdivisonId, status);
+            _db.ChangeSubdivisionsServiceStatus(serviceId, subdivisionId, status);
         }
 
-        public void InsertSubdivisonsServise(int serviceId, int subdivisonId)
+        public void InsertSubdivisionsService(int serviceId, int subdivisonId)
         {
-            _db.InsertSubdivisonsServise(serviceId, subdivisonId);
+            _db.InsertSubdivisionsService(serviceId, subdivisonId);
         }
-        public void DeleteSubdivisonsServise(int serviceId, int subdivisonId)
+        public void DeleteSubdivisionsService(int serviceId, int subdivisonId)
         {
-            _db.DeleteSubdivisonsServise(serviceId, subdivisonId);
+            _db.DeleteSubdivisionsService(serviceId, subdivisonId);
         }
     }
 }

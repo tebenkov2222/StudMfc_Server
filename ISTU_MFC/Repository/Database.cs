@@ -25,11 +25,11 @@ namespace Repository
 
         #region User
 
-        public string[][] CheckUserExistence(int userId) // тут нет проверки
+        public bool CheckUserExistence(int userId)
         {
             using var query = new QueryTool(_db);
-            return query.QueryWithTable
-                ($"SELECT count(*) FROM users WHERE Id = '{userId}';");
+            return bool.Parse(query.QueryWithTable
+                ($"SELECT (SELECT count(*) FROM users WHERE Id = '{userId}') = 1;")[1][0]);
         }
 
         #endregion
@@ -43,7 +43,7 @@ namespace Repository
                 ($"SELECT (SELECT Count(*) FROM employees WHERE user_id = {userId}) = 1")[1][0]);
         }
         
-        public int GetSubdivisonByEmployee(int userId)
+        public int GetSubdivisionByEmployee(int userId)
         {
             using var query = new QueryTool(_db);
             return Int32.Parse(query.QueryWithTable
@@ -239,7 +239,7 @@ namespace Repository
             query.QueryWithoutTable($"CALL change_status_message({userId});");
         }
         
-        public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status)
+        public void ChangeSubdivisionsServiceStatus(int serviceId, int subdivisonId, string status)
         {
             using var query = new QueryTool(_db);
             query.QueryWithoutTable($"UPDATE subdivisions_services SET status = '{status}' "+
@@ -287,7 +287,7 @@ namespace Repository
              $"'{student.student[0].group}');");
         }
         
-        public void InsertSubdivisonsServise(int serviceId, int subdivisonId)
+        public void InsertSubdivisionsService(int serviceId, int subdivisonId)
         {
             using var query = new QueryTool(_db);
             var res = query.QueryWithTable
@@ -296,11 +296,12 @@ namespace Repository
         }
 
         #endregion
-        public void DeleteSubdivisonsServise(int serviceId, int subdivisonId)
+        public void DeleteSubdivisionsService(int serviceId, int subdivisionId)
         {
             using var query = new QueryTool(_db);
-            var res = query.QueryWithTable
-            ($"DELETE FROM subdivisions_services WHERE service_id = {serviceId} AND subdivision_id = {subdivisonId};");
+            query.QueryWithoutTable
+            ("DELETE FROM subdivisions_services " +
+             $"WHERE service_id = {serviceId} AND subdivision_id = {subdivisionId};");
         }
     }
 }
