@@ -38,7 +38,7 @@ namespace ISTU_MFC.Controllers
         public IActionResult Home()
         {
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-            var model = _repository.GetDevisionsList(userId);
+            var model = _repository.GetDivisionsList(userId);
             return View(model);
         }
         
@@ -91,7 +91,7 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult Servise(int servId)
         {
-            var model = _repository.GetServisesInfo(servId);
+            var model = _repository.GetServicesInfo(servId);
             model.Id = servId;
             return View(model);
         }
