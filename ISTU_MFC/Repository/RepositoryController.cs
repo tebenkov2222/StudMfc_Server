@@ -284,7 +284,7 @@ namespace Repository
         {
             var res = _db.GetTableMessages(userId);
             var answ = new List<MessageModel>();
-            for (int i = 1; i < res.Length; i++)
+            for (var i = 1; i < res.Length; i++)
             {
                 answ.Add(new MessageModel()
                 {
@@ -358,7 +358,7 @@ namespace Repository
         
         public List<RequestModel> GetFilteredRequests(int userId, string status)
         {
-            var res = _db.GetTableFilteredRequestsForEmployees(userId, status);
+            var res = _db.GetTableAvailableRequestsForEmployees(userId, status);
             var answ = new List<RequestModel>();
             for (int i = 1; i < res.Length; i++)
             {

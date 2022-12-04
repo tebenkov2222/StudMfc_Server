@@ -58,14 +58,6 @@ namespace Repository
              " FROM list_of_requests_for_employees " + $"WHERE status <> '{status}' AND user_id = {userId};");
         }
 
-        public string[][] GetTableFilteredRequestsForEmployees(int userId, string status)
-        {
-            using var query = new QueryTool(_db);
-            return query.QueryWithTable
-            ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " +
-             " FROM list_of_requests_for_employees " + $"WHERE status = '{status}' AND user_id = {userId};");
-        }
-
         public string[][] GetTableNamedRequestsForEmployees(int userId, string family)
         {
             using var query = new QueryTool(_db);
@@ -265,10 +257,7 @@ namespace Repository
         public string[][] InsertRequest(int userId, int subdivisionService)
         {
             using var query = new QueryTool(_db);
-            return query.QueryWithTable
-            ("INSERT INTO requests (stud_id, subdivision_service_id)" +
-             $" VALUES ((SELECT stud_id FROM students WHERE user_id = {userId}), " +
-             $" {subdivisionService}) returning id AS request_id");
+            return query.QueryWithTable($"SELECT insert_request({userId}, {subdivisionService})");
         }
 
         public void InsertField(int requestId, string name, string value, bool manuallyFilled = false)
@@ -296,6 +285,9 @@ namespace Repository
         }
 
         #endregion
+
+        #region Delete
+
         public void DeleteSubdivisionsService(int serviceId, int subdivisionId)
         {
             using var query = new QueryTool(_db);
@@ -303,5 +295,8 @@ namespace Repository
             ("DELETE FROM subdivisions_services " +
              $"WHERE service_id = {serviceId} AND subdivision_id = {subdivisionId};");
         }
+
+        #endregion
+        
     }
 }
