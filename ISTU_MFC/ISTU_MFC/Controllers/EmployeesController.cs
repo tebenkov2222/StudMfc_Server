@@ -130,18 +130,20 @@ namespace ISTU_MFC.Controllers
             var documentsController = new DocumentsController(_repository);
             var linkToDocument = _repository.GetLinkToDocumentByRequestId(request_id);
             var copyToTempAndOpenDocument = documentsController.
-                CopyToTempAndOpenDocument(linkToDocument, linkToDocument + $"_temp{DateTime.Now.ToString("dd-MM-yy_hh-mm-ss")}", true);
+                CopyToTempAndOpenDocument(linkToDocument, linkToDocument + $"_temp{DateTime.Now.ToString("ddMMyy_hhmmss")}", true);
             var valueFields = _repository.GetValueFieldsByIdRequest(request_id);
             copyToTempAndOpenDocument.SetFieldValues(valueFields);
 
             var requestModel = _repository.GetInformationAboutRequestByRequest(request_id);
             var docName =
-                $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}_{DateTime.Now.ToString("dd-MM-yy_hh-mm-ss")}";
+                $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
             var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
 
-            copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
+            //copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
+            copyToTempAndOpenDocument.Save();
             copyToTempAndOpenDocument.Close();
-            copyToTempAndOpenDocument.Document.Dispose();
+            System.IO.File.Copy(copyToTempAndOpenDocument.PatchToFile, pathToDownloadDocument, true);
+            //copyToTempAndOpenDocument.Document.Dispose();
             
             /*var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
                 copyToTempAndOpenDocument,
@@ -217,8 +219,9 @@ namespace ISTU_MFC.Controllers
             //documentPath.Replace('\\', '/');
             string filePath = documentPath;
             string fileType = "application/docx";
-            string fileName = "Document";
-            
+            var name = Path.GetFileName(documentPath);
+            string fileName = name;
+
             return PhysicalFile(filePath, fileType,fileName);
         }
 
