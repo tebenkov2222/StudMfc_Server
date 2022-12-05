@@ -10,7 +10,7 @@
 </header>
 
 <div name="id" class="stud_data id">
-    <div name="labelID" class="grey1 label_stud_data">ID</div>
+    <div name="labelID" class="grey1 label_stud_data">ID заявки</div>
     <div name="fieldID" class="grey2 field_stud_data">@Model.Req_id</div>
 </div>
 
@@ -24,7 +24,7 @@
             <div name="fieldgroup" class="grey2 field_stud_data">@Model.Group</div>
         </div>
         <div name="studnum" class="stud_data">
-            <div name="labelstudnum" class="grey1 label_stud_data">Номер студенческого билета</div>
+            <div name="labelstudnum" class="grey1 label_stud_data">ID студента</div>
             <div name="fieldstudnum" class="grey2 field_stud_data">@Model.StudId</div>
         </div>
 </div>
@@ -41,12 +41,12 @@
 </div>
 
 <div name="buttons" class="request_buttons">
-    <form method="post" name="GoToDownloadGeneration">
+    <form method="post" name="GoToDownloadGeneration" class="d-flex justify-content-center">
         <input name="Type" value="DownloadGeneration", type="hidden"/>
         <input name="Req_Id" value="@Model.Req_id", type="hidden"/>
         <input name="btn" class="btn" type="submit" value="Предпросмотр"/>
     </form>
-    <form method="post" name="GoToDownloadGeneration">
+    <form method="post" name="GoToDownloadGeneration" class="d-flex justify-content-center">
         <input name="Type" value="ChangeStatus", type="hidden"/>
         <input name="Req_Id" value="@Model.Req_id", type="hidden"/>
         <input name="btn" class="btn shit" type="submit" value="Изменить статус заявки"/>
