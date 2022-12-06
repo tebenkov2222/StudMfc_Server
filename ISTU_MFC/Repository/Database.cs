@@ -32,6 +32,13 @@ namespace Repository
                 ($"SELECT count(*) FROM users WHERE Id = '{userId}';");
         }
 
+        public string[][] GetUserFullName(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+                ($"SELECT family, name, secondname FROM users WHERE Id = '{userId}';");
+        }
+
         #endregion
 
         #region Employee
@@ -290,17 +297,16 @@ namespace Repository
         public void InsertSubdivisonsServise(int serviceId, int subdivisonId)
         {
             using var query = new QueryTool(_db);
-            var res = query.QueryWithTable
-            ("INSERT INTO subdivisions_services (service_id, subdivision_id)" +
-             $" VALUES ({serviceId}, {subdivisonId})");
+            query.QueryWithoutTable("INSERT INTO subdivisions_services (service_id, subdivision_id)" +
+                                 $" VALUES ({serviceId}, {subdivisonId})");
         }
 
         #endregion
         public void DeleteSubdivisonsServise(int serviceId, int subdivisonId)
         {
             using var query = new QueryTool(_db);
-            var res = query.QueryWithTable
-            ($"DELETE FROM subdivisions_services WHERE service_id = {serviceId} AND subdivision_id = {subdivisonId};");
+            query.QueryWithoutTable($"DELETE FROM subdivisions_services "+
+                                    " WHERE service_id = {serviceId} AND subdivision_id = {subdivisonId};");
         }
     }
 }

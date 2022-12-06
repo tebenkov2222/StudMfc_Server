@@ -69,73 +69,69 @@ namespace ISTU_MFC.Controllers
         {
             if (ModelState.IsValid)
             {
-                HttpClient client = new HttpClient();
-                LoginModel loginData = new LoginModel()
+                user user = await db.users.FirstOrDefaultAsync(u => u.login == model.email && u.password == model.password);
+                if (user == null)
                 {
-                    email = model.email,
-                    password = model.password
-                };
-                string jsonRequest = JsonSerializer.Serialize(loginData);
-                using HttpContent content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
-                using HttpResponseMessage response = await client.PostAsync("https://istu.ru/api/mobile/login", content).ConfigureAwait(false);
-                string response_result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                LoginModel result = null;
-                try
-                {
-                    result = JsonSerializer.Deserialize<LoginModel>(response_result);
-                }
-                catch
-                {
-                    result = new LoginModel()
+                    HttpClient client = new HttpClient();
+                    LoginModel loginData = new LoginModel()
                     {
-                        message = "Unauthorized"
+                        email = model.email,
+                        password = model.password
                     };
-                }
-
-                if (result.message == null)
-                {
-                    if (!_repository.CheckUserExistence(result.user_id))
+                    string jsonRequest = JsonSerializer.Serialize(loginData);
+                    using HttpContent content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                    using HttpResponseMessage response = await client.PostAsync("https://istu.ru/api/mobile/login", content).ConfigureAwait(false);
+                    string response_result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    LoginModel result = null;
+                    try
+                    {
+                        result = JsonSerializer.Deserialize<LoginModel>(response_result);
+                    }
+                    catch
+                    {
+                        result = new LoginModel()
+                        {
+                            message = "Unauthorized"
+                        };
+                    }
+                    
+                    if (result.message == null && !_repository.CheckUserExistence(result.user_id))
                     {
                         var request = new HttpRequestMessage(HttpMethod.Get, "https://istu.ru/api/mobile/user");
                         request.Headers.Authorization = new AuthenticationHeaderValue(result.token_type, result.access_token);
                         HttpResponseMessage response_1 = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-                        
+                                            
                         var apiString = await response_1.Content.ReadAsStringAsync();
                         var student = JsonSerializer.Deserialize<StudentModelForAddToDB>(apiString);
                         _repository.CreateStudent(student);
+                        user = new user()
+                        {
+                            id = result.user_id
+                        };
                     }
-                    bool isStudent = _repository.CheckByStudent(result.user_id);
-                    await Authenticate(result.user_id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
-                    if(isStudent)
-                        return RedirectToAction("Home", "Students");
-                    else
-                        return RedirectToAction("WorkWithDoc", "Employees");
                 }
-                else
-                { 
-                    user user = await db.users.FirstOrDefaultAsync(u => u.login == model.email && u.password == model.password);
-                    if (user != null)
-                    {
-                        bool isStudent = _repository.CheckByStudent(user.id);
-                        await Authenticate(user.id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
-                        if(isStudent)
-                            return RedirectToAction("Home", "Students");
-                        else
-                            return RedirectToAction("WorkWithDoc", "Employees");
-                    } 
+                if (user != null)
+                {
+                    bool isStudent = _repository.CheckByStudent(user.id);
+                    var fullName = _repository.GetUserFullName(user.id);
+                    await Authenticate(user.id.ToString(), isStudent ? "Student" : "Employee", fullName); // аутентификация
+                    if(isStudent) 
+                        return RedirectToAction("Home", "Students"); 
+                    return RedirectToAction("WorkWithDoc", "Employees");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
         }
 
-        private async Task Authenticate(string userName, string userRole)
+        private async Task Authenticate(string userName, string userRole, string fullName)
         {
             // создаем один claim
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, userName),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, userRole),
+                new Claim(ClaimTypes.GivenName, fullName)
             };
             // создаем объект ClaimsIdentity
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);

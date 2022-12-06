@@ -15,8 +15,5 @@ namespace ISTU_MFC.ViewModels
         public int user_id { get; set; }
         public string access_token { get; set; }
         public string token_type { get; set; }
-        
-        
-        
     }
 }
