@@ -39,6 +39,7 @@ namespace Repository
         public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status);
         public void InsertSubdivisonsServise(int serviceId, int subdivisonId);
         public void DeleteSubdivisonsServise(int serviceId, int subdivisonId);
+        public string GetUserFullName(int userId);
     }
     
     

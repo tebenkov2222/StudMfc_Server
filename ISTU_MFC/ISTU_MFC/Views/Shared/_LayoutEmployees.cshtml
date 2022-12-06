@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -17,7 +21,7 @@
         <a asp-area="" asp-controller="Employees" asp-action="ServiceList" style="font-size:20pt;padding: 0 10px" class="heading_logos">Список услуг</a>
     </div>
     <div class="d-flex justify-content-end">
-        <div name="fio" class="d-flex align-items-center" style="font-size:16pt;color: white;">Достать из куков фио</div>
+        <div name="fio" class="d-flex align-items-center" style="font-size:16pt;color: white;">@Context.User.FindFirst(ClaimTypes.GivenName).Value</div>
         @* <a asp-area="" asp-controller="Employees" asp-action="Notifications" class="heading_logos logos"><i class="fa fa-bell" style="font-size:20pt;"></i></a> *@
         <a asp-area="" asp-controller="LogIn" asp-action="Logout" class="heading_logos logos"><i class="fa fa-sign-out" style="font-size:20pt;"></i></a>
     </div>

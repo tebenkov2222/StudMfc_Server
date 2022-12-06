@@ -32,6 +32,13 @@ namespace Repository
                 ($"SELECT count(*) FROM users WHERE Id = '{userId}';");
         }
 
+        public string[][] GetUserFullName(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+                ($"SELECT family, name, secondname FROM users WHERE Id = '{userId}';");
+        }
+
         #endregion
 
         #region Employee

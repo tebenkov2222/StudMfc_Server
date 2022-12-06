@@ -465,5 +465,11 @@ namespace Repository
         {
             _db.DeleteSubdivisonsServise(serviceId, subdivisonId);
         }
+
+        public string GetUserFullName(int userId)
+        {
+            var result = _db.GetUserFullName(userId);
+            return $"{result[1][0]} {result[1][1]} {result[1][2]}";
+        }
     }
 }
