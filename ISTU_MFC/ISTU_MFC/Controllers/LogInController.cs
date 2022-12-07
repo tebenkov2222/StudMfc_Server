@@ -95,15 +95,20 @@ namespace ISTU_MFC.Controllers
                         };
                     }
                     
-                    if (result.message == null && !_repository.CheckUserExistence(result.user_id))
+                    if (result.message == null)
                     {
-                        var request = new HttpRequestMessage(HttpMethod.Get, "https://istu.ru/api/mobile/user");
-                        request.Headers.Authorization = new AuthenticationHeaderValue(result.token_type, result.access_token);
-                        HttpResponseMessage response_1 = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-                                            
-                        var apiString = await response_1.Content.ReadAsStringAsync();
-                        var student = JsonSerializer.Deserialize<StudentModelForAddToDB>(apiString);
-                        _repository.CreateStudent(student);
+                        if(!_repository.CheckUserExistence(result.user_id))
+                        {
+                            var request = new HttpRequestMessage(HttpMethod.Get, "https://istu.ru/api/mobile/user");
+                            request.Headers.Authorization =
+                                new AuthenticationHeaderValue(result.token_type, result.access_token);
+                            HttpResponseMessage response_1 =
+                                await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+                            var apiString = await response_1.Content.ReadAsStringAsync();
+                            var student = JsonSerializer.Deserialize<StudentModelForAddToDB>(apiString);
+                            _repository.CreateStudent(student);
+                        }
                         user = new user()
                         {
                             id = result.user_id
