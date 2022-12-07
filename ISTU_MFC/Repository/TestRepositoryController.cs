@@ -12,12 +12,12 @@ namespace Repository
             Console.WriteLine($"Test Repository Controller {message}");
         }
 
-        public bool CheckByStudent(int idUser)
+        public bool CheckStudentExistence(int idUser)
         {
             return _isStudent;
         }
 
-        public bool CheckByEmployees(int idUser)
+        public bool CheckEmployeeExistence(int idUser)
         {
             return !_isStudent;
         }
@@ -113,7 +113,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId)
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int userId)
         {
             throw new NotImplementedException();
         }

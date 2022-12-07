@@ -30,14 +30,14 @@ namespace Repository
             Console.WriteLine($"Test message {message}");
         }
         
-        public bool CheckByStudent(int idUser)
+        public bool CheckStudentExistence(int idUser)
         {
-            return _db.CheckByStudent(idUser);
+            return _db.CheckStudentExistence(idUser);
         }
 
-        public bool CheckByEmployees(int idUser)
+        public bool CheckEmployeeExistence(int idUser)
         {
-            return _db.CheckByEmployee(idUser);
+            return _db.CheckEmployeeExistence(idUser);
         }
 
         public StudentProfileModel GetStudentProfileModel(int userId)
@@ -258,9 +258,9 @@ namespace Repository
             };
         }
 
-        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId)
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int userId)
         {
-            var directorInstituteByStudent = _db.GetDirectorInstituteByStudent(studentUserId);
+            var directorInstituteByStudent = _db.GetDirectorInstituteByStudent(userId);
 
             return new DirectorInstituteModel()
             {

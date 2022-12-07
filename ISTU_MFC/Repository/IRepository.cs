@@ -7,8 +7,8 @@ namespace Repository
     public interface IRepository
     {
         void WriteMessage(string message);
-        bool CheckByStudent(int idUser);
-        bool CheckByEmployees(int idUser);
+        bool CheckStudentExistence(int idUser);
+        bool CheckEmployeeExistence(int idUser);
         public StudentProfileModel GetStudentProfileModel(int userId);
         public void SetValueFieldsOnRequest(int requestId, List<FieldsModel> fields);
         public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int studentUserId);
@@ -20,7 +20,7 @@ namespace Repository
         public StudentProfileModel GetStudentByRequest(int requestId);
         InformationAboutRequestModel GetInformationAboutRequestByStudent(int studentUserId);
         InformationAboutRequestModel GetInformationAboutRequestByRequest(int requestId);
-        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId);
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int userId);
         public void ChangeRequestStatus(int requestId, int userId, string state);
         public void CreateMessage(int requestId, int userId, string message);
         public List<MessageModel> GetTableMessages(int userId);

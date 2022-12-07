@@ -25,6 +25,7 @@ namespace Repository
 
         #region User
 
+        // Проверка существования пользователя в таблице пользователей
         public bool CheckUserExistence(int userId)
         {
             using var query = new QueryTool(_db);
@@ -36,13 +37,15 @@ namespace Repository
 
         #region Employee
 
-        public bool CheckByEmployee(int userId)
+        // проверка существования сотрудника в таблице сотрудников
+        public bool CheckEmployeeExistence(int userId)
         {
             using var query = new QueryTool(_db);
             return bool.Parse(query.QueryWithTable
                 ($"SELECT (SELECT Count(*) FROM employees WHERE user_id = {userId}) = 1")[1][0]);
         }
         
+        // получить номер подразделения, в котором работает сотрудник
         public int GetSubdivisionByEmployee(int userId)
         {
             using var query = new QueryTool(_db);
@@ -50,6 +53,8 @@ namespace Repository
                 ($"SELECT subdivision_id FROM employees WHERE user_id = {userId}")[1][0]);
         }
 
+        // получить таблицу доступных заявок для сотрудника
+        // (отображать для сотрудника взятые им заявки и новые заявки в подразделении, к которому он относится)
         public string[][] GetTableAvailableRequestsForEmployees(int userId, string status = "closed")
         {
             using var query = new QueryTool(_db);
@@ -57,7 +62,9 @@ namespace Repository
             ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " +
              " FROM list_of_requests_for_employees " + $"WHERE status <> '{status}' AND user_id = {userId};");
         }
-
+        
+        // получить таблицу заявок по фамилии студента для сотрудника
+        // (метод для поиска сотрудником всех заявок по фамилии студента)
         public string[][] GetTableNamedRequestsForEmployees(int userId, string family)
         {
             using var query = new QueryTool(_db);
@@ -66,6 +73,8 @@ namespace Repository
              " FROM list_of_requests_for_employees " + $"WHERE stud_family = '{family}' AND user_id = {userId};");
         }
 
+        // получить таблицу запросов по номеру заявки для сотрудника
+        // (метод для поиска сотрудником всех заявок по номеру заявки)
         public string[][] GetTableNumberedRequestsForEmployees(int userId, int number)
         {
             using var query = new QueryTool(_db);
@@ -78,39 +87,45 @@ namespace Repository
 
         #region Student
 
-        public bool CheckByStudent(int userId)
+        // проверить существование студента в таблице студентов
+        public bool CheckStudentExistence(int userId)
         {
             using var query = new QueryTool(_db);
             return bool.Parse(query.QueryWithTable
                 ($"SELECT (SELECT Count(*) FROM students WHERE user_id = {userId}) = 1")[1][0]);
         }
-
+        
+        // получить информацию о студенте по его id пользователя
         public string[][] GetStudentInfo(int userId)
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable($"SELECT * FROM students_info WHERE user_id = {userId}");
         }
 
-        public Dictionary<string, string> GetInformationAboutStudent(int studentUserId)
+        // получить информацию о заявках для конкретного студента
+        public Dictionary<string, string> GetInformationAboutStudent(int userId)
         {
             using var query = new QueryTool(_db);
             return query.QueryWithDictionary
-                ($"SELECT * FROM information_about_requests WHERE student_user_id = {studentUserId}");
+                ($"SELECT * FROM information_about_requests WHERE student_user_id = {userId}");
         }
 
-        public Dictionary<string, string> GetDirectorInstituteByStudent(int studentUserId)
+        // получить ФИО директора института для конкретного студента
+        public Dictionary<string, string> GetDirectorInstituteByStudent(int userId)
         {
             using var query = new QueryTool(_db);
             return query.QueryWithDictionary
-                ($"SELECT * FROM directors_of_institutes_for_each_user WHERE user_id = {studentUserId}");
+                ($"SELECT * FROM directors_of_institutes_for_each_user WHERE user_id = {userId}");
         }
 
+        // получить информацию о подразделении для конкретного студента 
         public string[][] GetTableSubdivisionsInfoForStudent(int userId)
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable($"SELECT * FROM subdivisions_info WHERE user_id =  {userId};");
         }
 
+        // получить информацию о заяках для конкретного студента
         public string[][] GetTableRequestsForStudent(int userId)
         {
             using var query = new QueryTool(_db);
@@ -123,6 +138,7 @@ namespace Repository
 
         #region Request
 
+        // получить ссылку на документ по номеру заявки
         public string GetLinkToDocumentByRequestId(int requestId)
         {
             using var query = new QueryTool(_db);
@@ -130,6 +146,7 @@ namespace Repository
                 ($"SELECT document_link FROM references_to_documents WHERE request_id = {requestId};")["document_link"];
         }
 
+        // получить информацию о заявке по её номеру
         public Dictionary<string, string> GetInformationAboutRequest(int requestId)
         {
             using var query = new QueryTool(_db);
@@ -137,6 +154,7 @@ namespace Repository
                 ($"SELECT * FROM information_about_requests WHERE request_id = {requestId}");
         }
 
+        // получить поля для документа в заявке по её номеру.
         public string[][] GetRequestFields(int requestId)
         {
             using var query = new QueryTool(_db);
@@ -144,6 +162,7 @@ namespace Repository
                 ($"SELECT name, value, manually_filled FROM fields WHERE request_id = {requestId}");
         }
 
+        // получить номер конкретного студента по номеру заявки
         public int GetStudentByRequest(int requestId)
         {
             using var query = new QueryTool(_db);
@@ -154,19 +173,9 @@ namespace Repository
 
         #endregion
 
-        #region Field
-
-        public string[][] GetTableFields(int requestId)
-        {
-            using var query = new QueryTool(_db);
-            return query.QueryWithTable
-                ($"SELECT name, value, manually_filled FROM list_of_fields where request_id = {requestId}");
-        }
-
-        #endregion
-
         #region Message
 
+        // получить таблицу сообщений для определённого пользователя
         public string[][] GetTableMessages(int userId)
         {
             using var query = new QueryTool(_db);
@@ -177,6 +186,8 @@ namespace Repository
 
         #region Service
 
+        // получить таблицу с номерами услуг и их информацией в конкретном подразделении
+        // (в этом вариатне упор делается на таблицу подразделений)
         public string[][] GetServicesBySubdivision(int subId)
         {
             using var query = new QueryTool(_db);
@@ -184,22 +195,26 @@ namespace Repository
                 ($"SELECT services_id, name FROM services_info_by_subdivisions WHERE subdivision_id = {subId};");
         }
         
+        // получить все услуги, которые созданы и отсутствуют в конкретном подразделении
+        // (в этом варианте упор делается на таблицу услуг)
         public string[][] GetAllServicesBySubdivision(int subId)
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable
                 ("SELECT ser.id, ser.name, ser.information, ser.document_link, ss.subdivision_id, ss.status "+
                  " FROM services ser LEFT OUTER JOIN (SELECT * FROM subdivisions_services "+
-                 $" WHERE subdivision_id = {subId})AS ss ON ser.id = ss.service_id ;");
+                 $" WHERE subdivision_id = {subId}) AS ss ON ser.id = ss.service_id ;");
         }
 
+        // Получить информацию об услуге по её номеру
         public string[][] GetServicesInfo(int servId)
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable
                 ($"SELECT name, information FROM services_info_by_subdivisions WHERE services_id = {servId};");
         }
-
+        
+        // получить ссылку на документ (шаблон) для услуги по номеру услуги
         public string GetLinkToDocumentByServiceId(int serviceId)
         {
             using var query = new QueryTool(_db);
@@ -213,24 +228,33 @@ namespace Repository
 
         #region Update
 
+        // Изменить статус заявки и указать номер сотрудника обрабатывающего заявку
         public void ChangeRequestState(int requestId, int userId, string status)
         {
             using var query = new QueryTool(_db);
-            query.QueryWithoutTable($"CALL change_request_status({requestId},{userId},'{status}');");
+            query.QueryWithoutTable($"CALL change_request_status({requestId}, {userId},'{status}');");
         }
-
+        
+        // отличие от вышеописанного метода в том, что тут присваивается статус 'processing'
+        // только для той заявки, которая имеет статус 'not processed',
+        // и данное действие описано внутри процедуры.
+        // Это специальный метод. Например: два сотрудника обновили страницу и оба нажимают на одну и ту же заявку.
+        // Этот метод запишет данные того сотрудника, который первый нажал на заявку,
+        // а второму уже не даст перезаписать данные из-за условия.
         public void ChangeRequestStateByFirst(int requestId, int userId)
         {
             using var query = new QueryTool(_db);
             query.QueryWithoutTable($"CALL change_request_state_by_first({requestId}, {userId});");
         }
 
+        // изменить статус сообщения для конкретного студента
         public void ChangeMessagesStatus(int userId)
         {
             using var query = new QueryTool(_db);
             query.QueryWithoutTable($"CALL change_status_message({userId});");
         }
         
+        // изменить статус услуги для конкретного подразделения
         public void ChangeSubdivisionsServiceStatus(int serviceId, int subdivisonId, string status)
         {
             using var query = new QueryTool(_db);
@@ -238,6 +262,7 @@ namespace Repository
                                     $" WHERE service_id = {serviceId} AND subdivision_id = {subdivisonId}");
         }
 
+        // отказаться от выполнения определённой заявки. (метод для сотрудника)
         public void RequestRejection(int requestId)
         {
             using var query = new QueryTool(_db);
@@ -248,24 +273,28 @@ namespace Repository
 
         #region Insert
 
+        // Создать сообщение на заявку для студента
         public void CreateMessage(int requestId, int userId, string message)
         {
             using var query = new QueryTool(_db);
             query.QueryWithoutTable($"CALL create_message({requestId},{userId},'{message}');");
         }
-
+        
+        // Создать заявку для студента
         public string[][] InsertRequest(int userId, int subdivisionService)
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable($"SELECT insert_request({userId}, {subdivisionService})");
         }
 
+        // создать поле для конкретной заявки
         public void InsertField(int requestId, string name, string value, bool manuallyFilled = false)
         {
             using var query = new QueryTool(_db);
             query.QueryWithoutTable($"CALL insert_field({requestId}, '{name}', '{value}', {manuallyFilled});");
         }
 
+        // создать студента (заполняются данные таблицы пользователей и студентов)
         public void CreateStudent(StudentModelForAddToDB student)
         {
             using var query = new QueryTool(_db);
@@ -276,6 +305,7 @@ namespace Repository
              $"'{student.student[0].group}');");
         }
         
+        // создать конкретную услугу в конкретном подразделении
         public void InsertSubdivisionsService(int serviceId, int subdivisonId)
         {
             using var query = new QueryTool(_db);
@@ -288,6 +318,7 @@ namespace Repository
 
         #region Delete
 
+        // удалить конкретную сулугу из конкретного подразделения
         public void DeleteSubdivisionsService(int serviceId, int subdivisionId)
         {
             using var query = new QueryTool(_db);
