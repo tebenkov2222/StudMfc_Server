@@ -138,7 +138,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public List<SubdivisionModel> GetDivisionsList(int userId)
+        public StudentHomeModel GetHomepageModel(int userId)
         {
             throw new NotImplementedException();
         }
