@@ -38,7 +38,7 @@ namespace ISTU_MFC.Controllers
         public IActionResult Home()
         {
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-            var model = _repository.GetDivisionsList(userId);
+            var model = _repository.GetHomepageModel(userId);
             return View(model);
         }
         

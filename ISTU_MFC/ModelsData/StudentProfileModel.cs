@@ -8,7 +8,6 @@ namespace ModelsData
         public string StudId{ get; set; }
         public string Department{ get; set; } // 7
         public string Faculty{ get; set; } // 6
-        public List<RequestModel> Requests{ get; set; }
 
         public string GetValueByName(string nameField)
         {

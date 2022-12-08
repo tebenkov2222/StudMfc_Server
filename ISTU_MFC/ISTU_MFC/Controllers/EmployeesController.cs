@@ -49,31 +49,27 @@ namespace ISTU_MFC.Controllers
             //с одной страницы может быть несколько постзапросов, для этого нужно делать переадресацию по его типу
             if(model.Type == "ChooseRequest")
                 return RedirectToAction("RequestGenerator", new { req_id = model.Id });
-            else if(model.Type == "ServiceConstructor")
+            if(model.Type == "ServiceConstructor")
                 return RedirectToAction("ServiceConstructor", "Employees");
-            else
+            if (model.Status != null)
             {
-                if (model.Status != null)
-                {
-                    var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-                    var requests = _repository.GetFilteredRequests(userId, model.Status);
-                    return View(requests);
-                }
-                else if (model.Number != null)
-                {
-                    var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-                    var requests = _repository.GetNumberedRequests(userId, Int32.Parse(model.Number));
-                    return View(requests);
-                }
-                else if (model.Family != null)
-                {
-                    var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-                    var requests = _repository.GetNamedRequests(userId, model.Family);
-                    return View(requests);
-                }
-                else 
-                    return RedirectToAction("WorkWithDoc", "Employees");
+                var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+                var requests = _repository.GetFilteredRequests(userId, model.Status);
+                return View(requests);
             }
+            if (model.Number != null)
+            {
+                var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+                var requests = _repository.GetNumberedRequests(userId, Int32.Parse(model.Number));
+                return View(requests);
+            }
+            if (model.Family != null)
+            {
+                var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
+                var requests = _repository.GetNamedRequests(userId, model.Family);
+                return View(requests);
+            }
+            return RedirectToAction("WorkWithDoc", "Employees");
         }
         
         [Authorize(Roles = "Employee")]
@@ -116,8 +112,7 @@ namespace ISTU_MFC.Controllers
             //с одной страницы может быть несколько постзапросов, для этого нужно делать переадресацию по его типу
             if (model.Type == "DownloadGeneration")
                 return RedirectToAction("DownloadGeneration", new { req_id = model.Req_Id });
-            else
-                return RedirectToAction("ChangeStatus", new { req_id = model.Req_Id });
+            return RedirectToAction("ChangeStatus", new { req_id = model.Req_Id });
             
         }
 
