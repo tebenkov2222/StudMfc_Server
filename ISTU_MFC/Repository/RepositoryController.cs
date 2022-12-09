@@ -30,14 +30,14 @@ namespace Repository
             Console.WriteLine($"Test message {message}");
         }
         
-        public bool CheckByStudent(int idUser)
+        public bool CheckStudentExistence(int idUser)
         {
-            return _db.CheckByStudent(idUser);
+            return _db.CheckStudentExistence(idUser);
         }
 
-        public bool CheckByEmployees(int idUser)
+        public bool CheckEmployeeExistence(int idUser)
         {
-            return _db.CheckByEmployee(idUser);
+            return _db.CheckEmployeeExistence(idUser);
         }
 
         public StudentProfileModel GetStudentProfileModel(int userId)
@@ -237,9 +237,9 @@ namespace Repository
             };
         }
 
-        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId)
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int userId)
         {
-            var directorInstituteByStudent = _db.GetDirectorInstituteByStudent(studentUserId);
+            var directorInstituteByStudent = _db.GetDirectorInstituteByStudent(userId);
 
             return new DirectorInstituteModel()
             {
@@ -263,7 +263,7 @@ namespace Repository
         {
             var res = _db.GetTableMessages(userId);
             var answ = new List<MessageModel>();
-            for (int i = 1; i < res.Length; i++)
+            for (var i = 1; i < res.Length; i++)
             {
                 answ.Add(new MessageModel()
                 {
@@ -361,7 +361,7 @@ namespace Repository
         
         public List<RequestModel> GetFilteredRequests(int userId, string status)
         {
-            var res = _db.GetTableFilteredRequestsForEmployees(userId, status);
+            var res = _db.GetTableAvailableRequestsForEmployees(userId, status);
             var answ = new List<RequestModel>();
             for (int i = 1; i < res.Length; i++)
             {
@@ -410,8 +410,7 @@ namespace Repository
 
         public bool CheckUserExistence(int userId)
         {
-            var res = _db.CheckUserExistence(userId);
-            return res[1][0] == "1";
+            return _db.CheckUserExistence(userId);
         }
 
         public void CreateStudent(StudentModelForAddToDB student)
@@ -419,9 +418,9 @@ namespace Repository
             _db.CreateStudent(student);
         }
         
-        public ServisesSubdivisonModel GetSubdivisionServises(int userid)
+        public ServisesSubdivisonModel GetSubdivisionServices(int userid)
         {
-            int subid = _db.GetSubdivisonByEmployee(userid);
+            int subid = _db.GetSubdivisionByEmployee(userid);
             var res = _db.GetAllServicesBySubdivision(subid);
             var answ = new ServisesSubdivisonModel()
             {
@@ -455,18 +454,18 @@ namespace Repository
             return answ;
         }
 
-        public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status)
+        public void ChangeSubdivisionsServiceStatus(int serviceId, int subdivisionId, string status)
         {
-            _db.ChangeSubdivisonsServiseStatus(serviceId, subdivisonId, status);
+            _db.ChangeSubdivisionsServiceStatus(serviceId, subdivisionId, status);
         }
 
-        public void InsertSubdivisonsServise(int serviceId, int subdivisonId)
+        public void InsertSubdivisionsService(int serviceId, int subdivisonId)
         {
-            _db.InsertSubdivisonsServise(serviceId, subdivisonId);
+            _db.InsertSubdivisionsService(serviceId, subdivisonId);
         }
-        public void DeleteSubdivisonsServise(int serviceId, int subdivisonId)
+        public void DeleteSubdivisionsService(int serviceId, int subdivisonId)
         {
-            _db.DeleteSubdivisonsServise(serviceId, subdivisonId);
+            _db.DeleteSubdivisionsService(serviceId, subdivisonId);
         }
 
         public string GetUserFullName(int userId)

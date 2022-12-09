@@ -226,7 +226,7 @@ namespace ISTU_MFC.Controllers
         public IActionResult ServiceList()
         {
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-            var model = _repository.GetSubdivisionServises(userId);
+            var model = _repository.GetSubdivisionServices(userId);
             model.Awalible.Reverse();
             model.ForAdd.Reverse();
             return View(model);
@@ -239,15 +239,15 @@ namespace ISTU_MFC.Controllers
             switch (Model.Type)
             {
                 case "Add":
-                    _repository.InsertSubdivisonsServise(Int32.Parse(Model.Id),
+                    _repository.InsertSubdivisionsService(Int32.Parse(Model.Id),
                         Int32.Parse(Model.SubdivisonId));
                     break;
                 case "Delete":
-                    _repository.DeleteSubdivisonsServise(Int32.Parse(Model.Id),
+                    _repository.DeleteSubdivisionsService(Int32.Parse(Model.Id),
                         Int32.Parse(Model.SubdivisonId));
                     break;
                 default:
-                    _repository.ChangeSubdivisonsServiseStatus(Int32.Parse(Model.Id), 
+                    _repository.ChangeSubdivisionsServiceStatus(Int32.Parse(Model.Id), 
                         Int32.Parse(Model.SubdivisonId), Model.Type);
                     break;
             }
