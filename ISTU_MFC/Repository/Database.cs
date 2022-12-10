@@ -305,8 +305,8 @@ namespace Repository
         public void DeleteSubdivisonsServise(int serviceId, int subdivisonId)
         {
             using var query = new QueryTool(_db);
-            query.QueryWithoutTable($"DELETE FROM subdivisions_services "+
-                                    " WHERE service_id = {serviceId} AND subdivision_id = {subdivisonId};");
+            query.QueryWithoutTable("DELETE FROM subdivisions_services " +
+                $" WHERE service_id = {serviceId} AND subdivision_id = {subdivisonId};");
         }
     }
 }
