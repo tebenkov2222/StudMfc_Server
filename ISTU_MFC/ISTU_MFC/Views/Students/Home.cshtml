@@ -6,8 +6,6 @@
 }
 
 <h2 class="d-flex justify-content-center">Главная страница</h2>
-
-
 <div class="d-flex justify-content-center">
     @foreach (var sub in Model.Subdevisons)
     {
@@ -18,8 +16,7 @@
         </form>
     }
 </div>
-
-<div class="d-flex justify-content-center">
+<div class="sendedservices">
     @foreach (var req in Model.Requests)
     {
         <div class="grey2 field_stud_data" style="color: black; width:100%">@req.Id @req.Caption @req.State @req.FamylyNS @req.CreationDate</div>

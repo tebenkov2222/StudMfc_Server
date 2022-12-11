@@ -11,13 +11,11 @@ a.navbar-brand {
 a {
   color: #000000;
 }
-
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
-
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
@@ -34,18 +32,15 @@ html {
     font-size: 16px;
   }
 }
-
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;
 }
-
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
-
 button.accept-policy {
   font-size: 1rem;
   line-height: inherit;
@@ -134,7 +129,7 @@ body {
 .grey1 {
     background-color: #C6C6C6;
     padding: 10px 20px;
-    border-radius: 20px;
+    border-radius: 30px;
     border: none;
     min-height: 60px;
     min-width: 250px;
@@ -147,7 +142,7 @@ body {
     padding: 10px 20px;
     margin-left: 25px;
     margin-bottom: 20px;
-    border-radius: 20px;
+    border-radius: 30px;
     border: 1px solid black;
     min-height: 60px;
     min-width: 250px;
@@ -157,8 +152,8 @@ body {
     .login-form .form-horizontal {
         background-color: #fcfcfc;
         border: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 7px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         padding: 30px;
         min-width: 350px;
     }
@@ -181,7 +176,7 @@ body {
         padding: 10px 20px;
         margin-left: 25px;
         margin-bottom: 20px;
-        border-radius: 10px;
+        border-radius: 30px;
         border: 1px solid black;
         min-height: 60px;
         min-width: 250px;
@@ -197,12 +192,20 @@ body {
     .request_buttons .shit {
         margin-left: 40px;
     }
+    .name {
+        display: flex;
+        align-items: center;
+    }
+    .sendedservices {
+        display: flex;
+        justify-content: center;
+    }
 }
 @media (max-width: 650px) {
     .login-form .form-horizontal {
         background-color: #fcfcfc;
         border: 1px solid rgba(0, 0, 0, 0.1);
-        border-radius: 7px;
+        border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         padding: 30px;
         min-width: 290px;
@@ -226,7 +229,7 @@ body {
         padding: 10px 20px;
         margin-bottom: 20px;
         margin-left: 0;
-        border-radius: 10px;
+        border-radius: 30px;
         border: 1px solid black;
         min-height: 60px;
         min-width: 250px;
@@ -244,6 +247,12 @@ body {
     }
     .request_buttons .shit {
         margin-left: 0;
+    }
+    .name {
+        display: none;
+    }
+    .sendedservices {
+        display: block;
     }
 }
 ::-webkit-scrollbar {
@@ -291,4 +300,17 @@ select {
 }
 textarea {
     min-height: 100px;
+}
+.service-list-btn {
+    color: #164ACF;
+    font-size: 20pt;
+    border: none;
+    border-radius: 20px;
+}
+.service-list-btn:hover {
+    background-color: #164ACF;
+    color: #fff;
+}
+.service-list-btn:focus {
+    outline: none;
 }
