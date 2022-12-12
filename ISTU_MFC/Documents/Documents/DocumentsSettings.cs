@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Documents.Documents
 {
     public class DocumentsSettings
@@ -23,15 +25,17 @@ namespace Documents.Documents
 
         public static DocumentsSettings SetDirectoryByEnvironment(string environmentPath)
         {
-            var replace = environmentPath.Replace('\\','/');
+            Path.GetFullPath(environmentPath);
+            //var replace = environmentPath.Replace('\\','/');
+            var replace = Path.GetFullPath(environmentPath);
             Directory = new DocumentsSettings()
             {
                 RootPath = replace,
-                TempPath = "File/Temp",
-                InputPath = "File/Input",
-                OutputPath = "File/Output",
-                FormsInput = "File/FormsInput",
-                FormsTemp = "File/FormsTemp"
+                TempPath =  Path.Combine("File", "Temp"),
+                InputPath = Path.Combine("File", "Input"),
+                OutputPath = Path.Combine("File", "Output"),
+                FormsInput = Path.Combine("File", "FormsInput"),
+                FormsTemp = Path.Combine("File", "FormsTemp")
             };
             return Directory;
         }
