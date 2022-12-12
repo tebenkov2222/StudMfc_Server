@@ -83,25 +83,25 @@ namespace Documents.Documents
         {
             return _body.Elements<Table>();
         }
-        public IEnumerable<TableRow> GetTableRow()
+        public IEnumerable<TableRow> GetTableRow(Table table)
         {
-            return GetTable().SelectMany(t => t.Elements<TableRow>());
+            return table.Elements<TableRow>();
         }
-        public IEnumerable<TableCell> GetTableCell()
+        public IEnumerable<TableCell> GetTableCell(Table table)
         {
-            return GetTableRow().SelectMany(t => t.Elements<TableCell>());
+            return GetTableRow(table).SelectMany(t => t.Elements<TableCell>());
         }
-        public IEnumerable<Paragraph> GetParagraphsOnTable()
+        public IEnumerable<Paragraph> GetParagraphsOnTable(Table table)
         {
-            return GetTableCell().SelectMany(t => t.Elements<Paragraph>());
+            return GetTableCell(table).SelectMany(t => t.Elements<Paragraph>());
         }
-        public IEnumerable<Run> GetRunsOnTable()
+        public IEnumerable<Run> GetRunsOnTable(Table table)
         {
-            return GetParagraphsOnTable().SelectMany(t => t.Elements<Run>());
+            return GetParagraphsOnTable(table).SelectMany(t => t.Elements<Run>());
         }
-        public IEnumerable<Text> GetTextOnTable()
+        public IEnumerable<Text> GetTextOnTable(Table table)
         {
-            return GetRunsOnTable().SelectMany(t => t.Elements<Text>());
+            return GetRunsOnTable(table).SelectMany(t => t.Elements<Text>());
         }
         public IEnumerable<Run> GetRuns()
         {
@@ -111,13 +111,36 @@ namespace Documents.Documents
         {
             return GetRuns().SelectMany(t => t.Elements<Text>());
         }
+        public IEnumerable<Run> GetRunsOnParagraph(Paragraph paragraph)
+        {
+            return paragraph.Elements<Run>();
+        }
+        public IEnumerable<Text> GetTextsOnParagraph(Paragraph paragraph)
+        {
+            return GetRunsOnParagraph(paragraph).SelectMany(t => t.Elements<Text>());
+        }
 
         public IEnumerable<Text> GetAllText()
         {
-            var textsOnTable = GetTextOnTable().ToList();
+            List<Text> result = new();
+            foreach (var element in _body.ChildElements)
+            {
+                if (element.GetType() == typeof(Table))
+                {
+                    var textOnTable = GetTextOnTable(element as Table);
+                    result.AddRange(textOnTable);
+                }
+                else if (element.GetType() == typeof(Paragraph))
+                {
+                    result.AddRange(GetTextsOnParagraph(element as Paragraph));
+                }
+            }
+
+            return result;
+            /*var textsOnTable = GetTextOnTable().ToList();
             var texts = GetTexts().ToList();
             texts.AddRange(textsOnTable);
-            return texts;
+            return texts;*/
         }
     }
 }
