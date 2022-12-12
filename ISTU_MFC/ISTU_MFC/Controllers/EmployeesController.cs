@@ -132,24 +132,21 @@ namespace ISTU_MFC.Controllers
             var requestModel = _repository.GetInformationAboutRequestByRequest(request_id);
             var docName =
                 $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
+            var docViewName =
+                $"DocView_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
             var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
+            var pathToViewDocument = documentsController.GetPathByName(documentsController.Settings.TempPath, docViewName);
 
             //copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
             copyToTempAndOpenDocument.Save();
             copyToTempAndOpenDocument.Close();
             System.IO.File.Copy(copyToTempAndOpenDocument.PatchToFile, pathToDownloadDocument, true);
-            //copyToTempAndOpenDocument.Document.Dispose();
-            
-            /*var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
-                copyToTempAndOpenDocument,
-                documentsController.GetPathByName ( Path.Combine("wwwroot", "images"), copyToTempAndOpenDocument.Name, "jpg"));
-            */
-            //var relativePath = $"~/images/{copyToTempAndOpenDocument.Name}.jpg";
+            System.IO.File.Copy(copyToTempAndOpenDocument.PatchToFile, pathToViewDocument, true);
             var combine = Path.Combine("~", "images",copyToTempAndOpenDocument.Name);
             var relativePath = $"{combine}.jpg";
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
-            viewModel.PathToPreviewImage = relativePath;
+            viewModel.PathToPreviewDoc = pathToViewDocument;
             viewModel.RequestId = request_id;
             copyToTempAndOpenDocument.Dispose();
             copyToTempAndOpenDocument.Document.Dispose();
