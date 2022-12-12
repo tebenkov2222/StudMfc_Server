@@ -19,6 +19,8 @@
 @*     <embed src="../File/Output/КардапольцевКД_4_111222_015554.docx" width="800" height="1200"/> *@
 @* </object> *@
 
+<a class="view" href="javascript:;">View Word Doc</a>
+
 <div id="word-container" class=""></div>
 
 <div name="buttons" class="d-flex">
@@ -33,6 +35,7 @@
 <script src="js/docx-preview.js"></script>
 <script type="text/javascript">
         $(function () {
+            $(".view").click(function () {
                 $.ajax({
                     type: "POST",
                     url: "/Employees/GetWordDocument",
@@ -55,5 +58,6 @@
                         }
                     }
                 });
+            });
         });
 </script>
