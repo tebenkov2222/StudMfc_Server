@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Packaging;
 using Documents;
-using Documents.Documents;
-using Documents.View;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
@@ -16,10 +11,7 @@ using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR.Protocol;
-using ModelsData;
 using Repository;
-using Spire.Pdf.Exporting.XPS.Schema;
 using Path = System.IO.Path;
 
 namespace ISTU_MFC.Controllers
@@ -79,7 +71,8 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
         {
-            return View();
+            var docGenerationViewModel = new DocGenerationViewModel();
+            return View(docGenerationViewModel);
         }
 
         [Authorize(Roles = "Employee")]
@@ -165,27 +158,6 @@ namespace ISTU_MFC.Controllers
         {
             return RedirectToAction("Download", new {documentPath=model.DocumentPath});
         }
-
-        public void ShowPdf()
-        {
-            
-        }
-        /*[HttpPost]
-        [Authorize(Roles = "Employee")]
-        public JsonResult GetWordDocument(string fileName)
-        {
-            var documentsController = new DocumentsController(_repository);
-            var filePath = Path.Combine(documentsController.Settings.RootPath, documentsController.Settings.TempPath, fileName);
-            var document = WordprocessingDocument.Open(filePath, false);
-            MemoryStream ms = new MemoryStream();
-            var wordprocessingDocumentType = document.DocumentType;
-            //ms.Write(document);
-            var array = ms.ToArray();
-            ms.Dispose();
-            document.Close();
-            document.Dispose();
-            return Json(new { Data = array});
-        }*/
 
         [HttpGet]
         [Authorize(Roles = "Employee")]
@@ -278,11 +250,28 @@ namespace ISTU_MFC.Controllers
             return RedirectToAction("ServiceList");
         }
         [HttpPost]
-        public void AddFile(IFormFile uploadedFile)
+        [Authorize(Roles = "Employee")]
+        public IActionResult AddFile(IFormFile uploadedFile, DocGenerationViewModel model)
         {
-            var uploadedFileContentType = uploadedFile.ContentType;
-            Console.WriteLine(uploadedFileContentType);
-            
+            var documentsController = new DocumentsController(_repository);
+            var documentsSettings = new DocumentsController(_repository).Settings;
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uploadedFile.FileName);
+            var fileExtenstion = Path.GetExtension(uploadedFile.FileName);
+            string filePath = Path.Combine(documentsSettings.RootPath,documentsSettings.FormsTemp, $"{fileNameWithoutExtension}_{DateTime.Now.ToString("ddMMyy_hhmmss")}{fileExtenstion}");
+
+            if (uploadedFile.Length > 0) {
+                using (Stream fileStream = new FileStream(filePath, FileMode.Create)) {
+                    uploadedFile.CopyTo(fileStream);
+                }
+            }
+
+            model.PathToFormDoc = filePath;
+            model.PathToPreviewDoc = Path.Combine(documentsSettings.RootPath, "wwwroot", "temp",
+                $"{Path.GetFileNameWithoutExtension(filePath)}.pdf");
+            documentsController.DocumentViewer.GenerateAndSavePdf(filePath, model.PathToPreviewDoc);
+            model.RelativePathToPreviewDoc = $"~/temp/{Path.GetFileNameWithoutExtension(filePath)}.pdf";
+            model.IsHasDoc = true;
+            return View("DocGenerator", model);
         }
     }
 }
