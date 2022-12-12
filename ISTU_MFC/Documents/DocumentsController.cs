@@ -15,7 +15,7 @@ namespace Documents
 
         public DocumentViewer DocumentViewer => _documentViewer;
         private readonly IRepository _repository;
-        private readonly DocumentsSettings _settings = DocumentsSettings.LocalHartmann;
+        private readonly DocumentsSettings _settings = DocumentsSettings.Directory;
 
         public DocumentsSettings Settings => _settings;
         private FieldsController _fieldsController;
@@ -85,17 +85,17 @@ namespace Documents
             }
             return documentTemplate;
         }
-        public DocumentBase CopyAndOpenDocument(DocumentBase documentTemplate, string pathTo, bool isEditable = false) 
+        public DocumentTemplate CopyAndOpenDocument(DocumentTemplate documentTemplate, string pathTo, bool isEditable = false) 
         {
             documentTemplate.Close();
             File.Copy(documentTemplate.PatchToFile, pathTo, true);
-            return new DocumentBase (pathTo, isEditable);
+            return new DocumentTemplate (pathTo, isEditable);
         }
-        public DocumentBase CopyToTempAndOpenDocument(DocumentBase documentTemplate, string nameNewFile, bool isEditable = false)
+        public DocumentTemplate CopyToTempAndOpenDocument(DocumentTemplate documentTemplate, string nameNewFile, bool isEditable = false)
         {
             return CopyAndOpenDocument(documentTemplate, GetPathByName(_settings.TempPath, nameNewFile), isEditable);
         }
-        public DocumentBase CopyToTempAndOpenDocument(string nameTemplateFile, string nameNewFile, bool isEditable = false)
+        public DocumentTemplate CopyToTempAndOpenDocument(string nameTemplateFile, string nameNewFile, bool isEditable = false)
         {
             return CopyToTempAndOpenDocument(OpenDocumentAsTemplateByName(nameTemplateFile), nameNewFile, isEditable);
         }

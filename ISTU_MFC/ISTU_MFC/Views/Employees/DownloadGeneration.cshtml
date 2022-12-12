@@ -15,9 +15,9 @@
         
 </form>
 
-<object>
-    <embed src="../File/Output/КардапольцевКД_4_111222_015554.docx" width="800" height="1200"/>
-</object>
+@* <object> *@
+@*     <embed src="../File/Output/КардапольцевКД_4_111222_015554.docx" width="800" height="1200"/> *@
+@* </object> *@
 
 <div id="word-container" class=""></div>
 
@@ -30,18 +30,16 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
-<script src="~/Scripts/docx-preview.js"></script>
+<script src="js/docx-preview.js"></script>
 <script type="text/javascript">
         $(function () {
-            $("[id*=tblFiles] .view").click(function () {
-                var fileId = $(this).attr("rel");
                 $.ajax({
                     type: "POST",
-                    url: "/Home/GetWordDocument",
-                    data: { "fileId": fileId },
+                    url: "/Employees/GetWordDocument",
+                    data: {"path" : @Model.PathToDownloadDocument},
                     success: function (r) {
                         //Convert BLOB to File object.
-                        var doc = new File([bytes]);
+                        var doc = new File(r.Data);
  
                         //If Document not NULL, render it.
                         if (doc != null) {
@@ -57,6 +55,5 @@
                         }
                     }
                 });
-            });
         });
 </script>

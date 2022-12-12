@@ -125,7 +125,7 @@ namespace ISTU_MFC.Controllers
 // вот работаем с документами
             var documentsController = new DocumentsController(_repository);
             var linkToDocument = _repository.GetLinkToDocumentByRequestId(request_id);
-            var copyToTempAndOpenDocument = (DocumentTemplate) documentsController.
+            var copyToTempAndOpenDocument = documentsController.
                 CopyToTempAndOpenDocument(linkToDocument, linkToDocument + $"_temp{DateTime.Now.ToString("ddMMyy_hhmmss")}", true);
             var valueFields = _repository.GetValueFieldsByIdRequest(request_id);
             copyToTempAndOpenDocument.SetFieldValues(valueFields);
@@ -168,7 +168,7 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public JsonResult GetWordDocument(string path)
         {
-            // return Json(new { Data = new DocumentViewer });
+            return Json(new { Data = new DocumentViewer().GenerateBytesByFilePath(path) });
         }
 
         [HttpGet]
