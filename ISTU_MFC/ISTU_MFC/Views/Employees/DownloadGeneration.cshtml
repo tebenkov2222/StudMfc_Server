@@ -15,9 +15,9 @@
         
 </form>
 
-@* <object> *@
-@*     <embed src="../File/Output/КардапольцевКД_4_111222_015554.docx" width="800" height="1200"/> *@
-@* </object> *@
+<object> 
+     <iframe src="@Model.PathToPreviewDoc" width="80%" height="500px"></iframe>
+</object> 
 
 <a class="view" href="javascript:">View Word Doc</a>
 
@@ -29,7 +29,10 @@
         <input name="button" value="Скачать" class="btn" type="submit"/>
     </form>
 </div>
-
+<form asp-action="AddFile" method="post" enctype="multipart/form-data">
+    <input type="file" name="uploadedFile" /><br>
+    <input type="submit" value="Загрузить" />
+</form>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
 <script src="js/docx-preview.js"></script>
@@ -39,10 +42,12 @@
                 $.ajax({
                     type: "POST",
                     url: "/Employees/GetWordDocument",
-                    data: {"path": @Model.PathToPreviewDoc},
+                    data: {"fileName": "@Model.PathToPreviewDoc"},
                     success: function (r) {
                         //Convert BLOB to File object.
-                        var doc = new File(r.Data);
+                        var bytes = Base64ToBytes(r.Data);
+                        var doc = new File([bytes], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                        //var doc = new File([r.Data], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
  
                         //If Document not NULL, render it.
                         if (doc != null) {
@@ -60,4 +65,12 @@
                 });
             });
         });
+        function Base64ToBytes(base64) {
+                    var s = window.atob(base64);
+                    var bytes = new Uint8Array(s.length);
+                    for (var i = 0; i < s.length; i++) {
+                        bytes[i] = s.charCodeAt(i);
+                    }
+                    return bytes;
+                };
 </script>

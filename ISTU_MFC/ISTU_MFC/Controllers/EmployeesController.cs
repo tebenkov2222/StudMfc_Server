@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Packaging;
 using Documents;
 using Documents.Documents;
 using Documents.View;
@@ -14,6 +15,8 @@ using ISTU_MFC.Models;
 using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR.Protocol;
 using ModelsData;
 using Repository;
 using Spire.Pdf.Exporting.XPS.Schema;
@@ -117,6 +120,7 @@ namespace ISTU_MFC.Controllers
             
         }
 
+        private string _pathToViewDocument = "";
         [HttpGet]
         [Authorize(Roles = "Employee")]
         public IActionResult DownloadGeneration(string req_id)
@@ -136,19 +140,18 @@ namespace ISTU_MFC.Controllers
             var docViewName =
                 $"DocView_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
             var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
-            var pathToViewDocument = documentsController.GetPathByName(documentsController.Settings.TempPath, docViewName);
+            var pathToViewDocument = documentsController.GetPathByName(documentsController.Settings.TempPath, docViewName, "pdf"); 
 
             //copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
             copyToTempAndOpenDocument.Save();
             copyToTempAndOpenDocument.Close();
-            System.IO.File.Copy(copyToTempAndOpenDocument.PatchToFile, pathToDownloadDocument, true);
-            System.IO.File.Copy(copyToTempAndOpenDocument.PatchToFile, pathToViewDocument, true);
-            var combine = Path.Combine("~", "images",copyToTempAndOpenDocument.Name);
-            var relativePath = $"{combine}.jpg";
+            var patchToFile = copyToTempAndOpenDocument.PatchToFile;
+            System.IO.File.Copy(patchToFile, pathToDownloadDocument, true);
+            documentsController.DocumentViewer.GenerateAndSavePdf(patchToFile, pathToViewDocument);
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
-            var replace = pathToViewDocument.Replace("/", "\\").Replace("\\", "$").Split("$");
-            viewModel.PathToPreviewDoc =  replace;
+            //var replace = pathToViewDocument.Replace("/", "\\").Replace("\\", "$").Split("$");
+            viewModel.PathToPreviewDoc = pathToViewDocument;
             viewModel.RequestId = request_id;
             copyToTempAndOpenDocument.Dispose();
             copyToTempAndOpenDocument.Document.Dispose();
@@ -162,13 +165,22 @@ namespace ISTU_MFC.Controllers
             return RedirectToAction("Download", new {documentPath=model.DocumentPath});
         }
         
-        [HttpPost]
+        /*[HttpPost]
         [Authorize(Roles = "Employee")]
-        public JsonResult GetWordDocument(string[] path)
+        public JsonResult GetWordDocument(string fileName)
         {
-            var generaedPath = Path.Combine(path);
-            return Json(new { Data = new DocumentViewer().GenerateBytesByFilePath(generaedPath) });
-        }
+            var documentsController = new DocumentsController(_repository);
+            var filePath = Path.Combine(documentsController.Settings.RootPath, documentsController.Settings.TempPath, fileName);
+            var document = WordprocessingDocument.Open(filePath, false);
+            MemoryStream ms = new MemoryStream();
+            var wordprocessingDocumentType = document.DocumentType;
+            //ms.Write(document);
+            var array = ms.ToArray();
+            ms.Dispose();
+            document.Close();
+            document.Dispose();
+            return Json(new { Data = array});
+        }*/
 
         [HttpGet]
         [Authorize(Roles = "Employee")]
@@ -259,6 +271,13 @@ namespace ISTU_MFC.Controllers
                     break;
             }
             return RedirectToAction("ServiceList");
+        }
+        [HttpPost]
+        public void AddFile(IFormFile uploadedFile)
+        {
+            var uploadedFileContentType = uploadedFile.ContentType;
+            Console.WriteLine(uploadedFileContentType);
+            
         }
     }
 }
