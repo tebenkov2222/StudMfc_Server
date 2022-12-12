@@ -147,7 +147,8 @@ namespace ISTU_MFC.Controllers
             var relativePath = $"{combine}.jpg";
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
-            viewModel.PathToPreviewDoc = pathToViewDocument;
+            var replace = pathToViewDocument.Replace("/", "\\").Replace("\\", "$").Split("$");
+            viewModel.PathToPreviewDoc =  replace;
             viewModel.RequestId = request_id;
             copyToTempAndOpenDocument.Dispose();
             copyToTempAndOpenDocument.Document.Dispose();
@@ -163,9 +164,10 @@ namespace ISTU_MFC.Controllers
         
         [HttpPost]
         [Authorize(Roles = "Employee")]
-        public JsonResult GetWordDocument(string path)
+        public JsonResult GetWordDocument(string[] path)
         {
-            return Json(new { Data = new DocumentViewer().GenerateBytesByFilePath(path) });
+            var generaedPath = Path.Combine(path);
+            return Json(new { Data = new DocumentViewer().GenerateBytesByFilePath(generaedPath) });
         }
 
         [HttpGet]

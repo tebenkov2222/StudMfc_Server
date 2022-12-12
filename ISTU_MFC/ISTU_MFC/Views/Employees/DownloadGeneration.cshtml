@@ -19,7 +19,7 @@
 @*     <embed src="../File/Output/КардапольцевКД_4_111222_015554.docx" width="800" height="1200"/> *@
 @* </object> *@
 
-<a class="view" href="javascript:;">View Word Doc</a>
+<a class="view" href="javascript:">View Word Doc</a>
 
 <div id="word-container" class=""></div>
 
@@ -39,7 +39,7 @@
                 $.ajax({
                     type: "POST",
                     url: "/Employees/GetWordDocument",
-                    data: {"path" : @Model.PathToDownloadDocument},
+                    data: {"path": @Model.PathToPreviewDoc},
                     success: function (r) {
                         //Convert BLOB to File object.
                         var doc = new File(r.Data);
