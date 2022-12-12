@@ -125,7 +125,7 @@ namespace ISTU_MFC.Controllers
 // вот работаем с документами
             var documentsController = new DocumentsController(_repository);
             var linkToDocument = _repository.GetLinkToDocumentByRequestId(request_id);
-            var copyToTempAndOpenDocument = documentsController.
+            var copyToTempAndOpenDocument = (DocumentTemplate) documentsController.
                 CopyToTempAndOpenDocument(linkToDocument, linkToDocument + $"_temp{DateTime.Now.ToString("ddMMyy_hhmmss")}", true);
             var valueFields = _repository.GetValueFieldsByIdRequest(request_id);
             copyToTempAndOpenDocument.SetFieldValues(valueFields);

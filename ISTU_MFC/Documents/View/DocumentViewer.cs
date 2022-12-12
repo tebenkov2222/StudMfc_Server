@@ -1,4 +1,7 @@
+using System;
 using System.Drawing;
+using System.IO;
+using System.Net.Mime;
 using OpenXmlPowerTools;
 using Spire.Doc;
 using Spire.Doc.Documents;
@@ -8,22 +11,16 @@ namespace Documents.View
 {
     public class DocumentViewer
     {
-        private readonly DocumentsController _controller;
+        //private readonly DocumentsController _controller;
 
-        public DocumentViewer(DocumentsController controller)
+        public DocumentViewer()
         {
-            _controller = controller;
         }
-        //ASPOSE: 0 баллов
-        /*public void GenerateAndSaveImage(DocumentBase documentReference)
+        public Byte[] GenerateBytesByFilePath(string path)
         {
-            Document document = new Document(documentReference.PatchToFile);
-            var extractedPage = document.ExtractPages(0, 1);
-            extractedPage.Save(_controller.GetPathByName(_controller.Settings.TempPath,documentReference.Name,"jpg"));
-        }*/
-        
-        // Spire: 3
-        public string GenerateAndSaveImage(DocumentBase documentReference)
+             return File.ReadAllBytes(path);
+        }
+        /*public string GenerateAndSaveImage(DocumentBase documentReference)
         {
             Document document = new Document();
             document.LoadFromFile(documentReference.PatchToFile);
@@ -44,7 +41,7 @@ namespace Documents.View
             var path = pathToSave;
             //image.Save(path);
             return path;
-        }
+        }*/
         //DocGeneration:2
         /*public void GenerateAndSaveImage(DocumentBase documentReference)
         {

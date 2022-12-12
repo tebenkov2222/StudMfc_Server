@@ -6,13 +6,17 @@ namespace Documents.Documents
         public string TempPath;
         public string InputPath;
         public string OutputPath;
+        public string FormsInput;
+        public string FormsTemp;
 
         public static DocumentsSettings LocalHartmann = new DocumentsSettings()
         {
             RootPath = "E:\\Projects\\ISTU Projects\\MFC",
             TempPath = "Temp",
             InputPath = "Input",
-            OutputPath = "Output"
+            OutputPath = "Output",
+            FormsInput = "FormsInput",
+            FormsTemp = "FormsTemp"
         };
 
         public static DocumentsSettings Directory;
@@ -25,7 +29,9 @@ namespace Documents.Documents
                 RootPath = replace,
                 TempPath = "File/Temp",
                 InputPath = "File/Input",
-                OutputPath = "File/Output"
+                OutputPath = "File/Output",
+                FormsInput = "File/FormsInput",
+                FormsTemp = "File/FormsTemp"
             };
             return Directory;
         }
