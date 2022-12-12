@@ -1,6 +1,7 @@
-using System;
 using System.IO;
-using DocumentFormat.OpenXml.Office2013.Excel;
+using System.Linq;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Documents.Converter;
 using Documents.Documents;
 using Documents.Fields;
 using Documents.View;
@@ -23,10 +24,9 @@ namespace Documents
         public DocumentsController(IRepository repository)
         {
             _repository = repository;
-            _documentViewer = new DocumentViewer(this);
+            _documentViewer = new DocumentViewer();
             _fieldsController = new FieldsController(repository);
         }
-        //public void 
         public DocumentTemplate OpenDocumentAsTemplateByName(string docName, bool isEditable = false)
         {
             var documentTemplate = new DocumentTemplate( GetPathByName(_settings.InputPath, docName), isEditable);
@@ -37,7 +37,54 @@ namespace Documents
             var documentTemplate = new DocumentTemplate(docPath, isEditable);
             return documentTemplate;
         }
-
+        public DocumentForm OpenDocumentAsFormByPathWithValidate(string docPath, bool isEditable = false)
+        {
+            string name = Path.GetFileNameWithoutExtension(docPath);
+            var extension = Path.GetExtension(docPath);
+            var documentConverter = new DocumentConverter();
+            var documentOutput = GetPathByName(_settings.TempPath, name, "docx");
+            if (extension == ".doc")
+            {
+                documentConverter.ConvertDocToDocx(docPath, documentOutput);
+            }
+            else if (extension == ".docx")
+            {
+                documentConverter.ConvertDocToDocx(docPath, documentOutput);
+            }
+            var documentTemplate = new DocumentForm(documentOutput, isEditable);
+            Text lastText = new Text();
+            foreach (var text in documentTemplate.GetAllText())
+            {
+                if (text.Text.Length > 0 && lastText.Text.Length > 0)
+                {
+                    if (lastText.Text.Last() == '_' && text.Text.First() == '_')
+                    {
+                        lastText.Text += text.Text;
+                        text.Text = "";
+                    }
+                }
+                lastText = text;
+            }
+            return documentTemplate;
+        }
+        public DocumentForm OpenDocumentAsFormByPath(string docPath, bool isEditable = false)
+        {
+            var documentTemplate = new DocumentForm(docPath, isEditable);
+            Text lastText = new Text();
+            foreach (var text in documentTemplate.GetAllText())
+            {
+                if (text.Text.Length > 0 && lastText.Text.Length > 0)
+                {
+                    if (lastText.Text.Last() == '_' && text.Text.First() == '_')
+                    {
+                        lastText.Text += text.Text;
+                        text.Text = "";
+                    }
+                }
+                lastText = text;
+            }
+            return documentTemplate;
+        }
         public DocumentTemplate CopyAndOpenDocument(DocumentTemplate documentTemplate, string pathTo, bool isEditable = false) 
         {
             documentTemplate.Close();
