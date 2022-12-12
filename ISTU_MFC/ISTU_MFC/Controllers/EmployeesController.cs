@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Documents;
 using Documents.Documents;
+using Documents.View;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
@@ -161,6 +162,13 @@ namespace ISTU_MFC.Controllers
         public IActionResult DownloadGeneration(EmployeeDownloadGenerationPost model)
         {
             return RedirectToAction("Download", new {documentPath=model.DocumentPath});
+        }
+        
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public JsonResult GetWordDocument(string path)
+        {
+            // return Json(new { Data = new DocumentViewer });
         }
 
         [HttpGet]
