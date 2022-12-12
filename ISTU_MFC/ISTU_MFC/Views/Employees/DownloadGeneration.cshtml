@@ -6,15 +6,11 @@
     ViewData["Title"] = "DownloadGeneration";
 }
 
-<div class="d-flex">
+<div class="d-flex justify-content-center">
     <h3>ID заявки:</h3>
     <h3 name="IDservice">@Model.RequestId</h3>
 </div>
-
-<form>
-        
-</form>
-<object>
+<object class="d-flex justify-content-center">
     <div id="pdf_container" onload="LoadPdfFromUrl('@Url.Content(@Model.PathToPreviewDoc)')"></div>
     <script>
     window.onload = function (){
@@ -75,8 +71,7 @@
         };
     </script>
 </object>
-<div id="word-container" class=""></div>
-<div name="buttons" class="d-flex">
+<div name="buttons" class="d-flex justify-content-center">
     <form method="post" name="Download">
         <input name="DocumentPath" value="@Model.PathToDownloadDocument" type="hidden"/>
         <input name="button" value="Скачать" class="btn" type="submit"/>
