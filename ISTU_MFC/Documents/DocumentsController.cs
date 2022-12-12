@@ -24,7 +24,7 @@ namespace Documents
         public DocumentsController(IRepository repository)
         {
             _repository = repository;
-            _documentViewer = new DocumentViewer(this);
+            _documentViewer = new DocumentViewer();
             _fieldsController = new FieldsController(repository);
         }
         public DocumentTemplate OpenDocumentAsTemplateByName(string docName, bool isEditable = false)

@@ -11,17 +11,16 @@ namespace Documents.View
 {
     public class DocumentViewer
     {
-        private readonly DocumentsController _controller;
+        //private readonly DocumentsController _controller;
 
-        public DocumentViewer(DocumentsController controller)
+        public DocumentViewer()
         {
-            _controller = controller;
         }
         public Byte[] GenerateBytesByFilePath(string path)
         {
              return File.ReadAllBytes(path);
         }
-        public string GenerateAndSaveImage(DocumentBase documentReference)
+        /*public string GenerateAndSaveImage(DocumentBase documentReference)
         {
             Document document = new Document();
             document.LoadFromFile(documentReference.PatchToFile);
@@ -42,7 +41,7 @@ namespace Documents.View
             var path = pathToSave;
             //image.Save(path);
             return path;
-        }
+        }*/
         //DocGeneration:2
         /*public void GenerateAndSaveImage(DocumentBase documentReference)
         {
