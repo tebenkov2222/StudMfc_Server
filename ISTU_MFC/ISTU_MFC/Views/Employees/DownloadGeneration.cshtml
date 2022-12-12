@@ -14,63 +14,71 @@
 <form>
         
 </form>
-
-<object> 
-     <iframe src="@Model.PathToPreviewDoc" width="80%" height="500px"></iframe>
-</object> 
-
-<a class="view" href="javascript:">View Word Doc</a>
-
+<object>
+    <div id="pdf_container" onload="LoadPdfFromUrl('@Url.Content(@Model.PathToPreviewDoc)')"></div>
+    <script>
+    window.onload = function (){
+        LoadPdfFromUrl('@Url.Content(@Model.PathToPreviewDoc)')
+        }
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf_viewer.min.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript">
+        var pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
+        var pdfDoc = null;
+        var scale = 1; //Set Scale for zooming PDF.
+        var resolution = 1; //Set Resolution to Adjust PDF clarity.
+ 
+        function LoadPdfFromUrl(url) {
+            //Read PDF from URL.
+            pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+                pdfDoc = pdfDoc_;
+ 
+                //Reference the Container DIV.
+                var pdf_container = document.getElementById("pdf_container");
+                pdf_container.style.display = "block";
+ 
+                //Loop and render all pages.
+                for (var i = 1; i <= pdfDoc.numPages; i++) {
+                    RenderPage(pdf_container, i);
+                }
+            });
+        };
+        function RenderPage(pdf_container, num) {
+            pdfDoc.getPage(num).then(function (page) {
+                //Create Canvas element and append to the Container DIV.
+                var canvas = document.createElement('canvas');
+                canvas.id = 'pdf-' + num;
+                ctx = canvas.getContext('2d');
+                pdf_container.appendChild(canvas);
+ 
+                //Create and add empty DIV to add SPACE between pages.
+                var spacer = document.createElement("div");
+                spacer.style.height = "20px";
+                pdf_container.appendChild(spacer);
+ 
+                //Set the Canvas dimensions using ViewPort and Scale.
+                var viewport = page.getViewport({ scale: scale });
+                canvas.height = resolution * viewport.height;
+                canvas.width = resolution * viewport.width;
+ 
+                //Render the PDF page.
+                var renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport,
+                    transform: [resolution, 0, 0, resolution, 0, 0]
+                };
+ 
+               page.render(renderContext);
+            });
+        };
+    </script>
+</object>
 <div id="word-container" class=""></div>
-
 <div name="buttons" class="d-flex">
     <form method="post" name="Download">
         <input name="DocumentPath" value="@Model.PathToDownloadDocument" type="hidden"/>
         <input name="button" value="Скачать" class="btn" type="submit"/>
     </form>
 </div>
-<form asp-action="AddFile" method="post" enctype="multipart/form-data">
-    <input type="file" name="uploadedFile" /><br>
-    <input type="submit" value="Загрузить" />
-</form>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
-<script src="js/docx-preview.js"></script>
-<script type="text/javascript">
-        $(function () {
-            $(".view").click(function () {
-                $.ajax({
-                    type: "POST",
-                    url: "/Employees/GetWordDocument",
-                    data: {"fileName": "@Model.PathToPreviewDoc"},
-                    success: function (r) {
-                        //Convert BLOB to File object.
-                        var bytes = Base64ToBytes(r.Data);
-                        var doc = new File([bytes], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-                        //var doc = new File([r.Data], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
- 
-                        //If Document not NULL, render it.
-                        if (doc != null) {
-                            //Set the Document options.
-                            var docxOptions = Object.assign(docx.defaultOptions, {
-                                useMathMLPolyfill: true
-                            });
-                            //Reference the Container DIV.
-                            var container = document.querySelector("#word-container");
- 
-                            //Render the Word Document.
-                            docx.renderAsync(doc, container, null, docxOptions);
-                        }
-                    }
-                });
-            });
-        });
-        function Base64ToBytes(base64) {
-                    var s = window.atob(base64);
-                    var bytes = new Uint8Array(s.length);
-                    for (var i = 0; i < s.length; i++) {
-                        bytes[i] = s.charCodeAt(i);
-                    }
-                    return bytes;
-                };
-</script>

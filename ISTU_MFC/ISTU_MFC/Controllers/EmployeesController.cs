@@ -140,7 +140,7 @@ namespace ISTU_MFC.Controllers
             var docViewName =
                 $"DocView_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
             var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
-            var pathToViewDocument = documentsController.GetPathByName(documentsController.Settings.TempPath, docViewName, "pdf"); 
+            var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,"wwwroot", "temp", $"{docViewName}.pdf"); 
 
             //copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
             copyToTempAndOpenDocument.Save();
@@ -151,7 +151,8 @@ namespace ISTU_MFC.Controllers
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
             //var replace = pathToViewDocument.Replace("/", "\\").Replace("\\", "$").Split("$");
-            viewModel.PathToPreviewDoc = pathToViewDocument;
+            var wwwrootPathView = $"~/temp/{Path.GetFileName(pathToViewDocument)}";
+            viewModel.PathToPreviewDoc = wwwrootPathView;
             viewModel.RequestId = request_id;
             copyToTempAndOpenDocument.Dispose();
             copyToTempAndOpenDocument.Document.Dispose();
@@ -164,7 +165,11 @@ namespace ISTU_MFC.Controllers
         {
             return RedirectToAction("Download", new {documentPath=model.DocumentPath});
         }
-        
+
+        public void ShowPdf()
+        {
+            
+        }
         /*[HttpPost]
         [Authorize(Roles = "Employee")]
         public JsonResult GetWordDocument(string fileName)
