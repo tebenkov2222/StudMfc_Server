@@ -50,7 +50,7 @@ namespace ISTU_MFC.Controllers
             else
             {
                 var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
-                bool isStudent = _repository.CheckByStudent(userId);
+                bool isStudent = _repository.CheckStudentExistence(userId);
                 if (isStudent)
                     return RedirectToAction("Home", "Students");
                 else
@@ -87,6 +87,27 @@ namespace ISTU_MFC.Controllers
                     {
                         result = JsonSerializer.Deserialize<LoginModel>(response_result);
                     }
+/*<<<<<<< HEAD
+                    bool isStudent = _repository.CheckStudentExistence(result.user_id);
+                    await Authenticate(result.user_id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
+                    if(isStudent)
+                        return RedirectToAction("Home", "Students");
+                    else
+                        return RedirectToAction("WorkWithDoc", "Employees");
+                }
+                else
+                { 
+                    user user = await db.users.FirstOrDefaultAsync(u => u.login == model.email && u.password == model.password);
+                    if (user != null)
+                    {
+                        bool isStudent = _repository.CheckStudentExistence(user.id);
+                        await Authenticate(user.id.ToString(), isStudent ? "Student" : "Employee"); // аутентификация
+                        if(isStudent)
+                            return RedirectToAction("Home", "Students");
+                        else
+                            return RedirectToAction("WorkWithDoc", "Employees");
+                    } 
+=======*/
                     catch
                     {
                         result = new LoginModel()
@@ -117,7 +138,7 @@ namespace ISTU_MFC.Controllers
                 }
                 if (user != null)
                 {
-                    bool isStudent = _repository.CheckByStudent(user.id);
+                    bool isStudent = _repository.CheckStudentExistence(user.id);
                     var fullName = _repository.GetUserFullName(user.id);
                     await Authenticate(user.id.ToString(), isStudent ? "Student" : "Employee", fullName); // аутентификация
                     if(isStudent) 

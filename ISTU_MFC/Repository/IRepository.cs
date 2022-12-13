@@ -7,8 +7,8 @@ namespace Repository
     public interface IRepository
     {
         void WriteMessage(string message);
-        bool CheckByStudent(int idUser);
-        bool CheckByEmployees(int idUser);
+        bool CheckStudentExistence(int idUser);
+        bool CheckEmployeeExistence(int idUser);
         public StudentProfileModel GetStudentProfileModel(int userId);
         public void SetValueFieldsOnRequest(int requestId, List<FieldsModel> fields);
         public IDictionary<string, string> GetValueFieldsByPath(IDictionary<string, string[]> nameFieldByPath, int studentUserId);
@@ -20,7 +20,7 @@ namespace Repository
         public StudentProfileModel GetStudentByRequest(int requestId);
         InformationAboutRequestModel GetInformationAboutRequestByStudent(int studentUserId);
         InformationAboutRequestModel GetInformationAboutRequestByRequest(int requestId);
-        public DirectorInstituteModel GetDirectorInstituteByStudent(int studentUserId);
+        public DirectorInstituteModel GetDirectorInstituteByStudent(int userId);
         public void ChangeRequestStatus(int requestId, int userId, string state);
         public void CreateMessage(int requestId, int userId, string message);
         public List<MessageModel> GetTableMessages(int userId);
@@ -28,17 +28,17 @@ namespace Repository
         public List<ServiseModel> GetSubdivisionInfo(int subId);
         public ServiseModel GetServicesInfo(int servId);
         public void ChangeRequestStateByFirst(int requestId, int userId);
-        public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId);
+        public void CreateRequestWithFields(int subdivisionServId, List<FieldsModel> fields, int userId);
         public void ChangeMessagesStatus(int userId);
         public List<RequestModel> GetFilteredRequests(int userId, string status);
         public List<RequestModel> GetNamedRequests(int userId, string family);
         public List<RequestModel> GetNumberedRequests(int userId, int number);
         public bool CheckUserExistence(int userId);
         public void CreateStudent(StudentModelForAddToDB student);
-        public ServisesSubdivisonModel GetSubdivisionServises(int userid);
-        public void ChangeSubdivisonsServiseStatus(int serviceId, int subdivisonId, string status);
-        public void InsertSubdivisonsServise(int serviceId, int subdivisonId);
-        public void DeleteSubdivisonsServise(int serviceId, int subdivisonId);
+        public ServisesSubdivisonModel GetSubdivisionServices(int userid);
+        public void ChangeSubdivisionsServiceStatus(int serviceId, int subdivisionId, string status);
+        public void InsertSubdivisionsService(int serviceId, int subdivisonId);
+        public void DeleteSubdivisionsService(int serviceId, int subdivisonId);
         public string GetUserFullName(int userId);
     }
     
