@@ -309,9 +309,16 @@ namespace Repository
         public void InsertSubdivisionsService(int serviceId, int subdivisonId)
         {
             using var query = new QueryTool(_db);
-            var res = query.QueryWithTable
+            query.QueryWithTable
             ("INSERT INTO subdivisions_services (service_id, subdivision_id)" +
              $" VALUES ({serviceId}, {subdivisonId})");
+        }
+
+        public string[][] CreateServices
+            (string name, string information = "", string documentLink = "", string formLink = "")
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable($"SELECT create_services({name} , {information}, {documentLink}, {formLink});");
         }
 
         #endregion
@@ -327,7 +334,24 @@ namespace Repository
              $"WHERE service_id = {serviceId} AND subdivision_id = {subdivisionId};");
         }
 
-        #endregion
+        public int DeleteServices(int servicesId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithoutTable($"DELETE FROM services WHERE id = {servicesId}");
+        }
+
+        public int DeleteMessages(int messagesId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithoutTable($"DELETE FROM messages WHERE id = {messagesId}");
+        }
+
+        public int DeleteRequest(int requestId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithoutTable($"DELETE FROM requests WHERE id = {requestId}");
+        }
         
+        #endregion
     }
 }
