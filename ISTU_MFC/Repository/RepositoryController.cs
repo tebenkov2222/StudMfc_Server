@@ -325,8 +325,12 @@ namespace Repository
             {
                 answ.Add(new ServiseModel()
                 {
-                    Name = res[i][1],
-                    Id = Int32.Parse(res[i][0])
+                    Name = res[i][2],
+                    Id = Int32.Parse(res[i][1]),
+                    SubdivisionServiceId = Int32.Parse(res[i][5]),
+                    DocumentLink = res[i][6],
+                    FormLink = res[i][7],
+                    Info = res[i][3],
                 });
             }
             return answ;
@@ -342,9 +346,9 @@ namespace Repository
             };
         }
 
-        public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId)
+        public void CreateRequestWithFields(int subdivisionServId, List<FieldsModel> fields, int userId)
         {
-            var res = _db.InsertRequest(userId, servId);
+            var res = _db.InsertRequest(userId, subdivisionServId);
             var requestId = Int32.Parse(res[1][0]);
             SetValueFieldsOnRequest(requestId, fields);
         }

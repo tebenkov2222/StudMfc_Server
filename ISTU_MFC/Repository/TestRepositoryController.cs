@@ -158,7 +158,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId)
+        public void CreateRequestWithFields(int subdivisionServId, List<FieldsModel> fields, int userId)
         {
             throw new NotImplementedException();
         }
@@ -218,7 +218,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public void CreateRequestWithFields(int servId, List<FieldsModel> fields)
+        public void CreateRequestWithFields(int subdivisionServId, List<FieldsModel> fields)
         {
             throw new NotImplementedException();
         }

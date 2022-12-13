@@ -28,7 +28,7 @@ namespace Repository
         public List<ServiseModel> GetSubdivisionInfo(int subId);
         public ServiseModel GetServicesInfo(int servId);
         public void ChangeRequestStateByFirst(int requestId, int userId);
-        public void CreateRequestWithFields(int servId, List<FieldsModel> fields, int userId);
+        public void CreateRequestWithFields(int subdivisionServId, List<FieldsModel> fields, int userId);
         public void ChangeMessagesStatus(int userId);
         public List<RequestModel> GetFilteredRequests(int userId, string status);
         public List<RequestModel> GetNamedRequests(int userId, string family);
@@ -39,6 +39,7 @@ namespace Repository
         public void ChangeSubdivisionsServiceStatus(int serviceId, int subdivisionId, string status);
         public void InsertSubdivisionsService(int serviceId, int subdivisonId);
         public void DeleteSubdivisionsService(int serviceId, int subdivisonId);
+        public string GetUserFullName(int userId);
     }
     
     
