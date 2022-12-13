@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Documents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,6 +13,7 @@ using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Repository;
 using Path = System.IO.Path;
 using System.Text;
@@ -78,6 +81,7 @@ namespace ISTU_MFC.Controllers
         public IActionResult DocGenerator()
         {
             var docGenerationViewModel = new DocGenerationViewModel();
+            docGenerationViewModel.PathToFormDoc = "";
             return View(docGenerationViewModel);
         }
 
@@ -285,14 +289,32 @@ namespace ISTU_MFC.Controllers
                     uploadedFile.CopyTo(fileStream);
                 }
             }
-
             model.PathToFormDoc = filePath;
             model.PathToPreviewDoc = Path.Combine(documentsSettings.RootPath, "wwwroot", "temp",
                 $"{Path.GetFileNameWithoutExtension(filePath)}.pdf");
             documentsController.DocumentViewer.GenerateAndSavePdf(filePath, model.PathToPreviewDoc);
             model.RelativePathToPreviewDoc = $"~/temp/{Path.GetFileNameWithoutExtension(filePath)}.pdf";
             model.IsHasDoc = true;
+            model.FormFields = new List<FormFieldViewModel>();
+            var form = documentsController.OpenDocumentAsFormByPath(filePath);
+            var formFields = form.GetAllFormFields().ToList();
+            for (int i = 0; i < formFields.Count; i++)
+            {
+                var formField = formFields[i];
+
+                model.FormFields.Add(new FormFieldViewModel()
+                {
+                    Name = formField.Name,
+                    Id = i,
+                    SelectedType = ""
+                }); 
+            }
             return View("DocGenerator", model);
+        }
+        [HttpPost]
+        public void DebugAll(string[] names, string[] fields, string pathToPreviewDoc, string relativePathToPreviewDoc, string pathToFormDoc)
+        {
+            var formFieldsCount = fields.Length;
         }
     }
 }
