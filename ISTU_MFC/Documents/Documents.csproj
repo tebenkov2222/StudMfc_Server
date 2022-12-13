@@ -9,8 +9,11 @@
     <ItemGroup>
       <PackageReference Include="Aspose.Words" Version="22.11.0" />
       <PackageReference Include="DocumentFormat.OpenXml" Version="2.18.0" />
+      <PackageReference Include="Google.Apis.Docs.v1" Version="1.58.0.2833" />
       <PackageReference Include="GroupDocs.Conversion" Version="22.10.0" />
       <PackageReference Include="OpenXmlPowerTools" Version="4.5.3.2" />
+      <PackageReference Include="sautinsoft.document" Version="5.7.11.28" />
+      <PackageReference Include="sautinsoft.useoffice" Version="5.2.12.8" />
       <PackageReference Include="Spire.Doc" Version="10.11.0" />
     </ItemGroup>
 

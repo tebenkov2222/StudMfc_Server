@@ -1,4 +1,4 @@
-﻿@model List<ModelsData.SubdivisionModel>
+﻿@model ModelsData.StudentHomeModel
 
 @{
     Layout = "_Layout";
@@ -6,15 +6,19 @@
 }
 
 <h2 class="d-flex justify-content-center">Главная страница</h2>
-
-
 <div class="d-flex justify-content-center">
-    @foreach (var sub in Model)
+    @foreach (var sub in Model.Subdevisons)
     {
         <form method="post" name="ChoosingSubServise">
             <input name="Sub_id" value="@sub.Id" type="hidden"/>
             <input name="Info" value="@sub.Information" type="hidden"/>
             <input class="btn" type="submit" value="@sub.Name"/> 
         </form>
+    }
+</div>
+<div class="sendedservices">
+    @foreach (var req in Model.Requests)
+    {
+        <div class="grey2 field_stud_data" style="color: black; width:100%">@req.Id @req.Caption @req.State @req.FamylyNS @req.CreationDate</div>
     }
 </div>

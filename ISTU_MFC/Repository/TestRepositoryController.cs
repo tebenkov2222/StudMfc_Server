@@ -138,7 +138,7 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public List<SubdivisionModel> GetDivisionsList(int userId)
+        public StudentHomeModel GetHomepageModel(int userId)
         {
             throw new NotImplementedException();
         }
@@ -209,6 +209,11 @@ namespace Repository
         }
 
         public void DeleteSubdivisionsService(int serviceId, int subdivisonId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetUserFullName(int userId)
         {
             throw new NotImplementedException();
         }

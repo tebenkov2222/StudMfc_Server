@@ -24,7 +24,7 @@ namespace Repository
         public void ChangeRequestStatus(int requestId, int userId, string state);
         public void CreateMessage(int requestId, int userId, string message);
         public List<MessageModel> GetTableMessages(int userId);
-        public List<SubdivisionModel> GetDivisionsList(int userId);
+        public StudentHomeModel GetHomepageModel(int userId);
         public List<ServiseModel> GetSubdivisionInfo(int subId);
         public ServiseModel GetServicesInfo(int servId);
         public void ChangeRequestStateByFirst(int requestId, int userId);

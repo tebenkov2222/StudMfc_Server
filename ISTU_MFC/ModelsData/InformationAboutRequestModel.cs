@@ -45,6 +45,7 @@ namespace ModelsData
 
         public void SetDate(string input)
         {
+            input = "04/12/2022 08:56:57";
             var isLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
             Console.WriteLine($"IsLinux = {isLinux}");
             Console.WriteLine($"Date Time Input = {input}");

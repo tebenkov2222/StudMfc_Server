@@ -33,6 +33,13 @@ namespace Repository
                 ($"SELECT (SELECT count(*) FROM users WHERE Id = '{userId}') = 1;")[1][0]);
         }
 
+        public string[][] GetUserFullName(int userId)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+                ($"SELECT family, name, secondname FROM users WHERE Id = '{userId}';");
+        }
+
         #endregion
 
         #region Employee
@@ -192,7 +199,8 @@ namespace Repository
         {
             using var query = new QueryTool(_db);
             return query.QueryWithTable
-                ($"SELECT services_id, name FROM services_info_by_subdivisions WHERE subdivision_id = {subId};");
+                ($"SELECT services_id, name FROM services_info_by_subdivisions WHERE subdivision_id = {subId}"+
+                 " AND status = 'Enabled';");
         }
         
         // получить все услуги, которые созданы и отсутствуют в конкретном подразделении

@@ -6,37 +6,66 @@
     Layout = "_LayoutEmployees";
 }
 
-
-
+@if (Model.Awalible.Count > 0)
+{
+    <div class="d-flex justify-content-center" style="margin-bottom: 10px; font-size: 20pt;">Существующие услуги</div>
+}
 @foreach (var serv in Model.Awalible)
 {
-    <div>@serv.Id @serv.Name @serv.Status</div>
-    <form method="post">
-        <input type="hidden" name="Type" value="Enabled"/>
-        <input type="hidden" name="Id" value="@serv.Id"/>
-        <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
-        <input name="button" class="btn" type="submit" value="Включить"/>
-    </form>
-    <form method="post">
-        <input type="hidden" name="Type" value="Disabled"/>
-        <input type="hidden" name="Id" value="@serv.Id"/>
-        <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
-        <input name="button" class="btn" type="submit" value="Выключить"/>
-    </form>
-    <form method="post">
-        <input type="hidden" name="Type" value="Delete"/>
-        <input type="hidden" name="Id" value="@serv.Id"/>
-        <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
-        <input name="button" class="btn" type="submit" value="Удалить"/>
-    </form>
+    <div class="grey2" style="margin: 0 0 20px 0; padding: 30px 20px">
+        <div class="d-flex justify-content-center" style="color: black; font-size: 18pt;">@serv.Name</div>
+        @{
+            string s1, s2, s3;
+            if (serv.Status == "Enabled")
+            {
+                s3 = "Включена";
+                s1 = "display: none;";
+                s2 = "display: block;";
+            }
+            else
+            {
+                s3 = "Выключена";
+                s2 = "display: none;";
+                s1 = "display: block;";
+            }
+        }
+        <div style="color: black; font-size: 18pt;">Статус: @s3</div>
+        <div class="d-flex" style="margin-top: 10px">
+            <form method="post" style=@s1>
+                <input type="hidden" name="Type" value="Enabled"/>
+                <input type="hidden" name="Id" value="@serv.Id"/>
+                <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+                <button type="submit" class="service-list-btn"><i class="fas fa-toggle-off"></i></button>
+            </form>
+            <form method="post" style=@s2>
+                <input type="hidden" name="Type" value="Disabled"/>
+                <input type="hidden" name="Id" value="@serv.Id"/>
+                <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+                <button type="submit" class="service-list-btn"><i class="fas fa-toggle-on"></i></button>
+            </form>
+            <form method="post">
+                <input type="hidden" name="Type" value="Delete"/>
+                <input type="hidden" name="Id" value="@serv.Id"/>
+                <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+                <button type="submit" class="service-list-btn"><i class="fas fa-trash-alt"></i></button>
+            </form>
+        </div>
+    </div>
+}
+@if (Model.ForAdd.Count > 0)
+{
+    <div class="d-flex justify-content-center" style="margin-bottom: 10px; font-size: 20pt;">Возможные услуги для добавления</div>
 }
 @foreach (var serv in Model.ForAdd)
 {
-    <div>@serv.Id @serv.Name @serv.Info @serv.DocumentLink</div>
-    <form method="post">
-        <input type="hidden" name="Type" value="Add"/>
-        <input type="hidden" name="Id" value="@serv.Id"/>
-        <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
-        <input name="button" class="btn" type="submit" value="Добавить"/>
-    </form>
+    <div class="grey2" style="margin: 0 0 20px 0; padding: 30px 20px">
+        <div>@serv.Id @serv.Name @serv.Info @serv.DocumentLink</div>
+        <form method="post">
+            <input type="hidden" name="Type" value="Add"/>
+            <input type="hidden" name="Id" value="@serv.Id"/>
+            <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+            @* <input name="button" class="btn" type="submit" value="Добавить"/> *@
+            <button type="submit" class="service-list-btn"><i class="fas fa-plus"></i>Добавить</button>
+        </form>
+    </div>
 }

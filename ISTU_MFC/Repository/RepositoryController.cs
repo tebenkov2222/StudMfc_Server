@@ -51,29 +51,8 @@ namespace Repository
                 Group = studentInfo[1][5],
                 StudId = studentInfo[1][1],
                 Department = studentInfo[1][7],
-                Faculty = studentInfo[1][6],
-                Requests = new List<RequestModel>()
+                Faculty = studentInfo[1][6]
             };
-            var requsts = _db.GetTableRequestsForStudent(userId);
-            var statuses = new Dictionary<string, string>()
-            {
-                { "not processed", "Не обработана" },
-                { "processing", "В работе" },
-                { "processed", "Обработана" },
-                { "closed", "Закрыта" }
-            };
-            for (int i = 1; i < requsts.Length; i++)
-            {
-                result.Requests.Add(new RequestModel()
-                {
-                    Id = requsts[i][0],
-                    Caption = requsts[i][1],
-                    State = statuses[requsts[i][2]],
-                    CreationDate = requsts[i][6].Split()[0]
-                });
-                if (requsts[i][3] != "")
-                    result.Requests[i-1].FamylyNS = requsts[i][3] + " " + requsts[i][4][0] + "." + requsts[i][5][0] + ".";
-            }
             return result;
         }
 
@@ -297,18 +276,42 @@ namespace Repository
             return answ;
         }
 
-        public List<SubdivisionModel> GetDivisionsList(int userId)
+        public StudentHomeModel GetHomepageModel(int userId)
         {
             var res = _db.GetTableSubdivisionsInfoForStudent(userId);
-            var answ = new List<SubdivisionModel>();
+            var answ = new StudentHomeModel()
+            {
+                Subdevisons = new List<SubdivisionModel>(),
+                Requests = new List<RequestModel>()
+            };
             for (int i = 1; i < res.Length; i++)
             {
-                answ.Add(new SubdivisionModel()
+                answ.Subdevisons.Add(new SubdivisionModel()
                 {
                     Id = res[i][1],
                     Information = res[i][3],
                     Name = res[i][2]
                 });
+            }
+            var req = _db.GetTableRequestsForStudent(userId);
+            var statuses = new Dictionary<string, string>()
+            {
+                { "not processed", "Не обработана" },
+                { "processing", "В работе" },
+                { "processed", "Обработана" },
+                { "closed", "Закрыта" }
+            };
+            for (int i = 1; i < req.Length; i++)
+            {
+                answ.Requests.Add(new RequestModel()
+                {
+                    Id = req[i][0],
+                    Caption = req[i][1],
+                    State = statuses[req[i][2]],
+                    CreationDate = req[i][6].Split()[0]
+                });
+                if (req[i][3] != "")
+                    answ.Requests[i-1].FamylyNS = req[i][3] + " " + req[i][4][0] + "." + req[i][5][0] + ".";
             }
 
             return answ;
@@ -463,6 +466,12 @@ namespace Repository
         public void DeleteSubdivisionsService(int serviceId, int subdivisonId)
         {
             _db.DeleteSubdivisionsService(serviceId, subdivisonId);
+        }
+
+        public string GetUserFullName(int userId)
+        {
+            var result = _db.GetUserFullName(userId);
+            return $"{result[1][0]} {result[1][1]} {result[1][2]}";
         }
     }
 }

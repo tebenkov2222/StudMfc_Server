@@ -274,3 +274,4 @@ __pycache__/
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore
 *.docx
 *.jpg
+ISTU_MFC/ISTU_MFC/wwwroot/temp/

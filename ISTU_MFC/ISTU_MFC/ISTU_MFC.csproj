@@ -6,16 +6,24 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="File\FormsInput" />
+      <Folder Include="File\FormsTemp" />
       <Folder Include="File\Output" />
       <Folder Include="File\Temp" />
       <Folder Include="wwwroot\temp" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.17" />
+      <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
+      <PackageReference Include="PDFjs" Version="1.10.100" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,6 +41,7 @@
 
     <ItemGroup>
       <None Remove="wwwroot\images\Temp\**" />
+      <None Include="wwwroot\temp\DocView_4_121222_035239.pdf" />
     </ItemGroup>
 
     <ItemGroup>
