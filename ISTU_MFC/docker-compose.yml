@@ -7,3 +7,9 @@ services:
     restart: always  
     ports:
       - 80:80
+    environment:
+      TZ: "Europe/Samara"
+      command: >
+        sh -c "ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && 
+        echo $TZ > /etc/timezone &&
+        exec my-main-application"

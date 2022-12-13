@@ -1,13 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model ISTU_MFC.ViewModels.DocGenerationViewModel
-
 @{
     Layout = "_LayoutEmployees";
     ViewData["Title"] = "DocGenerator";
 }
 
+
 <form asp-action="AddFile" method="post" enctype="multipart/form-data" hidden="@Model.IsHasDoc">
-    <input name="model" value=@Model type="hidden" /><br>
+    <input name="model" value="@Model" style="display: none"/><br>
     <input type="file" name="uploadedFile" required="required"/><br>
     <input type="submit" value="Загрузить" />
 </form>
@@ -16,6 +16,9 @@
     if (!Model.IsHasDoc)
         s = "display: none";
 }
+<div>
+    <a>@DateTime.Now.ToString("g")</a>
+</div>
 <div class="justify-content-between" style="@s">
     <object>
         <div id="pdf_container"></div>
@@ -78,9 +81,32 @@
             };
         </script>
     </object>
-    <div name="listOfFields">
-        <select>
-            <option>Срань</option>
-        </select>
-    </div>
+    @{
+        if (Model.IsHasDoc)
+        {
+            <div name="listOfFields">
+                <form asp-action="DebugAll" method="post" enctype="multipart/form-data">
+                    @foreach (var field in Model.FormFields)
+                    {
+                        <a>Name = [@field.Name]</a>
+                        <a>SelectedType = [@field.SelectedType]</a>
+                        <select name="fields">
+                            <option value="StudentName">Имя</option>
+                            <option value="StudentFamily">Фамилия</option>
+                            <option value="Student">Студент</option>
+                        </select>
+                        @Html.Hidden("names", field.Name)
+                        @Html.Hidden("pathToPreviewDoc", Model.PathToPreviewDoc)
+                        @Html.Hidden("relativePathToPreviewDoc", Model.RelativePathToPreviewDoc)
+                        @Html.Hidden("pathToFormDoc", Model.PathToFormDoc)
+                        @*<select name="select" asp-for=@field.SelectedType>
+                            <option value="Срань">Срань</option>
+                            <option value="Не Срань">Не Срань</option>
+                        </select>*@
+                    }
+                    <input type="submit" value="дебаг"/>
+                </form>
+            </div>
+        }
+    }
 </div>
