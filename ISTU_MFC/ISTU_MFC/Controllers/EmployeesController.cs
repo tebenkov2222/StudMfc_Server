@@ -163,21 +163,6 @@ namespace ISTU_MFC.Controllers
             copyToTempAndOpenDocument.Document.Dispose();
             return View(viewModel);
         }
-        
-        [HttpPost]
-        public JsonResult GetWordDocument(string path)
-        {
-            byte[] bytes;
-            string fileName = "КалининНА_3_121222_115957.docx" , contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-            using (FileStream fstream = new FileStream(path, FileMode.Open))
-            {
-                byte[] array = new byte[fstream.Length];
-                fstream.Read(array, 0, array.Length);
-                bytes = array;
-            }
- 
-            return Json(new { FileName = fileName, ContentType = contentType, Data = bytes });
-        }
 
         [HttpPost]
         [Authorize(Roles = "Employee")]
@@ -186,6 +171,20 @@ namespace ISTU_MFC.Controllers
             return RedirectToAction("Download", new { documentPath = model.DocumentPath });
         }
 
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public ActionResult GetWordDocument(string path)
+        {
+            byte[] bytes;
+            using (FileStream fstream = new FileStream(path, FileMode.Open))
+            {
+                byte[] array = new byte[fstream.Length];
+                fstream.Read(array, 0, array.Length);
+                bytes = array;
+            }
+            return Json(bytes);
+        }
+        
 
         [HttpGet]
         [Authorize(Roles = "Employee")]
