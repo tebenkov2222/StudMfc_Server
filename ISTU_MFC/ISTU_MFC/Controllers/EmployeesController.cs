@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Documents;
-using Documents.Documents;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISTU_MFC.Models;
@@ -14,9 +11,7 @@ using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using ModelsData;
 using Repository;
-using Spire.Pdf.Exporting.XPS.Schema;
 using Path = System.IO.Path;
 using System.Text;
 using Microsoft.AspNetCore.Http;
@@ -82,7 +77,8 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
         {
-            return View();
+            var docGenerationViewModel = new DocGenerationViewModel();
+            return View(docGenerationViewModel);
         }
 
         [Authorize(Roles = "Employee")]
@@ -123,6 +119,7 @@ namespace ISTU_MFC.Controllers
 
         }
 
+        private string _pathToViewDocument = "";
         [HttpGet]
         [Authorize(Roles = "Employee")]
         public IActionResult DownloadGeneration(string req_id)
@@ -139,25 +136,22 @@ namespace ISTU_MFC.Controllers
             var requestModel = _repository.GetInformationAboutRequestByRequest(request_id);
             var docName =
                 $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
-            var pathToDownloadDocument =
-                documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
+            var docViewName =
+                $"DocView_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
+            var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
+            var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,"wwwroot", "temp", $"{docViewName}.pdf"); 
 
             //copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
             copyToTempAndOpenDocument.Save();
             copyToTempAndOpenDocument.Close();
-            System.IO.File.Copy(copyToTempAndOpenDocument.PatchToFile, pathToDownloadDocument, true);
-            //copyToTempAndOpenDocument.Document.Dispose();
-
-            /*var generateAndSaveImage = documentsController.DocumentViewer.GenerateAndSaveImage(
-                copyToTempAndOpenDocument,
-                documentsController.GetPathByName ( Path.Combine("wwwroot", "images"), copyToTempAndOpenDocument.Name, "jpg"));
-            */
-            //var relativePath = $"~/images/{copyToTempAndOpenDocument.Name}.jpg";
-            var combine = Path.Combine("~", "images", copyToTempAndOpenDocument.Name);
-            var relativePath = $"{combine}.jpg";
+            var patchToFile = copyToTempAndOpenDocument.PatchToFile;
+            System.IO.File.Copy(patchToFile, pathToDownloadDocument, true);
+            documentsController.DocumentViewer.GenerateAndSavePdf(patchToFile, pathToViewDocument);
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
-            viewModel.PathToPreviewImage = relativePath;
+            //var replace = pathToViewDocument.Replace("/", "\\").Replace("\\", "$").Split("$");
+            var wwwrootPathView = $"~/temp/{Path.GetFileName(pathToViewDocument)}";
+            viewModel.PathToPreviewDoc = wwwrootPathView;
             viewModel.RequestId = request_id;
             copyToTempAndOpenDocument.Dispose();
             copyToTempAndOpenDocument.Document.Dispose();
@@ -275,6 +269,30 @@ namespace ISTU_MFC.Controllers
                     break;
             }
             return RedirectToAction("ServiceList");
+        }
+        [HttpPost]
+        [Authorize(Roles = "Employee")]
+        public IActionResult AddFile(IFormFile uploadedFile, DocGenerationViewModel model)
+        {
+            var documentsController = new DocumentsController(_repository);
+            var documentsSettings = new DocumentsController(_repository).Settings;
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uploadedFile.FileName);
+            var fileExtenstion = Path.GetExtension(uploadedFile.FileName);
+            string filePath = Path.Combine(documentsSettings.RootPath,documentsSettings.FormsTemp, $"{fileNameWithoutExtension}_{DateTime.Now.ToString("ddMMyy_hhmmss")}{fileExtenstion}");
+
+            if (uploadedFile.Length > 0) {
+                using (Stream fileStream = new FileStream(filePath, FileMode.Create)) {
+                    uploadedFile.CopyTo(fileStream);
+                }
+            }
+
+            model.PathToFormDoc = filePath;
+            model.PathToPreviewDoc = Path.Combine(documentsSettings.RootPath, "wwwroot", "temp",
+                $"{Path.GetFileNameWithoutExtension(filePath)}.pdf");
+            documentsController.DocumentViewer.GenerateAndSavePdf(filePath, model.PathToPreviewDoc);
+            model.RelativePathToPreviewDoc = $"~/temp/{Path.GetFileNameWithoutExtension(filePath)}.pdf";
+            model.IsHasDoc = true;
+            return View("DocGenerator", model);
         }
     }
 }

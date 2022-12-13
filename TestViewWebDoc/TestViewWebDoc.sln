@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestViewWebDoc", "TestViewWebDoc\TestViewWebDoc.csproj", "{63EF4359-64EF-4E70-BC26-2BB8352BC8D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documents", "..\ISTU_MFC\Documents\Documents.csproj", "{0501B92F-B3BC-421F-B432-11DCA08FE25D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63EF4359-64EF-4E70-BC26-2BB8352BC8D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63EF4359-64EF-4E70-BC26-2BB8352BC8D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63EF4359-64EF-4E70-BC26-2BB8352BC8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63EF4359-64EF-4E70-BC26-2BB8352BC8D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0501B92F-B3BC-421F-B432-11DCA08FE25D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0501B92F-B3BC-421F-B432-11DCA08FE25D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0501B92F-B3BC-421F-B432-11DCA08FE25D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0501B92F-B3BC-421F-B432-11DCA08FE25D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
