@@ -13,6 +13,7 @@ using ISTU_MFC.Models;
 using ISTU_MFC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using ModelsData;
 using Repository;
 using Spire.Pdf.Exporting.XPS.Schema;
@@ -29,9 +30,7 @@ namespace ISTU_MFC.Controllers
         private readonly ILogger<EmployeesController> _logger;
         private readonly IRepository _repository;
         private readonly IWebHostEnvironment _appEnvironment;
-
-        public EmployeesController(ILogger<EmployeesController> logger, IRepository repository,
-            IWebHostEnvironment appEnvironment)
+        public EmployeesController(ILogger<EmployeesController> logger, IRepository repository, IWebHostEnvironment appEnvironment)
         {
             _logger = logger;
             _repository = repository;
@@ -164,6 +163,21 @@ namespace ISTU_MFC.Controllers
             copyToTempAndOpenDocument.Document.Dispose();
             return View(viewModel);
         }
+        
+        [HttpPost]
+        public JsonResult GetWordDocument(string path)
+        {
+            byte[] bytes;
+            string fileName = "КалининНА_3_121222_115957.docx" , contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            using (FileStream fstream = new FileStream(path, FileMode.Open))
+            {
+                byte[] array = new byte[fstream.Length];
+                fstream.Read(array, 0, array.Length);
+                bytes = array;
+            }
+ 
+            return Json(new { FileName = fileName, ContentType = contentType, Data = bytes });
+        }
 
         [HttpPost]
         [Authorize(Roles = "Employee")]
@@ -172,23 +186,6 @@ namespace ISTU_MFC.Controllers
             return RedirectToAction("Download", new { documentPath = model.DocumentPath });
         }
 
-        [HttpPost]
-        [IgnoreAntiforgeryToken]
-        public ActionResult GetWordDocument(string path)
-        {
-            byte[] bytes;
-            string contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-            var splited = path.Split("\\");
-            string fileName = splited[splited.Length-1];
-            using (FileStream fstream = new FileStream(path, FileMode.Open))
-            {
-                byte[] array = new byte[fstream.Length];
-                fstream.Read(array, 0, array.Length);
-                bytes = array;
-            }
-            return Json(bytes);
-        }
-        
 
         [HttpGet]
         [Authorize(Roles = "Employee")]
