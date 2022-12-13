@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Repository;
 using Path = System.IO.Path;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
+
 
 namespace ISTU_MFC.Controllers
 {
@@ -21,14 +25,13 @@ namespace ISTU_MFC.Controllers
         private readonly ILogger<EmployeesController> _logger;
         private readonly IRepository _repository;
         private readonly IWebHostEnvironment _appEnvironment;
-        
         public EmployeesController(ILogger<EmployeesController> logger, IRepository repository, IWebHostEnvironment appEnvironment)
         {
             _logger = logger;
             _repository = repository;
             _appEnvironment = appEnvironment;
         }
-        
+
         [Authorize(Roles = "Employee")]
         [HttpGet]
         public IActionResult WorkWithDoc()
@@ -43,9 +46,9 @@ namespace ISTU_MFC.Controllers
         public IActionResult WorkWithDoc(EmployeeWorkWithDocPost model)
         {
             //с одной страницы может быть несколько постзапросов, для этого нужно делать переадресацию по его типу
-            if(model.Type == "ChooseRequest")
+            if (model.Type == "ChooseRequest")
                 return RedirectToAction("RequestGenerator", new { req_id = model.Id });
-            if(model.Type == "ServiceConstructor")
+            if (model.Type == "ServiceConstructor")
                 return RedirectToAction("ServiceConstructor", "Employees");
             if (model.Status != null)
             {
@@ -53,21 +56,24 @@ namespace ISTU_MFC.Controllers
                 var requests = _repository.GetFilteredRequests(userId, model.Status);
                 return View(requests);
             }
+
             if (model.Number != null)
             {
                 var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
                 var requests = _repository.GetNumberedRequests(userId, Int32.Parse(model.Number));
                 return View(requests);
             }
+
             if (model.Family != null)
             {
                 var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
                 var requests = _repository.GetNamedRequests(userId, model.Family);
                 return View(requests);
             }
+
             return RedirectToAction("WorkWithDoc", "Employees");
         }
-        
+
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
         {
@@ -96,7 +102,7 @@ namespace ISTU_MFC.Controllers
                 Fields = documentsController.FieldsController.GetFieldsOnViewByNames(
                     _repository.GetRequestFields(Int32.Parse(req_id)))
             };
-            
+
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
             _repository.ChangeRequestStateByFirst(Int32.Parse(req_id), userId);
             return View(model);
@@ -110,7 +116,7 @@ namespace ISTU_MFC.Controllers
             if (model.Type == "DownloadGeneration")
                 return RedirectToAction("DownloadGeneration", new { req_id = model.Req_Id });
             return RedirectToAction("ChangeStatus", new { req_id = model.Req_Id });
-            
+
         }
 
         private string _pathToViewDocument = "";
@@ -122,8 +128,8 @@ namespace ISTU_MFC.Controllers
 // вот работаем с документами
             var documentsController = new DocumentsController(_repository);
             var linkToDocument = _repository.GetLinkToDocumentByRequestId(request_id);
-            var copyToTempAndOpenDocument = documentsController.
-                CopyToTempAndOpenDocument(linkToDocument, linkToDocument + $"_temp{DateTime.Now.ToString("ddMMyy_hhmmss")}", true);
+            var copyToTempAndOpenDocument = documentsController.CopyToTempAndOpenDocument(linkToDocument,
+                linkToDocument + $"_temp{DateTime.Now.ToString("ddMMyy_hhmmss")}", true);
             var valueFields = _repository.GetValueFieldsByIdRequest(request_id);
             copyToTempAndOpenDocument.SetFieldValues(valueFields);
 
@@ -156,8 +162,23 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult DownloadGeneration(EmployeeDownloadGenerationPost model)
         {
-            return RedirectToAction("Download", new {documentPath=model.DocumentPath});
+            return RedirectToAction("Download", new { documentPath = model.DocumentPath });
         }
+
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public ActionResult GetWordDocument(string path)
+        {
+            byte[] bytes;
+            using (FileStream fstream = new FileStream(path, FileMode.Open))
+            {
+                byte[] array = new byte[fstream.Length];
+                fstream.Read(array, 0, array.Length);
+                bytes = array;
+            }
+            return Json(bytes);
+        }
+        
 
         [HttpGet]
         [Authorize(Roles = "Employee")]
