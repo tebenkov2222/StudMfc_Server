@@ -84,15 +84,16 @@ namespace ISTU_MFC.Controllers
                 Info = info,
                 Servises = _repository.GetSubdivisionInfo(Int32.Parse(sub_id))
             };
-            return View(model);
+             return View(model);
         }
 
         [HttpGet]
         [Authorize(Roles = "Student")]
-        public IActionResult Servise(int servId)
+        public IActionResult Servise(int servId, int subdivisionServiceId)
         {
             var model = _repository.GetServicesInfo(servId);
             model.Id = servId;
+            model.SubdivisionServiceId = subdivisionServiceId;
             return View(model);
         }
 
@@ -100,12 +101,12 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult Servise(ServiseModel model)
         {
-            return RedirectToAction("RegService", new { servId = model.Id, name = model.Name });
+            return RedirectToAction("RegService", new { servId = model.Id, subdivisionServiceId = model.SubdivisionServiceId, name = model.Name });
         }
         
 
         [Authorize(Roles = "Student")]
-        public IActionResult RegService(int servId, string name)
+        public IActionResult RegService(int servId, int subdivisionServiceId, string name)
         {
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
             var documentsController = new DocumentsController(_repository); // вот работаем с документами
@@ -133,6 +134,7 @@ namespace ISTU_MFC.Controllers
             return View(new UserRegModel()
             {
                 Serv_id = servId.ToString(),
+                SubdivisionServiceId = subdivisionServiceId.ToString(),
                 Serv_name = name,
                 Fields = fieldsOnView
             });
@@ -161,7 +163,8 @@ namespace ISTU_MFC.Controllers
             template.Close();
             
             //var results = model.Fields.Select(t => t.Value).ToList();
-            _repository.CreateRequestWithFields(Int32.Parse(model.Serv_id), fields, userId);
+            var subdivisionServId = Int32.Parse(model.SubdivisionServiceId);
+            _repository.CreateRequestWithFields(subdivisionServId, fields, userId);
             return RedirectToAction("Home");
         }
     }
