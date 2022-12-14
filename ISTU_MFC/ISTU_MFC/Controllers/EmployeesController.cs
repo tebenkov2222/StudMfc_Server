@@ -315,6 +315,7 @@ namespace ISTU_MFC.Controllers
                 model.FormFields.Add(new FormFieldViewModel()
                 {
                     Name = formField.Name,
+                    Text = formField.Text.Text,
                     SelectedType = "FieldDefault"
                 }); 
                 model.FormFields[i].SelectList = DocGenerationViewModel.DefaultSelectList();
@@ -339,6 +340,7 @@ namespace ISTU_MFC.Controllers
             for (int i = 0; i < names.Length; i++)
             {
                 var name = names[i];
+                if (name == null) name = "";
                 var field = fields[i];
                 formFields[name].SetValueByFieldName(field);
             }
@@ -357,6 +359,7 @@ namespace ISTU_MFC.Controllers
                 docGenerationViewModel.FormFields.Add(new FormFieldViewModel()
                 {
                     Name = names[i],
+                    Text = formFields[names[i]].Text.Text,
                     SelectedType = fields[i]
                 });
                 docGenerationViewModel.FormFields[i].SelectList = new List<SelectListItem>();

@@ -70,7 +70,7 @@ namespace Documents
         public DocumentForm OpenDocumentAsFormByPath(string docPath, bool isEditable = false)
         {
             var documentTemplate = new DocumentForm(docPath, isEditable);
-            Text lastText = new Text();
+            /*Text lastText = new Text();
             foreach (var text in documentTemplate.GetAllText())
             {
                 if (text.Text.Length > 0 && lastText.Text.Length > 0)
@@ -82,7 +82,7 @@ namespace Documents
                     }
                 }
                 lastText = text;
-            }
+            }*/
             return documentTemplate;
         }
         public DocumentTemplate CopyAndOpenDocument(DocumentTemplate documentTemplate, string pathTo, bool isEditable = false) 
