@@ -16,12 +16,71 @@
     if (!Model.IsHasDoc)
         s = "display: none";
 }
-<div>
-    <a>@DateTime.Now.ToString("g")</a>
-</div>
 <div class="justify-content-between" style="@s">
     <object>
-        <div id="pdf_container"></div>
+        @*<div id="pdf_container"></div>*@
+        <div id="word-container" class=""></div>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
+        <script src="~/Scripts/docx-preview.js"></script>
+        @{
+            if (Model.IsHasDoc)
+            {
+                <script>
+                    window.onload = function ()
+                    {
+                        openDoc('@Model.PathToPreviewDoc')
+                    }
+                </script>
+            }
+        }
+        
+        <script type="text/javascript">
+            function openDoc (path) {
+                $.ajax({
+                    method: "post",
+                    url: '@Url.Action("GetWordDocument","Employees")',
+                    dataType: 'json', 
+                    data: { "path": path },
+                    success: function (data) {
+                        //Convert Base64 string to Byte Array.
+                        var bytes = Base64ToBytes(data);
+                        //Convert BLOB to File object.
+                        var doc = new File([bytes], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                        //If Document not NULL, render it.
+                        if (doc != null) {
+                            //Set the Document options.
+                            var docxOptions = Object.assign(docx.defaultOptions, {
+                                useMathMLPolyfill: true
+                            });
+                            //Reference the Container DIV.
+                            var container = document.querySelector("#word-container");
+                            //Render the Word Document.
+                            docx.renderAsync(doc, container, null, docxOptions);
+                        }
+                    },
+                    error: function (err){
+                            alert("Ошибка")
+                            alert(err.status + err.statusText);
+                        }
+                });
+            }
+            function Base64ToBytes(base64) {
+                try{
+                    var s = window.atob(base64);
+                    }
+                catch (e) {
+                  alert('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
+                }
+                
+                var bytes = new Uint8Array(s.length);
+                for (var i = 0; i < s.length; i++) {
+                    bytes[i] = s.charCodeAt(i);
+                }
+                return bytes;
+            };
+        </script>
+        @*
         <script>
             window.onload = function (){
                 LoadPdfFromUrl('@Url.Content(@Model.RelativePathToPreviewDoc)')
@@ -79,32 +138,75 @@
                    page.render(renderContext);
                 });
             };
-        </script>
+        </script>*@
     </object>
     @{
         if (Model.IsHasDoc)
         {
             <div name="listOfFields">
-                <form asp-action="DebugAll" method="post" enctype="multipart/form-data">
+                <form asp-action="ViewDocumentOnDocGeneration" method="post" enctype="multipart/form-data">
                     @foreach (var field in Model.FormFields)
                     {
-                        <a>Name = [@field.Name]</a>
-                        <a>SelectedType = [@field.SelectedType]</a>
-                        <select name="fields">
-                            <option value="StudentName">Имя</option>
-                            <option value="StudentFamily">Фамилия</option>
-                            <option value="Student">Студент</option>
-                        </select>
-                        @Html.Hidden("names", field.Name)
-                        @Html.Hidden("pathToPreviewDoc", Model.PathToPreviewDoc)
-                        @Html.Hidden("relativePathToPreviewDoc", Model.RelativePathToPreviewDoc)
-                        @Html.Hidden("pathToFormDoc", Model.PathToFormDoc)
-                        @*<select name="select" asp-for=@field.SelectedType>
-                            <option value="Срань">Срань</option>
-                            <option value="Не Срань">Не Срань</option>
-                        </select>*@
+                        <div class="justify-content-between">
+                            <div>@field.Name: </div>
+                            <input name="names" value="@field.Name" type="hidden"/>
+                            @{
+                                Dictionary<SelectListGroup, List<SelectListItem>> selectListView = new Dictionary<SelectListGroup, List<SelectListItem>>();
+                                foreach (var selectListItem in field.SelectList)
+                                {
+                                    var selectListGroup = selectListItem.Group;
+                                    if (selectListGroup == null) selectListGroup = new SelectListGroup() { Name = "none" };
+                                    if (!selectListView.ContainsKey(selectListGroup))
+                                    {
+                                        selectListView.Add(selectListGroup, new List<SelectListItem>());
+                                    }
+                                    selectListView[selectListGroup].Add(selectListItem);
+                                }
+                            }
+                            <select name="fields">
+                                @foreach (var item in selectListView)
+                                {
+                                    @if (item.Key.Name != "none")
+                                    {
+                                        <optgroup label="@item.Key.Name">>
+                                            @foreach (var select in item.Value)
+                                            {
+                                                if (select.Value == field.SelectedType)
+                                                {
+                                                    <option value="@select.Value" selected="selected">@select.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@select.Value">@select.Text</option>
+                                                }
+                                            }
+                                        </optgroup>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var select in item.Value)
+                                        {
+                                            if (select.Value == field.SelectedType)
+                                            {
+                                                <option value="@select.Value" selected="selected">@select.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@select.Value">@select.Text</option>
+                                            }
+                                        }
+                                    }
+
+                                }
+                            </select>
+                            <br/>
+                        </div>
+
                     }
-                    <input type="submit" value="дебаг"/>
+                    @Html.Hidden("pathToPreviewDoc", Model.PathToPreviewDoc)
+                    @Html.Hidden("pathToOutputDoc", Model.PathToOutputDoc)
+                    @Html.Hidden("pathToFormDoc", Model.PathToFormDoc)
+                    <br/><br/><input type="submit" value="Отобразить документ"/>
                 </form>
             </div>
         }

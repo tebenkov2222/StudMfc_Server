@@ -143,19 +143,21 @@ namespace ISTU_MFC.Controllers
             var docViewName =
                 $"DocView_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
             var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
-            var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,"wwwroot", "temp", $"{docViewName}.pdf"); 
+            var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, $"{docViewName}.docx"); 
 
             //copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
             copyToTempAndOpenDocument.Save();
             copyToTempAndOpenDocument.Close();
             var patchToFile = copyToTempAndOpenDocument.PatchToFile;
             System.IO.File.Copy(patchToFile, pathToDownloadDocument, true);
-            documentsController.DocumentViewer.GenerateAndSavePdf(patchToFile, pathToViewDocument);
+            System.IO.File.Copy(patchToFile, pathToViewDocument, true);
+            
+            //documentsController.DocumentViewer.GenerateAndSavePdf(patchToFile, pathToViewDocument);
             var viewModel = new DownloadGenerationViewModel();
             viewModel.PathToDownloadDocument = pathToDownloadDocument;
             //var replace = pathToViewDocument.Replace("/", "\\").Replace("\\", "$").Split("$");
-            var wwwrootPathView = $"~/temp/{Path.GetFileName(pathToViewDocument)}";
-            viewModel.PathToPreviewDoc = wwwrootPathView;
+            //var wwwrootPathView = $"~/temp/{Path.GetFileName(pathToViewDocument)}";
+            viewModel.PathToPreviewDoc = Path.GetFileName(pathToViewDocument);
             viewModel.RequestId = request_id;
             copyToTempAndOpenDocument.Dispose();
             copyToTempAndOpenDocument.Document.Dispose();
@@ -173,8 +175,11 @@ namespace ISTU_MFC.Controllers
         [IgnoreAntiforgeryToken]
         public ActionResult GetWordDocument(string path)
         {
+            var documentsController = new DocumentsController(_repository);
+            var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, path);
+
             byte[] bytes;
-            using (FileStream fstream = new FileStream(path, FileMode.Open))
+            using (FileStream fstream = new FileStream(pathToViewDocument, FileMode.Open))
             {
                 byte[] array = new byte[fstream.Length];
                 fstream.Read(array, 0, array.Length);
@@ -290,10 +295,15 @@ namespace ISTU_MFC.Controllers
                 }
             }
             model.PathToFormDoc = filePath;
-            model.PathToPreviewDoc = Path.Combine(documentsSettings.RootPath, "wwwroot", "temp",
-                $"{Path.GetFileNameWithoutExtension(filePath)}.pdf");
+            var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, Path.GetFileName(filePath));
+            var pathToOutputDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.FormsTemp,  $"{fileNameWithoutExtension}_Output_{DateTime.Now.ToString("ddMMyy_hhmmss")}{fileExtenstion}");
+
+            System.IO.File.Copy(filePath, pathToViewDocument);
+            System.IO.File.Copy(filePath, pathToOutputDocument);
+            model.PathToPreviewDoc = Path.GetFileName(filePath);
+            model.PathToFormDoc = filePath;
             documentsController.DocumentViewer.GenerateAndSavePdf(filePath, model.PathToPreviewDoc);
-            model.RelativePathToPreviewDoc = $"~/temp/{Path.GetFileNameWithoutExtension(filePath)}.pdf";
+            model.PathToOutputDoc = pathToOutputDocument;
             model.IsHasDoc = true;
             model.FormFields = new List<FormFieldViewModel>();
             var form = documentsController.OpenDocumentAsFormByPath(filePath);
@@ -305,16 +315,70 @@ namespace ISTU_MFC.Controllers
                 model.FormFields.Add(new FormFieldViewModel()
                 {
                     Name = formField.Name,
-                    Id = i,
-                    SelectedType = ""
+                    SelectedType = "FieldDefault"
                 }); 
+                model.FormFields[i].SelectList = DocGenerationViewModel.DefaultSelectList();
             }
             return View("DocGenerator", model);
         }
-        [HttpPost]
-        public void DebugAll(string[] names, string[] fields, string pathToPreviewDoc, string relativePathToPreviewDoc, string pathToFormDoc)
+
+        private string GetPathViewDoc(string fileName)
         {
-            var formFieldsCount = fields.Length;
+            DocumentsController documentsController = new DocumentsController(_repository);
+            return Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, Path.GetFileName(fileName));
+        }
+        [HttpPost]
+        public IActionResult ViewDocumentOnDocGeneration(string[] names, string[] fields, string pathToPreviewDoc, string pathToOutputDoc, string pathToFormDoc)
+        {
+            DocumentsController documentsController = new DocumentsController(_repository);
+            var pathToViewDocument = GetPathViewDoc(pathToPreviewDoc);
+            System.IO.File.Copy(pathToFormDoc,pathToOutputDoc, true);
+            var outputDoc = documentsController.OpenDocumentAsFormByPath(pathToOutputDoc, true);
+            var formFieldIEnumerable = outputDoc.GetAllFormFields();
+            var formFields = formFieldIEnumerable.ToDictionary(t => t.Name);
+            for (int i = 0; i < names.Length; i++)
+            {
+                var name = names[i];
+                var field = fields[i];
+                formFields[name].SetValueByFieldName(field);
+            }
+            
+            outputDoc.Save();
+            outputDoc.Close();
+            //outputDoc.SaveAs(pathToViewDocument);
+            System.IO.File.Copy(pathToOutputDoc,pathToViewDocument, true);
+            
+            var docGenerationViewModel = new DocGenerationViewModel();
+            docGenerationViewModel.FormFields = new List<FormFieldViewModel>();
+            var formFieldList = formFieldIEnumerable.ToList();
+            for (var i = 0; i < formFieldList.Count; i++)
+            {
+                var field = formFieldList[i];
+                docGenerationViewModel.FormFields.Add(new FormFieldViewModel()
+                {
+                    Name = names[i],
+                    SelectedType = fields[i]
+                });
+                docGenerationViewModel.FormFields[i].SelectList = new List<SelectListItem>();
+                foreach (var listItem in  DocGenerationViewModel.DefaultSelectList())
+                {
+                    docGenerationViewModel.FormFields[i].SelectList.Add(
+                        new SelectListItem()
+                        {
+                            Text = listItem.Text,
+                            Group = listItem.Group,
+                            Value = listItem.Value,
+                            Selected =(bool)(listItem.Value == fields[i])
+                        }
+                    );
+                }
+            }
+
+            docGenerationViewModel.IsHasDoc = true;
+            docGenerationViewModel.PathToFormDoc = pathToFormDoc;
+            docGenerationViewModel.PathToOutputDoc = pathToOutputDoc;
+            docGenerationViewModel.PathToPreviewDoc = pathToPreviewDoc;
+            return View("DocGenerator", docGenerationViewModel);
         }
     }
 }

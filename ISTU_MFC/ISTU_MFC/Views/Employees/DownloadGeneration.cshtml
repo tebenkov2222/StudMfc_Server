@@ -18,52 +18,44 @@
         <input name="button" value="Скачать" class="btn" type="submit"/>
     </form>
 </div>
-
-
-<table id="tblFiles">
-    <tr>
-        <td><a class="view" href="javascript:;" rel='@Model.PathToDownloadDocument'>View Word Doc</a></td>
-    </tr>
-</table>
-
-
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
-<script src="~/Scripts/docx-preview.js"></script>
+<script>
+        window.onload = function ()
+    {
+        openDoc('@Model.PathToPreviewDoc')
+    }
+</script>
 <script type="text/javascript">
-    $(function () {
-        $("[id*=tblFiles] .view").click(function () {
-            var path = $(this).attr("rel");
-            $.ajax({
-                method: "post",
-                url: '@Url.Action("GetWordDocument","Employees")',
-                dataType: 'json', 
-                data: { "path": path },
-                success: function (data) {
-                    //Convert Base64 string to Byte Array.
-                    var bytes = Base64ToBytes(data);
-                    //Convert BLOB to File object.
-                    var doc = new File([bytes], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-                    //If Document not NULL, render it.
-                    if (doc != null) {
-                        //Set the Document options.
-                        var docxOptions = Object.assign(docx.defaultOptions, {
-                            useMathMLPolyfill: true
-                        });
-                        //Reference the Container DIV.
-                        var container = document.querySelector("#word-container");
-                        //Render the Word Document.
-                        docx.renderAsync(doc, container, null, docxOptions);
-                    }
-                },
-                error: function (err){
-                        alert("Ошибка")
-                        alert(err.status + err.statusText);
-                    }
-            });
+    function openDoc (path) {
+        $.ajax({
+            method: "post",
+            url: '@Url.Action("GetWordDocument","Employees")',
+            dataType: 'json', 
+            data: { "path": path },
+            success: function (data) {
+                //Convert Base64 string to Byte Array.
+                var bytes = Base64ToBytes(data);
+                //Convert BLOB to File object.
+                var doc = new File([bytes], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                //If Document not NULL, render it.
+                if (doc != null) {
+                    //Set the Document options.
+                    var docxOptions = Object.assign(docx.defaultOptions, {
+                        useMathMLPolyfill: true
+                    });
+                    //Reference the Container DIV.
+                    var container = document.querySelector("#word-container");
+                    //Render the Word Document.
+                    docx.renderAsync(doc, container, null, docxOptions);
+                }
+            },
+            error: function (err){
+                    alert("Ошибка")
+                    alert(err.status + err.statusText);
+                }
         });
-    });
-
+    }
     function Base64ToBytes(base64) {
         try{
             var s = window.atob(base64);
