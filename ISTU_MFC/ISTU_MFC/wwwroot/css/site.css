@@ -112,7 +112,7 @@ body {
 .services {
     padding: 20px 20px 10px 20px;
     border-radius: 30px;
-    border: none;
+    border: 1px solid grey;
     margin-top: 20px;
     height: 650px;
     overflow-y: auto;
@@ -196,10 +196,6 @@ body {
         display: flex;
         align-items: center;
     }
-    .sendedservices {
-        display: flex;
-        justify-content: center;
-    }
 }
 @media (max-width: 650px) {
     .login-form .form-horizontal {
@@ -251,9 +247,6 @@ body {
     .name {
         display: none;
     }
-    .sendedservices {
-        display: block;
-    }
 }
 ::-webkit-scrollbar {
     background-color: #fff;
@@ -273,6 +266,9 @@ body {
     color: #fff;
     height: 50px;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .heading_logos:hover {
     background-color: #fff;
