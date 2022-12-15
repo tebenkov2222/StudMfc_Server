@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISTU_MFC.ViewModels
 {
-    public class DocGenerationViewModel
+    public class ServiceConstructorViewModel
     {
+        public string State { get; set; }
         public string PathToPreviewDoc { get; set; }
         public string PathToOutputDoc { get; set; }
         public string PathToFormDoc { get; set; }

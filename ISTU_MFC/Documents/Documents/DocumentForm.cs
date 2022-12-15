@@ -54,6 +54,7 @@ namespace Documents.Documents
             return list;
         }
 
+        private int _countEmpty = 0;
         private List<FormFieldData> CheckFormFields(Text text)
         {
             List<FormFieldData> result = new();
@@ -66,21 +67,26 @@ namespace Documents.Documents
                 var foundedField = foundedFields[0];
                 var startIndex = foundedField.startIndex;
                 var endIndex = foundedField.endIndex;
+                FormFieldData fieldData;
                 if (startIndex == 0 && endIndex == maxIndex)
                 {
-                    var fieldData = new FormFieldData(text,_lastText.Text, startIndex, endIndex);
-                    result.Add(fieldData);
+                    fieldData = new FormFieldData(text,_lastText.Text, startIndex, endIndex);
                 }
                 else if (startIndex == 0)
                 {
-                    var fieldData = new FormFieldData(text,textValue.Substring(endIndex+1), startIndex, endIndex);
-                    result.Add(fieldData);
+                    fieldData = new FormFieldData(text,textValue.Substring(endIndex+1), startIndex, endIndex);
                 }
                 else
                 {
-                    var fieldData = new FormFieldData(text,textValue.Substring(0,startIndex), startIndex, endIndex);
-                    result.Add(fieldData);
+                    fieldData = new FormFieldData(text,textValue.Substring(0,startIndex), startIndex, endIndex);
                 }
+                if (fieldData.Name == "" || fieldData.Name == " ")
+                {
+                    _countEmpty++;
+                    fieldData.Name = $"Empty_{_countEmpty}";
+                }
+                result.Add(fieldData);
+
             }
             else
             {
@@ -88,6 +94,11 @@ namespace Documents.Documents
                 foreach (var field in foundedFields)
                 {
                     var fieldData = new FormFieldData(text,textValue.Substring(curStartIndex,field.startIndex - curStartIndex), field.startIndex, field.endIndex);
+                    if (fieldData.Name == "" || fieldData.Name == " ")
+                    {
+                        _countEmpty++;
+                        fieldData.Name = $"Empty_{_countEmpty}";
+                    }
                     result.Add(fieldData);
                     curStartIndex = field.endIndex+1;
 

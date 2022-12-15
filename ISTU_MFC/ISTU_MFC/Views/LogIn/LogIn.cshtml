@@ -6,41 +6,42 @@
 }
 <!DOCTYPE html>
 <html lang="en">
+<link rel="icon" type="image/x-icon" href="~/images/mfcIstuIcon.ico">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
 </head>
 <body>
-    <header class="d-flex justify-content-center align-items-center colored">
-        <div style="font-size:35pt;color: white;margin: 0;height: 100px" class="d-flex align-items-center">МФЦ ИжГТУ</div>
-    </header>
-    <div class="container" style="margin-top: 200px;">
-        <main role="main" class="pb-3">
-            <div name="form" class="login-form">
-                <form name="auth" method="post" class="form-horizontal">
-                    <fieldset name="caption" class="form-group">
-                        <h4 class="d-flex justify-content-center">Вход</h4>
-                    </fieldset>
+<header class="d-flex justify-content-center align-items-center colored">
+    <div style="font-size:35pt;color: white;margin: 0;height: 100px" class="d-flex align-items-center">МФЦ ИжГТУ</div>
+</header>
+<div class="container" style="margin-top: 200px;">
+    <main role="main" class="pb-3">
+        <div name="form" class="login-form">
+            <form name="auth" method="post" class="form-horizontal">
+                <fieldset name="caption" class="form-group">
+                    <h4 class="d-flex justify-content-center">Вход</h4>
+                </fieldset>
 
-                    <fieldset name="login" class="form-group">
-                        <label for="email">Email/Логин</label>
-                        <input type="text" name="email" placeholder="" autofocus required />
-                    </fieldset>
+                <fieldset name="login" class="form-group">
+                    <label for="email">Email/Логин</label>
+                    <input type="text" name="email" placeholder="" autofocus required/>
+                </fieldset>
 
-                    <fieldset name="password" class="form-group">
-                        <label for="password">Пароль</label>
-                        <input type="password" name="password" required />
-                    </fieldset>
+                <fieldset name="password" class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" name="password" required/>
+                </fieldset>
 
-                    <fieldset name="buttonIN" class="form-group">
-                        <input type="submit" name="in" value="Войти" class="btn"/>
-                    </fieldset>
-                </form>
-            </div>
-        </main>
-    </div>
+                <fieldset name="buttonIN" class="form-group">
+                    <input type="submit" name="in" value="Войти" class="btn"/>
+                </fieldset>
+            </form>
+        </div>
+    </main>
+</div>
 </body>
 </html>

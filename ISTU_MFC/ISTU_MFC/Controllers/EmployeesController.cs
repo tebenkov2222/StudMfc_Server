@@ -80,7 +80,7 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult DocGenerator()
         {
-            var docGenerationViewModel = new DocGenerationViewModel();
+            var docGenerationViewModel = new ServiceConstructorViewModel();
             docGenerationViewModel.PathToFormDoc = "";
             return View(docGenerationViewModel);
         }
@@ -88,7 +88,9 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Employee")]
         public IActionResult ServiceConstructor()
         {
-            return View();
+            var serviceConstructorModelView = new ServiceConstructorViewModel();
+            serviceConstructorModelView.State = "Info";
+            return View(serviceConstructorModelView);
         }
 
         [HttpGet]
@@ -123,7 +125,6 @@ namespace ISTU_MFC.Controllers
 
         }
 
-        private string _pathToViewDocument = "";
         [HttpGet]
         [Authorize(Roles = "Employee")]
         public IActionResult DownloadGeneration(string req_id)
@@ -188,7 +189,6 @@ namespace ISTU_MFC.Controllers
             return Json(bytes);
         }
         
-
         [HttpGet]
         [Authorize(Roles = "Employee")]
         public IActionResult ChangeStatus(string req_id)
@@ -218,8 +218,6 @@ namespace ISTU_MFC.Controllers
             return RedirectToAction("RequestGenerator", new{req_id = model.request_id});
         }
         
-        
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         [Authorize(Roles = "Employee")]
         public IActionResult Error()
@@ -281,7 +279,7 @@ namespace ISTU_MFC.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Employee")]
-        public IActionResult AddFile(IFormFile uploadedFile, DocGenerationViewModel model)
+        public IActionResult ServiceConstructorOnAddFile(IFormFile uploadedFile, ServiceConstructorViewModel viewModel)
         {
             var documentsController = new DocumentsController(_repository);
             var documentsSettings = new DocumentsController(_repository).Settings;
@@ -294,41 +292,57 @@ namespace ISTU_MFC.Controllers
                     uploadedFile.CopyTo(fileStream);
                 }
             }
-            model.PathToFormDoc = filePath;
+            viewModel.PathToFormDoc = filePath;
             var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, Path.GetFileName(filePath));
             var pathToOutputDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.FormsTemp,  $"{fileNameWithoutExtension}_Output_{DateTime.Now.ToString("ddMMyy_hhmmss")}{fileExtenstion}");
 
             System.IO.File.Copy(filePath, pathToViewDocument);
             System.IO.File.Copy(filePath, pathToOutputDocument);
-            model.PathToPreviewDoc = Path.GetFileName(filePath);
-            model.PathToFormDoc = filePath;
-            documentsController.DocumentViewer.GenerateAndSavePdf(filePath, model.PathToPreviewDoc);
-            model.PathToOutputDoc = pathToOutputDocument;
-            model.IsHasDoc = true;
-            model.FormFields = new List<FormFieldViewModel>();
+            viewModel.PathToPreviewDoc = Path.GetFileName(filePath);
+            viewModel.PathToFormDoc = filePath;
+            //documentsController.DocumentViewer.GenerateAndSavePdf(filePath, model.PathToPreviewDoc);
+            viewModel.PathToOutputDoc = pathToOutputDocument;
+            viewModel.IsHasDoc = true;
+            viewModel.FormFields = new List<FormFieldViewModel>();
             var form = documentsController.OpenDocumentAsFormByPath(filePath);
             var formFields = form.GetAllFormFields().ToList();
             for (int i = 0; i < formFields.Count; i++)
             {
                 var formField = formFields[i];
 
-                model.FormFields.Add(new FormFieldViewModel()
+                viewModel.FormFields.Add(new FormFieldViewModel()
                 {
                     Name = formField.Name,
+                    Text = formField.Text.Text,
                     SelectedType = "FieldDefault"
                 }); 
-                model.FormFields[i].SelectList = DocGenerationViewModel.DefaultSelectList();
+                viewModel.FormFields[i].SelectList = ServiceConstructorViewModel.DefaultSelectList();
             }
-            return View("DocGenerator", model);
-        }
 
+            viewModel.State = "ChangeFile";
+            return View("ServiceConstructor", viewModel);
+        }
         private string GetPathViewDoc(string fileName)
         {
             DocumentsController documentsController = new DocumentsController(_repository);
             return Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, Path.GetFileName(fileName));
         }
         [HttpPost]
-        public IActionResult ViewDocumentOnDocGeneration(string[] names, string[] fields, string pathToPreviewDoc, string pathToOutputDoc, string pathToFormDoc)
+        public IActionResult ServiceConstructorOnViewDoc(string[] names, string[] fields, string pathToPreviewDoc, string pathToOutputDoc, string pathToFormDoc)
+        {
+            var model = GenerateDocumentForm(names, fields, pathToPreviewDoc, pathToOutputDoc, pathToFormDoc);
+            model.State = "ChangeFile";
+            return View("ServiceConstructor", model);
+        }
+        [HttpPost]
+        public IActionResult ServiceConstructorOnSaveDoc(string[] names, string[] fields, string pathToPreviewDoc, string pathToOutputDoc, string pathToFormDoc)
+        {
+            var model = GenerateDocumentForm(names, fields, pathToPreviewDoc, pathToOutputDoc, pathToFormDoc);
+            model.State = "ServiceInfo";
+            return View("ServiceConstructor", model);
+        }
+
+        private ServiceConstructorViewModel GenerateDocumentForm(string[] names, string[] fields, string pathToPreviewDoc, string pathToOutputDoc, string pathToFormDoc)
         {
             DocumentsController documentsController = new DocumentsController(_repository);
             var pathToViewDocument = GetPathViewDoc(pathToPreviewDoc);
@@ -339,6 +353,7 @@ namespace ISTU_MFC.Controllers
             for (int i = 0; i < names.Length; i++)
             {
                 var name = names[i];
+                if (name == null) name = "";
                 var field = fields[i];
                 formFields[name].SetValueByFieldName(field);
             }
@@ -348,21 +363,22 @@ namespace ISTU_MFC.Controllers
             //outputDoc.SaveAs(pathToViewDocument);
             System.IO.File.Copy(pathToOutputDoc,pathToViewDocument, true);
             
-            var docGenerationViewModel = new DocGenerationViewModel();
-            docGenerationViewModel.FormFields = new List<FormFieldViewModel>();
+            var model = new ServiceConstructorViewModel();
+            model.FormFields = new List<FormFieldViewModel>();
             var formFieldList = formFieldIEnumerable.ToList();
             for (var i = 0; i < formFieldList.Count; i++)
             {
                 var field = formFieldList[i];
-                docGenerationViewModel.FormFields.Add(new FormFieldViewModel()
+                model.FormFields.Add(new FormFieldViewModel()
                 {
                     Name = names[i],
+                    Text = formFields[names[i]].Text.Text,
                     SelectedType = fields[i]
                 });
-                docGenerationViewModel.FormFields[i].SelectList = new List<SelectListItem>();
-                foreach (var listItem in  DocGenerationViewModel.DefaultSelectList())
+                model.FormFields[i].SelectList = new List<SelectListItem>();
+                foreach (var listItem in  ServiceConstructorViewModel.DefaultSelectList())
                 {
-                    docGenerationViewModel.FormFields[i].SelectList.Add(
+                    model.FormFields[i].SelectList.Add(
                         new SelectListItem()
                         {
                             Text = listItem.Text,
@@ -374,11 +390,18 @@ namespace ISTU_MFC.Controllers
                 }
             }
 
-            docGenerationViewModel.IsHasDoc = true;
-            docGenerationViewModel.PathToFormDoc = pathToFormDoc;
-            docGenerationViewModel.PathToOutputDoc = pathToOutputDoc;
-            docGenerationViewModel.PathToPreviewDoc = pathToPreviewDoc;
-            return View("DocGenerator", docGenerationViewModel);
+            model.IsHasDoc = true;
+            model.PathToFormDoc = pathToFormDoc;
+            model.PathToOutputDoc = pathToOutputDoc;
+            model.PathToPreviewDoc = pathToPreviewDoc;
+            return model;
+        }
+
+        public IActionResult ServiceConstructorOnStart()
+        {
+            var model = new ServiceConstructorViewModel();
+            model.State = "SelectFile";
+            return View("ServiceConstructor", model);
         }
     }
 }
