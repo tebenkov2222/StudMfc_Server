@@ -310,3 +310,17 @@ textarea {
 .service-list-btn:focus {
     outline: none;
 }
+.blink{
+    animation: blink 1s infinite;
+}
+@keyframes blink{
+    0% {
+        background-color: white;
+    }
+    50% {
+        background-color: #e4606d;
+    }
+    100%{
+        background-color: white;
+    }
+}
