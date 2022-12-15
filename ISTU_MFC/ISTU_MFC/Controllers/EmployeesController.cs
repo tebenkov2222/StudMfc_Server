@@ -283,7 +283,7 @@ namespace ISTU_MFC.Controllers
         {
             var documentsController = new DocumentsController(_repository);
             var documentsSettings = new DocumentsController(_repository).Settings;
-            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uploadedFile.FileName);
+            var fileNameWithoutExtension = TranslitController.ToEn(Path.GetFileNameWithoutExtension(uploadedFile.FileName));
             var fileExtenstion = Path.GetExtension(uploadedFile.FileName);
             string filePath = Path.Combine(documentsSettings.RootPath,documentsSettings.FormsTemp, $"{fileNameWithoutExtension}_{DateTime.Now.ToString("ddMMyy_hhmmss")}{fileExtenstion}");
 
