@@ -9,9 +9,8 @@
 
 @foreach (var str in Model.Info.Split("<!>"))
 {
-    <p name="hours-of-work">@str </p>
+    <p>@str</p>
 }
-
 
 <p>Предоставляемые услуги:</p>
 
@@ -20,5 +19,4 @@
     {
         <p name="servise1">@Html.ActionLink(@item.Name, "Servise", "Students", new { servId = @item.Id, subdivisionServiceId = @item.SubdivisionServiceId, formLink= @item.FormLink}, null)</p>
     }
-    
 </div>
