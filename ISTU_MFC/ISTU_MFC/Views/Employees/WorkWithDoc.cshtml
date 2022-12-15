@@ -1,24 +1,16 @@
 ﻿@model List<ModelsData.RequestModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     Layout = "_LayoutEmployees";
     ViewData["Title"] = "Home";
 }
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
-@* <div class="d-flex"> *@
-@*     <form method="post" name="ChooseRequest"> *@
-@*         <input name="Type" value="ServiceConstructor" type="hidden"/> *@
-@*         <input name="button" class="btn" type="submit" value="Конструктор услуг"/> *@
-@*     </form> *@
-@*     <div name="ServiceCollection" class="btn left-margin"><a asp-area="" asp-controller="Employees" asp-action="ServiceList">Список услуг</a></div> *@
-@* </div> *@
 
 <div name="SearchFilter">
     <form method="post" style="margin-bottom: 20px;">
         <input name="Type" value="Filter" type="hidden"/>
         <fieldset name="search" style="margin-top: 20px;">
-            <label for="status">Фильтр заявок:</label>
+            <label for="status" style="font-size: 18pt">Фильтр заявок:</label>
             <select name="Status">
                 <option value="">Выбрать статус заявки</option>
                 <option value="not processed">Необработанные</option>

@@ -58,14 +58,15 @@
 }
 @foreach (var serv in Model.ForAdd)
 {
-    <div class="grey2" style="margin: 0 0 20px 0; padding: 30px 20px">
-        <div>@serv.Id @serv.Name @serv.Info @serv.DocumentLink</div>
-        <form method="post">
-            <input type="hidden" name="Type" value="Add"/>
-            <input type="hidden" name="Id" value="@serv.Id"/>
-            <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
-            @* <input name="button" class="btn" type="submit" value="Добавить"/> *@
-            <button type="submit" class="service-list-btn"><i class="fas fa-plus"></i>Добавить</button>
-        </form>
+    <div class="grey2 d-flex justify-content-between" style="margin: 0 0 20px 0; padding: 15px 20px">
+        <div class="d-flex align-items-center" style="color: black; font-size: 18pt;">@serv.Name</div>
+        <div class="d-flex align-items-center">
+            <form method="post">
+                <input type="hidden" name="Type" value="Add"/>
+                <input type="hidden" name="Id" value="@serv.Id"/>
+                <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+                <button type="submit" class="service-list-btn"><i class="fas fa-plus"></i>Добавить</button>
+            </form>
+        </div>
     </div>
 }
