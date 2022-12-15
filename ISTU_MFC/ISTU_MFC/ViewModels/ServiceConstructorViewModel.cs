@@ -6,6 +6,10 @@ namespace ISTU_MFC.ViewModels
     public class ServiceConstructorViewModel
     {
         public string State { get; set; }
+        public string TemplateName { get; set; }
+        public string FormName { get; set; }
+        public string NameService { get; set; }
+        public string DescriptionService { get; set; }
         public string PathToPreviewDoc { get; set; }
         public string PathToOutputDoc { get; set; }
         public string PathToFormDoc { get; set; }

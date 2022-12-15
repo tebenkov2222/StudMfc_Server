@@ -322,11 +322,10 @@ namespace Repository
              $" VALUES ({serviceId}, {subdivisonId})");
         }
 
-        public string[][] CreateServices
-            (string name, string information = "", string documentLink = "", string formLink = "")
+        public string[][] CreateService(string name, string information = "", string documentLink = "", string formLink = "")
         {
             using var query = new QueryTool(_db);
-            return query.QueryWithTable($"SELECT create_services({name} , {information}, {documentLink}, {formLink});");
+            return query.QueryWithTable($"SELECT create_services('{name}' , '{information}', '{documentLink}', '{formLink}');");
         }
 
         #endregion

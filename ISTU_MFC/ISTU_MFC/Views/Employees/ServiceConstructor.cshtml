@@ -28,7 +28,7 @@
         </form>
         break;
     case "ChangeFile":
-        <div class="justify-content-between">
+        <div class="justify-content-between d-flex">
         <object>
             <div id="word-container" class="word-container"></div>
             <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -165,12 +165,9 @@
             }
         }
     </div>
-        <script src="https://colorjs.io/dist/color.global.js"></script>
         <script>
             function debugAll(nameView){
                 $("div.word-container").find("span").each (function (index){
-                    console.log("Name = [" + nameView + "]")
-                    console.log((this).innerText)
                     if((this).innerText === nameView){
                         $(this).addClass("blink")
                         setTimeout(() => {
@@ -182,26 +179,42 @@
         </script>
         break;
     case "FilesInfo":
+        <div name="form" class="login-form">
+            <form asp-action="ServiceConstructorSaveFiles" method="post" class="form-horizontal">
+                <fieldset name="nameTemplate" class="form-group">
+                    <label >Имя файла Шаблона</label>
+                    <input type="text" name="nameTemplate" placeholder="" autofocus required />
+                </fieldset>
+
+                <fieldset name="nameForm" class="form-group">
+                    <label>Имя файла Бланка заявлений</label>
+                    <input type="text" name="nameForm" placeholder="" required />
+                </fieldset>
+                
+                @Html.Hidden("pathToPreviewDoc", Model.PathToPreviewDoc)
+                @Html.Hidden("pathToOutputDoc", Model.PathToOutputDoc)
+                @Html.Hidden("pathToFormDoc", Model.PathToFormDoc)
+                
+                <fieldset name="save" class="form-group">
+                    <button class="btn" type="submit">Сохранить</button>
+                </fieldset>
+                
+            </form>
+        </div>
         break;
     case "ServiceInfo":
-        <div name="form" class="login-form">
-            <form name="auth" class="form-horizontal">
-                <fieldset name="nameservice" class="form-group">
-                    <label for="nameservice">Название услуги</label>
-                    <input type="text" name="nameservice" placeholder="" autofocus required />
+        <div  name="form" class="login-form">
+            <form asp-action="ServiceConstructorSendService" method="post" class="form-horizontal">
+                @Html.Hidden("templateName", Model.TemplateName)
+                @Html.Hidden("formName", Model.FormName)
+                <fieldset name="nameService" class="form-group">
+                    <label>Название услуги</label>
+                    <input type="text" name="nameService" placeholder="" autofocus required/>
                 </fieldset>
 
-                <fieldset name="infoservice" class="form-group">
-                    <label for="infoservice">Информация об услуге</label>
-                    <textarea></textarea>
-                </fieldset>
-
-                <fieldset name="choosepref" class="form-group">
-                    <p class="btn">Выбрать шаблон</p>
-                </fieldset>
-
-                <fieldset name="createpref" class="form-group">
-                    <p class="btn"><a asp-area="" asp-controller="Employees" asp-action="DocGenerator">Создать шаблон</a></p>
+                <fieldset name="descriptionService" class="form-group">
+                    <label>Информация об услуге</label>
+                    <textarea name="descriptionService"></textarea>
                 </fieldset>
 
                 <fieldset name="save" class="form-group">
@@ -210,4 +223,9 @@
             </form>
         </div>
         break;
+    case "Final":
+        <p>Услуга создана</p>
+        <p>Теперь вы можете ее добавить в подразделение в разделе со списокм услуг</p>
+        break;
+        
 }

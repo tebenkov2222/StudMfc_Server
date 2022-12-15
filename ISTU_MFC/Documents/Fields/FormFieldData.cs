@@ -58,7 +58,7 @@ namespace Documents.Fields
 
         private string GetFieldValueByName(string nameField)
         {
-            string patternStart = "<$";
+            string patternStart = " <$";
             string patternEnd = "$>";
             return $"{patternStart}{nameField}{patternEnd}";
         }

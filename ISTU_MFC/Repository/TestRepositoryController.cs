@@ -218,6 +218,11 @@ namespace Repository
             throw new NotImplementedException();
         }
 
+        public string CreateService(string name, string information = "", string documentLink = "", string formLink = "")
+        {
+            throw new NotImplementedException();
+        }
+
         public void CreateRequestWithFields(int subdivisionServId, List<FieldsModel> fields)
         {
             throw new NotImplementedException();

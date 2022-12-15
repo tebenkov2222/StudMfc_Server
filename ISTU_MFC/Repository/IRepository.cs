@@ -40,6 +40,7 @@ namespace Repository
         public void InsertSubdivisionsService(int serviceId, int subdivisonId);
         public void DeleteSubdivisionsService(int serviceId, int subdivisonId);
         public string GetUserFullName(int userId);
+        public string CreateService(string name, string information = "", string documentLink = "", string formLink = "");
     }
     
     

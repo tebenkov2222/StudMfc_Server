@@ -21,5 +21,9 @@
         <input name="Name" value="@Model.Name" type="hidden"/>
         <input name="RegService" value="Запросить услугу" class="btn" type="submit"/>
     </form>
-    <div name="DownloadBlank" class="btn"><a>Скачать бланк заявления</a></div>
+    <form asp-action="DownloadForm" method="post" name="DownloadForm">
+        <input name="nameService" value="@Model.Name" type="hidden"/>
+        <input name="formLink" value="@Model.FormLink" type="hidden"/>
+        <input name="DownloadForm" value="Скачать бланк заявления" class="btn" type="submit"/>
+    </form>
 </div>

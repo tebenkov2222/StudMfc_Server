@@ -300,7 +300,6 @@ namespace ISTU_MFC.Controllers
             System.IO.File.Copy(filePath, pathToOutputDocument);
             viewModel.PathToPreviewDoc = Path.GetFileName(filePath);
             viewModel.PathToFormDoc = filePath;
-            //documentsController.DocumentViewer.GenerateAndSavePdf(filePath, model.PathToPreviewDoc);
             viewModel.PathToOutputDoc = pathToOutputDocument;
             viewModel.IsHasDoc = true;
             viewModel.FormFields = new List<FormFieldViewModel>();
@@ -332,13 +331,30 @@ namespace ISTU_MFC.Controllers
         {
             var model = GenerateDocumentForm(names, fields, pathToPreviewDoc, pathToOutputDoc, pathToFormDoc);
             model.State = "ChangeFile";
+            /*var documentsController = new DocumentsController(_repository);
+            /*var pathToViewDocument = GetPathViewDoc(pathToPreviewDoc);
+            documentsController.OpenDocumentAsTemplateByPath(pathToViewDocument, true);
+            var valueFields = _repository.GetStudentProfileModel();
+            copyToTempAndOpenDocument.SetFieldValues(valueFields);
+
+            var requestModel = _repository.GetInformationAboutRequestByRequest(request_id);
+            var docName =
+                $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
+            var docViewName =
+                $"DocView_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
+            var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
+            var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, $"{docViewName}.docx"); 
+
+            //copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
+            copyToTempAndOpenDocument.Save();
+            copyToTempAndOpenDocument.Close();*/
             return View("ServiceConstructor", model);
         }
         [HttpPost]
         public IActionResult ServiceConstructorOnSaveDoc(string[] names, string[] fields, string pathToPreviewDoc, string pathToOutputDoc, string pathToFormDoc)
         {
             var model = GenerateDocumentForm(names, fields, pathToPreviewDoc, pathToOutputDoc, pathToFormDoc);
-            model.State = "ServiceInfo";
+            model.State = "FilesInfo";
             return View("ServiceConstructor", model);
         }
 
@@ -396,11 +412,42 @@ namespace ISTU_MFC.Controllers
             model.PathToPreviewDoc = pathToPreviewDoc;
             return model;
         }
-
+        [HttpPost]
         public IActionResult ServiceConstructorOnStart()
         {
             var model = new ServiceConstructorViewModel();
             model.State = "SelectFile";
+            return View("ServiceConstructor", model);
+        }
+        [HttpPost]
+        public IActionResult ServiceConstructorSendService(string templateName, string formName, string nameService, string descriptionService)
+        {
+            var model = new ServiceConstructorViewModel();
+            model.State = "Final";
+            _repository.CreateService(nameService, descriptionService, templateName, formName);
+            return View("ServiceConstructor", model);
+        }
+        [HttpPost]
+        public IActionResult ServiceConstructorSaveFiles(string nameTemplate, string nameForm, string pathToPreviewDoc, string pathToOutputDoc, string pathToFormDoc)
+        {
+            var nameTemplateEn = TranslitController.ToEn(nameTemplate);
+            var nameFormEn = TranslitController.ToEn(nameForm);
+            var documentsController = new DocumentsController(_repository);
+            var documentsSettings = documentsController.Settings;
+            var date = DateTime.Now.ToString("yyMMdd_hhmm");
+            var templateFileName = $"{nameTemplateEn}_{date}";
+            var formFileName = $"{nameFormEn}_{date}";
+            var formPath = Path.Combine(documentsSettings.RootPath, documentsController.Settings.FormsInput, $"{formFileName}.docx");
+            var templatePath = Path.Combine(documentsSettings.RootPath, documentsController.Settings.InputPath, $"{templateFileName}.docx");
+            var previewPath = Path.Combine(documentsSettings.RootPath, documentsController.Settings.TempPath, pathToPreviewDoc);
+            System.IO.File.Copy(pathToOutputDoc, templatePath, true);
+            System.IO.File.Copy(pathToFormDoc, formPath, true);
+
+            var model = new ServiceConstructorViewModel();
+            model.State = "ServiceInfo";
+            model.TemplateName = templateFileName;
+            model.FormName = formFileName;
+            
             return View("ServiceConstructor", model);
         }
     }
