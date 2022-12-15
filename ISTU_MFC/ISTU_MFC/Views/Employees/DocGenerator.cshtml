@@ -1,22 +1,17 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model ISTU_MFC.ViewModels.DocGenerationViewModel
+@model ISTU_MFC.ViewModels.ServiceConstructorViewModel
 @{
     Layout = "_LayoutEmployees";
     ViewData["Title"] = "DocGenerator";
 }
 
 
-<form asp-action="AddFile" method="post" enctype="multipart/form-data" hidden="@Model.IsHasDoc">
+<form asp-action="ServiceConstructorOnAddFile" method="post" enctype="multipart/form-data" hidden="@Model.IsHasDoc">
     <input name="model" value="@Model" style="display: none"/><br>
     <input type="file" name="uploadedFile" accept=".docx" required="required"/><br>
     <input type="submit" value="Загрузить" />
 </form>
-@{
-    string s = "display: flex";
-    if (!Model.IsHasDoc)
-        s = "display: none";
-}
-<div class="justify-content-between" style="@s">
+<div class="justify-content-between">
     <object>
         <div id="word-container" class="word-container"></div>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -35,56 +30,56 @@
         }
 
         <script type="text/javascript">
-            function openDoc (path) {
-                $.ajax({
-                    method: "post",
-                    url: '@Url.Action("GetWordDocument", "Employees")',
-                    dataType: 'json', 
-                    data: { "path": path },
-                    success: function (data) {
-                        //Convert Base64 string to Byte Array.
-                        var bytes = Base64ToBytes(data);
-                        //Convert BLOB to File object.
-                        var doc = new File([bytes], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-                        //If Document not NULL, render it.
-                        if (doc != null) {
-                            //Set the Document options.
-                            var docxOptions = Object.assign(docx.defaultOptions, {
-                                useMathMLPolyfill: true
-                            });
-                            //Reference the Container DIV.
-                            var container = document.querySelector("#word-container");
-                            //Render the Word Document.
-                            docx.renderAsync(doc, container, null, docxOptions);
+             function openDoc (path) {
+                    $.ajax({
+                        method: "post",
+                        url: '@Url.Action("GetWordDocument","Employees")',
+                        dataType: 'json', 
+                        data: { "path": path },
+                        success: function (data) {
+                            //Convert Base64 string to Byte Array.
+                            var bytes = Base64ToBytes(data);
+                            //Convert BLOB to File object.
+                            var doc = new File([bytes], "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                            //If Document not NULL, render it.
+                            if (doc != null) {
+                                //Set the Document options.
+                                var docxOptions = Object.assign(docx.defaultOptions, {
+                                    useMathMLPolyfill: true
+                                });
+                                //Reference the Container DIV.
+                                var container = document.querySelector("#word-container");
+                                //Render the Word Document.
+                                docx.renderAsync(doc, container, null, docxOptions);
+                            }
+                        },
+                        error: function (err){
+                                alert("Ошибка")
+                                alert(err.status + err.statusText);
+                            }
+                    });
+                }
+                function Base64ToBytes(base64) {
+                    try{
+                        var s = window.atob(base64);
                         }
-                    },
-                    error: function (err){
-                            alert("Ошибка")
-                            alert(err.status + err.statusText);
-                        }
-                });
-            }
-            function Base64ToBytes(base64) {
-                try{
-                    var s = window.atob(base64);
+                    catch (e) {
+                      alert('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
                     }
-                catch (e) {
-                  alert('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack);
-                }
-                
-                var bytes = new Uint8Array(s.length);
-                for (var i = 0; i < s.length; i++) {
-                    bytes[i] = s.charCodeAt(i);
-                }
-                return bytes;
-            };
+                    
+                    var bytes = new Uint8Array(s.length);
+                    for (var i = 0; i < s.length; i++) {
+                        bytes[i] = s.charCodeAt(i);
+                    }
+                    return bytes;
+                };
         </script>
     </object>
     @{
         if (Model.IsHasDoc)
         {
             <div name="listOfFields">
-                <form asp-action="ViewDocumentOnDocGeneration" method="post" enctype="multipart/form-data">
+                <form asp-action="ServiceConstructorOnViewDoc" method="post" enctype="multipart/form-data">
                     @foreach (var field in Model.FormFields)
                     {
                         <div class="justify-content-between">
@@ -168,26 +163,4 @@ function debugAll(nameView){
         })
         
 }
-function testViewBlink(){
-    let color = new Color("white");
-    let redgreen = color.range("red", {
-        space: "lch", // interpolation space
-        outputSpace: "srgb"
-    });
-    var i = 0.0;
-    var offset = 0.01;
-    window.setInterval(function(){
-        i = i+offset;
-        if (i > 0.8){
-            offset = -0.01;
-            }
-        if (i < 0.01){
-            offset = 0.01;
-            }
-            $("#divtoBlink").css("background-color", redgreen(i));
-            },10)
-            
-    }
-    
-
 </script>
