@@ -337,3 +337,7 @@ hr {
     height: 582px;
     overflow-y: auto;
 }
+.caution
+{
+    display: none;
+}
