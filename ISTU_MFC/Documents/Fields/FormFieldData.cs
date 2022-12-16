@@ -50,8 +50,23 @@ namespace Documents.Fields
                 case "SurnameStudentField":
                     SetValue(GetFieldValueByName("SurnameStudentField"));
                     break;
+                case "PatronymicStudentField":
+                    SetValue(GetFieldValueByName("PatronymicStudentField"));
+                    break;
                 case "GroupStudentField":
                     SetValue(GetFieldValueByName("GroupStudentField"));
+                    break;
+                case "StudIdStudentField":
+                    SetValue(GetFieldValueByName("StudIdStudentField"));
+                    break;
+                case "DepartamentStudent":
+                    SetValue(GetFieldValueByName("DepartamentStudent"));
+                    break;
+                case "NPSurnameDean":
+                    SetValue(GetFieldValueByName("NPSurnameDean"));
+                    break;
+                case "Date":
+                    SetValue(GetFieldValueByName("Date"));
                     break;
             }
         }

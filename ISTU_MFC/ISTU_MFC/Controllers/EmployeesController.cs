@@ -19,6 +19,8 @@ using Path = System.IO.Path;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Packaging;
 
 
 namespace ISTU_MFC.Controllers
@@ -293,6 +295,7 @@ namespace ISTU_MFC.Controllers
                 }
             }
             viewModel.PathToFormDoc = filePath;
+            var document = WordprocessingDocument.Open(filePath, false);
             var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, Path.GetFileName(filePath));
             var pathToOutputDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.FormsTemp,  $"{fileNameWithoutExtension}_Output_{DateTime.Now.ToString("ddMMyy_hhmmss")}{fileExtenstion}");
 
