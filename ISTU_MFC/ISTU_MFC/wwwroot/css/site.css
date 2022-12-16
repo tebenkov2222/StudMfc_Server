@@ -284,7 +284,36 @@ body {
 .notifications {
     padding: 20px 20px 10px 20px;
     border-radius: 30px;
-    border: none;
+    border: 1px solid grey;
+    margin-top: 20px;
+    height: 645px;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+}
+.current-notification {
+    width: 100%;
+    margin-left: 0;
+    font-size: 20px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid grey;
+}
+.not-viewed {
+    color: black;
+    background-color: #d3d3d3;
+}
+.viewed {
+    color: #8c8c8c;
+    background-color: #f5f5f5;
+}
+.notification-text {
+    display: flex;
+    flex-basis: 0;
+    align-items: center;
+    flex-grow: 1;
 }
 input {
     border-radius: 20px;
