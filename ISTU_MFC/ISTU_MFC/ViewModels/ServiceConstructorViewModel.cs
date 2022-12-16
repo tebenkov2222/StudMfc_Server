@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ISTU_MFC.ViewModels
@@ -43,5 +44,7 @@ namespace ISTU_MFC.ViewModels
                 },
             };
         }
+
+        public List<string> RequiredDocs { get; set; }
     }
 }

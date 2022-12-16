@@ -148,6 +148,38 @@
         }
     }
 </div>
+<div>
+    <div id="chosenDocs"></div>
+    <select id="docSelect">
+        <option value="">Выберите документ</option>
+        @foreach (var doc in Model.RequiredDocs)
+        {
+            <option value="@doc">@doc</option>
+        }
+    </select>
+    <button onclick="sendReq()" class="service-list-btn">Сохранить</button>
+    <script>
+            $(function(){
+                $("#docSelect").on("change", function (){
+                    $("#chosenDocs").text($("#chosenDocs").text() + " " + $(this).val());
+                })
+            })
+    </script>
+    <script>
+        function sendReq(){
+            var cdd = $("#chosenDocs").text();
+            alert(cdd);
+            $.ajax({
+                type: "POST", //Либо "GET"
+                url: "@Url.Action("GetRequiredDocs","Employees")", //Целевой скрипт
+                data: {"inpChosenDocs": cdd}, //Данные, которые посылаешь скрипту
+                success: function(){},
+                error: function (){}
+            })   
+        }
+    </script>
+</div>
+
 <script src="https://colorjs.io/dist/color.global.js"></script>
 <script>
 function debugAll(nameView){
