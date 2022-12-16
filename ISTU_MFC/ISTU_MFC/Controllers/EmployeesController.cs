@@ -85,6 +85,7 @@ namespace ISTU_MFC.Controllers
         {
             var docGenerationViewModel = new ServiceConstructorViewModel();
             docGenerationViewModel.PathToFormDoc = "";
+            docGenerationViewModel.RequiredDocs = new List<string>() { "Паспорт", "СНИЛС", "ИНН" };
             return View(docGenerationViewModel);
         }
 
@@ -423,6 +424,14 @@ namespace ISTU_MFC.Controllers
             model.State = "SelectFile";
             return View("ServiceConstructor", model);
         }
+
+        [HttpPost]
+        public IActionResult GetRequiredDocs(string inpChosenDocs)
+        {
+            Console.WriteLine(inpChosenDocs);
+            return RedirectToAction("WorkWithDoc");
+        }
+
         [HttpPost]
         public IActionResult ServiceConstructorSendService(string templateName, string formName, string nameService, string descriptionService)
         {
