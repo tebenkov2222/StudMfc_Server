@@ -9,7 +9,7 @@ namespace Documents.Documents
     {
         
         private const string _patternStart = "<$";
-        private const string _patternEnd = "\\>";
+        private const string _patternEnd = "$>";
         private IEnumerable<TemplateField> _foundFields;
 
         public IEnumerable<TemplateField> FoundFields => _foundFields;

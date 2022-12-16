@@ -6,7 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="File\FormsInput" />
       <Folder Include="File\FormsTemp" />
       <Folder Include="File\Output" />
       <Folder Include="File\Temp" />

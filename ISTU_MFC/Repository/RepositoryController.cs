@@ -477,5 +477,11 @@ namespace Repository
             var result = _db.GetUserFullName(userId);
             return $"{result[1][0]} {result[1][1]} {result[1][2]}";
         }
+
+        public string CreateService(string name, string information = "", string documentLink = "", string formLink = "")
+        {
+            var service = Database.CreateService(name,information,documentLink,formLink);
+            return service[1][0];
+        }
     }
 }
