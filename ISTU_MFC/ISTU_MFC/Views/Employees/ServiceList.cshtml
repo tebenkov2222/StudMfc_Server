@@ -43,12 +43,22 @@
                 <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
                 <button type="submit" class="service-list-btn"><i class="fas fa-toggle-on"></i></button>
             </form>
-            <form method="post">
-                <input type="hidden" name="Type" value="Delete"/>
-                <input type="hidden" name="Id" value="@serv.Id"/>
-                <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
-                <button type="submit" class="service-list-btn"><i class="fas fa-trash-alt"></i></button>
-            </form>
+            <button onclick="showCaution(true, @serv.Id)" class="service-list-btn"><i class="fas fa-trash-alt"></i></button>
+        </div>
+        <div id="@serv.Id" class="caution">
+            <div><p>Внимение!</p>
+                <p>При удалении услуги будут также удалены все заявки, отправленные для получения этой услуги.</p>
+                <p>Вы действительно хотите удалить услугу?</p>
+            </div>
+            <div class="d-flex">
+                <form method="post">
+                    <input type="hidden" name="Type" value="Delete"/>
+                    <input type="hidden" name="Id" value="@serv.Id"/>
+                    <input type="hidden" name="SubdivisonId" value="@Model.SubdivisionId"/>
+                    <button type="submit" class="service-list-btn">Удалить</button>
+                </form>
+                    <button onclick="showCaution(false, @serv.Id)" class="service-list-btn">Отмена</button>
+            </div>
         </div>
     </div>
 }
@@ -70,3 +80,17 @@
         </div>
     </div>
 }
+
+<script>
+    function showCaution(isEnable, id)
+    {
+        if (isEnable)
+        {
+            $("#" + id.toString()).css("display", "block")
+        }
+        else 
+        {
+            $("#" + id.toString()).css("display", "none")
+        }
+    }
+</script>
