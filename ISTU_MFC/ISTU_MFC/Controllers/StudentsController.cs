@@ -89,11 +89,12 @@ namespace ISTU_MFC.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Student")]
-        public IActionResult Servise(int servId, int subdivisionServiceId)
+        public IActionResult Servise(int servId, int subdivisionServiceId, string formLink)
         {
             var model = _repository.GetServicesInfo(servId);
             model.Id = servId;
             model.SubdivisionServiceId = subdivisionServiceId;
+            model.FormLink = formLink;
             return View(model);
         }
 
@@ -166,6 +167,18 @@ namespace ISTU_MFC.Controllers
             var subdivisionServId = Int32.Parse(model.SubdivisionServiceId);
             _repository.CreateRequestWithFields(subdivisionServId, fields, userId);
             return RedirectToAction("Home");
+        }
+
+        public IActionResult DownloadForm(string nameService,string formLink)
+        {
+            var documentsController = new DocumentsController(_repository);
+            var documentsSettings = documentsController.Settings;
+            var fullPath = Path.Combine(documentsSettings.RootPath, documentsSettings.FormsInput, $"{formLink}.docx");
+            string filePath = fullPath;
+            string fileType = "application/docx";
+            var name = $"Бланк {nameService}.docx";
+            string fileName = name;
+            return PhysicalFile(filePath, fileType,fileName);
         }
     }
 }

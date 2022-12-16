@@ -19,7 +19,6 @@ namespace Documents.Fields
                 { "StudIdStudentField", "Database/StudentData/StudId" },
                 { "DepartamentStudent", "Database/StudentData/Department" },
                 { "NPSurnameDean", "Database/DirectorInstitute/NPSurnameDean" },
-                { "INN", "User/INN" },
                 { "Date", "System/Date" },
             };
             Names = new Dictionary<string, string>()
@@ -28,10 +27,9 @@ namespace Documents.Fields
                 { "SurnameStudentField", "Фамилия студента" },
                 { "PatronymicStudentField", "Отчество студентов" },
                 { "GroupStudentField", "Группа студента" },
-                { "StudIdStudentField", "Номер студенческого " },
+                { "StudIdStudentField", "Номер студенческого" },
                 { "DepartamentStudent", "Институт, где учится студент" },
                 { "NPSurnameDean", "Директор института" },
-                { "INN", "Инн" },
                 { "Date", "Дата" },
             };
         }
