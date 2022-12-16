@@ -198,6 +198,11 @@ body {
         display: flex;
         align-items: center;
     }
+    .about-list {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
 }
 @media (max-width: 650px) {
     .login-form .form-horizontal {
@@ -240,6 +245,9 @@ body {
     }
     .name {
         display: none;
+    }
+    .about-list {
+        display: block;
     }
 }
 ::-webkit-scrollbar {
@@ -340,4 +348,12 @@ hr {
 .caution
 {
     display: none;
+}
+.about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 0;
+    color: black;
+    margin-left: 0;
 }

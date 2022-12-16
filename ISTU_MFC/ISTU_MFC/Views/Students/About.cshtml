@@ -5,18 +5,18 @@
     ViewData["Title"] = "About";
 }
 
-<h4 class="d-flex justify-content-center">О деканате</h4>
-
-@foreach (var str in Model.Info.Split("<!>"))
-{
-    <p>@str</p>
-}
-
-<p>Предоставляемые услуги:</p>
-
-<div name="servises">
+<h3 class="d-flex justify-content-center">О деканате</h3>
+<div class="about-list">
+    @foreach (var str in Model.Info.Split("<!>"))
+    {
+        <div class="grey2 about">@str</div>
+    }
+</div>
+<hr style="margin-top: 0">
+<h4 class="d-flex justify-content-center">Предоставляемые услуги:</h4>
+<div class="about-list">
     @foreach (var item in Model.Servises)
     {
-        <p name="servise1">@Html.ActionLink(@item.Name, "Servise", "Students", new { servId = @item.Id, subdivisionServiceId = @item.SubdivisionServiceId, formLink= @item.FormLink}, null)</p>
+        <div class="grey2 about">@Html.ActionLink(@item.Name, "Servise", "Students", new { servId = @item.Id, subdivisionServiceId = @item.SubdivisionServiceId, formLink= @item.FormLink}, null)</div>
     }
 </div>
