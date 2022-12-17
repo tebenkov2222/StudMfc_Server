@@ -7,7 +7,7 @@ namespace ISTU_MFC.Models
     {
         public string Sub_Id { get; set; }
         public string Info { get; set; }
-        public List<ServiseModel> Servises { get; set; }
+        public List<ServiceModel> Servises { get; set; }
         
     }
 }

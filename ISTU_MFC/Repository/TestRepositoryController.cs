@@ -143,12 +143,12 @@ namespace Repository
             throw new NotImplementedException();
         }
 
-        public List<ServiseModel> GetSubdivisionInfo(int sunId)
+        public List<ServiceModel> GetSubdivisionInfo(int sunId)
         {
             throw new NotImplementedException();
         }
 
-        public ServiseModel GetServicesInfo(int servId)
+        public ServiceModel GetServicesInfo(int servId)
         {
             throw new NotImplementedException();
         }

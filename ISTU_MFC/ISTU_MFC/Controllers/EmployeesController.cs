@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Packaging;
+using ModelsData;
 
 
 namespace ISTU_MFC.Controllers
@@ -335,23 +336,23 @@ namespace ISTU_MFC.Controllers
         {
             var model = GenerateDocumentForm(names, fields, pathToPreviewDoc, pathToOutputDoc, pathToFormDoc);
             model.State = "ChangeFile";
-            /*var documentsController = new DocumentsController(_repository);
-            /*var pathToViewDocument = GetPathViewDoc(pathToPreviewDoc);
-            documentsController.OpenDocumentAsTemplateByPath(pathToViewDocument, true);
-            var valueFields = _repository.GetStudentProfileModel();
-            copyToTempAndOpenDocument.SetFieldValues(valueFields);
-
-            var requestModel = _repository.GetInformationAboutRequestByRequest(request_id);
-            var docName =
-                $"{requestModel.StudentFamily}{char.ToUpper(requestModel.StudentName[0])}{char.ToUpper(requestModel.StudentSecondName[0])}_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
-            var docViewName =
-                $"DocView_{request_id}_{DateTime.Now.ToString("ddMMyy_hhmmss")}";
-            var pathToDownloadDocument = documentsController.GetPathByName(documentsController.Settings.OutputPath, docName);
-            var pathToViewDocument = Path.Combine(documentsController.Settings.RootPath,documentsController.Settings.TempPath, $"{docViewName}.docx"); 
-
-            //copyToTempAndOpenDocument.SaveAs(pathToDownloadDocument);
-            copyToTempAndOpenDocument.Save();
-            copyToTempAndOpenDocument.Close();*/
+            var documentsController = new DocumentsController(_repository);
+            var pathToViewDocument = GetPathViewDoc(pathToPreviewDoc);
+            var documentTemplate = documentsController.OpenDocumentAsTemplateByPath(pathToViewDocument, true);
+            Dictionary<string, string> valueFields = new Dictionary<string, string>()
+            {
+                {"NameStudentField", "Иван"},
+                {"SurnameStudentField", "Иванов"},
+                {"PatronymicStudentField", "Иванов"},
+                {"GroupStudentField", "Б20-191-1"},
+                {"StudIdStudentField", "12345678"},
+                {"DepartamentStudent", "Институт «Информатика и вычислительная техника»"},
+                {"NPSurnameDean", "И. О. Архипов"},
+                {"Date", DateTime.Now.ToString("ddMMyy")},
+            };
+            documentTemplate.SetFieldValues(valueFields);
+            documentTemplate.Save();
+            documentTemplate.Close();
             return View("ServiceConstructor", model);
         }
         [HttpPost]

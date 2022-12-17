@@ -23,7 +23,10 @@
     @foreach (var req in Model.Requests)
     {
         <div class="grey2 d-flex align-items-center" style="color: black; width:100%;margin-left: 0">
-            <div class="d-flex flex-grow-1 justify-content-start" style="flex-basis: 0;">№@req.Id от @req.FamylyNS</div>
+            @{
+                string NS = @req.FamylyNS != null ? $"№{@req.Id}, обрабатывает {@req.FamylyNS}": $"№{@req.Id}";
+            }
+            <div class="d-flex flex-grow-1 justify-content-start" style="flex-basis: 0;">@NS</div>
             <div class="d-block flex-grow-1 align-items-center" style="flex-basis: 0;">
                 <div class="d-flex justify-content-center">@req.State</div>
                 <div class="d-flex justify-content-center">@req.Caption</div>

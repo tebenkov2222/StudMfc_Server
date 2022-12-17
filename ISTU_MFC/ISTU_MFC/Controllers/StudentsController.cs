@@ -39,6 +39,7 @@ namespace ISTU_MFC.Controllers
         {
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
             var model = _repository.GetHomepageModel(userId);
+            model.Requests = model.Requests.OrderByDescending(t => t.CreateDateTime).ToList();
             return View(model);
         }
         
@@ -87,25 +88,33 @@ namespace ISTU_MFC.Controllers
              return View(model);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Roles = "Student")]
-        public IActionResult Servise(int servId, int subdivisionServiceId, string formLink)
-        {
+        public IActionResult ShowService(int servId, int subdivisionServiceId, string formLink)
+        { 
+            var model = _repository.GetServicesInfo(servId);
+            model.Id = servId;
+            model.SubdivisionServiceId = subdivisionServiceId;
+            model.FormLink = formLink;
+            return RedirectToAction("Service", new {servId = model.Id, subdivisionServiceId = model.SubdivisionServiceId, formLink = model.FormLink});
+        }
+        [HttpGet]
+        public IActionResult Service(int servId, int subdivisionServiceId, string formLink)
+        { 
             var model = _repository.GetServicesInfo(servId);
             model.Id = servId;
             model.SubdivisionServiceId = subdivisionServiceId;
             model.FormLink = formLink;
             return View(model);
         }
-
         [HttpPost]
         [Authorize(Roles = "Student")]
-        public IActionResult Servise(ServiseModel model)
+        public IActionResult OpenRegService (ServiceModel model)
         {
             return RedirectToAction("RegService", new { servId = model.Id, subdivisionServiceId = model.SubdivisionServiceId, name = model.Name });
         }
         
-
+        [HttpPost]
         [Authorize(Roles = "Student")]
         public IActionResult RegService(int servId, int subdivisionServiceId, string name)
         {
@@ -151,7 +160,7 @@ namespace ISTU_MFC.Controllers
         
         [HttpPost]
         [Authorize(Roles = "Student")]
-        public IActionResult RegService(UserRegModel model)
+        public IActionResult RegServiceToHome(UserRegModel model)
         {
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
             var documentsController = new DocumentsController(_repository); 
@@ -169,15 +178,14 @@ namespace ISTU_MFC.Controllers
             return RedirectToAction("Home");
         }
 
-        public IActionResult DownloadForm(string nameService,string formLink)
+        public IActionResult DownloadForm(string name,string formLink)
         {
             var documentsController = new DocumentsController(_repository);
             var documentsSettings = documentsController.Settings;
             var fullPath = Path.Combine(documentsSettings.RootPath, documentsSettings.FormsInput, $"{formLink}.docx");
             string filePath = fullPath;
             string fileType = "application/docx";
-            var name = $"Бланк {nameService}.docx";
-            string fileName = name;
+            string fileName = $"Бланк {name}.docx";
             return PhysicalFile(filePath, fileType,fileName);
         }
     }

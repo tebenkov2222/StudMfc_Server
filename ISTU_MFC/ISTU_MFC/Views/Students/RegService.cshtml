@@ -10,6 +10,7 @@
     <form method="post" name="auth" class="form-horizontal">
         <input name="Serv_id" value="@Model.Serv_id" type="hidden"/>
         <input name="Serv_name" value="@Model.Serv_name" type="hidden"/>
+        <input name="SubdivisionServiceId" value="@Model.SubdivisionServiceId" type="hidden"/>
         <fieldset name="caption" class="form-group">
             <h5>Личная информация</h5>
         </fieldset>
@@ -21,7 +22,7 @@
             </fieldset>
         }
         <fieldset class="form-group">
-            <input type="submit" name="inwith" value="Отправить" class="btn"/>
+            <input asp-action="RegServiceToHome" type="submit" name="inwith" value="Отправить" class="btn"/>
         </fieldset>
     </form>
 </div>

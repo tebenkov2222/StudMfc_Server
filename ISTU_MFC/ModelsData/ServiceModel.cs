@@ -1,6 +1,6 @@
 namespace ModelsData
 {
-    public class ServiseModel
+    public class ServiceModel
     {
         public string Name { get; set; }
         public string Info { get; set; }
