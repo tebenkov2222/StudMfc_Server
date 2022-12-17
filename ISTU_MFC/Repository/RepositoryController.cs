@@ -317,13 +317,13 @@ namespace Repository
             return answ;
         }
 
-        public List<ServiseModel> GetSubdivisionInfo(int sunId)
+        public List<ServiceModel> GetSubdivisionInfo(int sunId)
         {
             var res = _db.GetServicesBySubdivision(sunId);
-            var answ = new List<ServiseModel>();
+            var answ = new List<ServiceModel>();
             for (int i = 1; i < res.Length; i++)
             {
-                answ.Add(new ServiseModel()
+                answ.Add(new ServiceModel()
                 {
                     Name = res[i][2],
                     Id = Int32.Parse(res[i][1]),
@@ -336,10 +336,10 @@ namespace Repository
             return answ;
         }
 
-        public ServiseModel GetServicesInfo(int servId)
+        public ServiceModel GetServicesInfo(int servId)
         {
             var res = _db.GetServicesInfo(servId);
-            return new ServiseModel()
+            return new ServiceModel()
             {
                 Name = res[1][0],
                 Info = res[1][1]
@@ -428,15 +428,15 @@ namespace Repository
             var res = _db.GetAllServicesBySubdivision(subid);
             var answ = new ServisesSubdivisonModel()
             {
-                Awalible = new List<ServiseModel>(),
-                ForAdd = new List<ServiseModel>()
+                Awalible = new List<ServiceModel>(),
+                ForAdd = new List<ServiceModel>()
             };
             for (int i = 1; i < res.Length; i++)
             {
                 answ.SubdivisionId = subid.ToString();
                 if (res[i][4]!="")
                 {
-                    answ.Awalible.Add(new ServiseModel()
+                    answ.Awalible.Add(new ServiceModel()
                     {
                         Name = res[i][1],
                         Id = Int32.Parse(res[i][0]),
@@ -445,7 +445,7 @@ namespace Repository
                 }
                 else
                 {
-                    answ.ForAdd.Add(new ServiseModel()
+                    answ.ForAdd.Add(new ServiceModel()
                     {
                         Name = res[i][1],
                         Id = Int32.Parse(res[i][0]),

@@ -8,26 +8,59 @@
 {
     case "Info":
         <div class="alert-success alert-box">
-            <p>Тут короче описание того, че происходит на этой странице и какого ответственность данного этапа.</p>
-            <p>Создание шаблона состоит нескольких этапов</p>
-            <p>1. Выбор бланка заявлений в качестве будущего шаблона</p>
-            <p>2. Создание шаблона из бланка заявлений</p>
-            <p>3. Описание файлов для генерации и скачивания файлов</p>
-            <p>4. Название и описание услуги, где будет присутствовать данный файл</p>
+            <span>Все возможные услуги на нашем сайте включают себя документ, который можно сгененировать по отправленной заявке от студента</span> <br/>
+            <span>На данной странице вы можете создать подобный документ, называющийся шаблоном, и услугу, привязанную к нему.</span>
+            <p></p>
+            <label>Создание шаблона состоит нескольких этапов:</label>
+            <ul>
+            <li>Выбор бланка заявлений в качестве будущего шаблона</li>
+            <li>Создание шаблона из бланка заявлений</li>
+            <li>Выбор документов необходимых для поучения услуги</li>
+            <li>Название и описание услуги, где будет присутствовать данный файл</li>
+            </ul>
             <p></p>
             <p style="margin: 0">Чтобы начать нажмите на кнопку "Начать"</p>
+            
         </div>
 
         <form asp-action="ServiceConstructorOnStart" method="post" enctype="multipart/form-data">
-            <input type="submit" value="Начать"/>
+            <input type="submit" class="btn" value="Начать"/>
         </form>
         break;
     case "SelectFile":
-        <form asp-action="ServiceConstructorOnAddFile" method="post" enctype="multipart/form-data">
+        <div name="form" class="login-form">
+            <form asp-action="ServiceConstructorOnAddFile" method="post" class="form-horizontal" enctype="multipart/form-data">
+                <input name="model" value="@Model" style="display: none"/><br>
+                <fieldset name="nameTemplate" class="form-group">
+                    <label>Документ для заявки</label>
+                    <label class="input-file">
+                        <input style="display: none" type="file" name="uploadedFile" accept=".docx" onchange="changeInput(this)" required/>
+                        <span>Выберите файл</span>
+                    </label>
+                </fieldset>
+                <fieldset name="save" class="form-group">
+                    <button class="btn" type="submit">Загрузить</button>
+                </fieldset>
+
+            </form>
+            <script>
+            /*window.onload = function () {
+                $('.input-file input[type=file]').on('change', function(){
+                            	let file = this.files[0];
+                            	$(this).next().html(file.name);
+                            });
+                }*/
+            function changeInput(obj){
+                let file = obj.files[0];
+                $(obj).next().html(file.name);
+            }
+            </script>
+        </div>
+        @*<form asp-action="ServiceConstructorOnAddFile" method="post" enctype="multipart/form-data">
             <input name="model" value="@Model" style="display: none"/><br>
             <input type="file" name="uploadedFile" accept=".docx" required="required"/><br>
             <input type="submit" value="Загрузить"/>
-        </form>
+        </form>*@
         break;
     case "ChangeFile":
         <div class="justify-content-between d-flex">
