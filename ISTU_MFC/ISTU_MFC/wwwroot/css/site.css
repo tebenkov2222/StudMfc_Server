@@ -386,3 +386,23 @@ hr {
     color: black;
     margin-left: 0;
 }
+#shiiit {
+    background-color: #d3d3d3;
+    color: black;
+    padding: 10px 40px;
+    border-radius: 20px;
+    border: none;
+}
+#shiiit:hover {
+    background-color: #b4b4b4;
+    color: black;
+}
+.warning-box {
+    background-color: #ff5f5f;
+    color: #480000;
+    border: 1px solid black;
+    border-radius: 30px;
+    padding: 20px;
+    font-size: 16pt;
+    margin: 10px 0;
+}
