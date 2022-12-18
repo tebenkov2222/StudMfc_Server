@@ -25,9 +25,11 @@
             s = "not-viewed";
         }
         <div name="notif" class="grey2 current-notification @s">
-            <div class="notification-text justify-content-start">№@noty.RequestId</div>
-            <div class="notification-text justify-content-center">@noty.Text</div>
-            <div class="notification-text justify-content-end">@noty.Date</div>
+            <div class="wtf">
+                <div class="notification-text justify-content-start" style="flex-grow: 0">№@noty.RequestId</div>
+                <div class="notification-text justify-content-center">@noty.Text</div>
+            </div>
+            <div class="notification-text justify-content-end" style="flex-grow: 0">@noty.Date</div>
         </div>
     }
 </div>
