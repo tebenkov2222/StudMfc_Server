@@ -330,17 +330,6 @@ body {
     overflow-y: auto;
     background-color: #f5f5f5;
 }
-.current-notification {
-    width: 100%;
-    margin-left: 0;
-    font-size: 20px;
-    border-radius: 50px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid grey;
-}
 .not-viewed {
     color: black;
     background-color: #d3d3d3;
@@ -354,6 +343,39 @@ body {
     flex-basis: 0;
     align-items: center;
     flex-grow: 1;
+}
+@media (min-width: 650px) {
+    .wtf {
+        display: flex;
+        flex-basis: 0;
+        align-items: center;
+        flex-grow: 1;
+    }
+    .current-notification {
+        width: 100%;
+        margin-left: 0;
+        font-size: 20px;
+        border-radius: 50px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid grey;
+    }
+}
+@media (max-width: 650px) {
+    .wtf {
+        display: block;
+    }
+    .current-notification {
+        width: 100%;
+        margin-left: 0;
+        font-size: 20px;
+        border-radius: 50px;
+        margin-bottom: 10px;
+        display: block;
+        border: 1px solid grey;
+    }
 }
 input {
     border-radius: 20px;
