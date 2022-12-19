@@ -217,7 +217,7 @@ namespace ISTU_MFC.Controllers
             };
             var userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
             _repository.ChangeRequestStatus(Int32.Parse(model.request_id), userId , model.status);
-            if (model.message == "")
+            if (string.IsNullOrWhiteSpace(model.message))
                 model.message = $"Статус заявки изменен на \"{statuses[model.status]}\"";
             _repository.CreateMessage(Int32.Parse(model.request_id), userId, model.message);
             return RedirectToAction("RequestGenerator", new{req_id = model.request_id});
