@@ -3,7 +3,7 @@ version: "3"
 services:
  istumfc:
     container_name: istumfc
-    image: tebenkov2222/mfcistu:0.1
+    image: tebenkov2222/mfcistu:0.2
     restart: always  
     ports:
       - 80:80

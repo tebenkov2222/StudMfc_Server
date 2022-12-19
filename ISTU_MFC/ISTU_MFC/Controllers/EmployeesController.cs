@@ -22,6 +22,7 @@ using System.Text.Json;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Packaging;
 using ModelsData;
+using FormFieldData = Documents.Fields.FormFieldData;
 
 
 namespace ISTU_MFC.Controllers
@@ -308,21 +309,28 @@ namespace ISTU_MFC.Controllers
             viewModel.PathToOutputDoc = pathToOutputDocument;
             viewModel.IsHasDoc = true;
             viewModel.FormFields = new List<FormFieldViewModel>();
-            var form = documentsController.OpenDocumentAsFormByPath(filePath);
+            var form = documentsController.OpenDocumentAsFormByPath(pathToViewDocument, true);
             var formFields = form.GetAllFormFields().ToList();
             for (int i = 0; i < formFields.Count; i++)
             {
                 var formField = formFields[i];
-
-                viewModel.FormFields.Add(new FormFieldViewModel()
+                if (formField.Name.StartsWith("Empty_"))
                 {
-                    Name = formField.Name,
-                    Text = formField.Text.Text,
-                    SelectedType = "FieldDefault"
-                }); 
-                viewModel.FormFields[i].SelectList = ServiceConstructorViewModel.DefaultSelectList();
+                    formField.SetValue("");
+                }
+                else
+                {
+                    viewModel.FormFields.Add(new FormFieldViewModel()
+                    {
+                        Name = formField.Name,
+                        Text = formField.Text.Text,
+                        SelectedType = "FieldDefault",
+                        SelectList = ServiceConstructorViewModel.DefaultSelectList()
+                    }); 
+                }
             }
-
+            form.Save();
+            form.Close();
             viewModel.State = "ChangeFile";
             return View("ServiceConstructor", viewModel);
         }
@@ -343,12 +351,12 @@ namespace ISTU_MFC.Controllers
             {
                 {"NameStudentField", "Иван"},
                 {"SurnameStudentField", "Иванов"},
-                {"PatronymicStudentField", "Иванов"},
+                {"PatronymicStudentField", "Иванович"},
                 {"GroupStudentField", "Б20-191-1"},
                 {"StudIdStudentField", "12345678"},
                 {"DepartamentStudent", "Институт «Информатика и вычислительная техника»"},
                 {"NPSurnameDean", "И. О. Архипов"},
-                {"Date", DateTime.Now.ToString("ddMMyy")},
+                {"Date", DateTime.Now.ToString("dd.MM.yy")},
             };
             documentTemplate.SetFieldValues(valueFields);
             documentTemplate.Save();
@@ -369,7 +377,19 @@ namespace ISTU_MFC.Controllers
             var pathToViewDocument = GetPathViewDoc(pathToPreviewDoc);
             System.IO.File.Copy(pathToFormDoc,pathToOutputDoc, true);
             var outputDoc = documentsController.OpenDocumentAsFormByPath(pathToOutputDoc, true);
-            var formFieldIEnumerable = outputDoc.GetAllFormFields();
+            var formFieldResult = outputDoc.GetAllFormFields();
+            List<FormFieldData> formFieldIEnumerable = new List<FormFieldData>();
+            foreach (var field in formFieldResult)
+            {
+                if (field.Name.StartsWith("Empty_"))
+                {
+                    field.SetValue("");
+                }
+                else
+                {
+                    formFieldIEnumerable.Add(field);
+                }
+            }
             var formFields = formFieldIEnumerable.ToDictionary(t => t.Name);
             for (int i = 0; i < names.Length; i++)
             {
