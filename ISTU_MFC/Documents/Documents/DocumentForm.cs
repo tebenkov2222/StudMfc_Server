@@ -114,7 +114,11 @@ namespace Documents.Documents
             foreach (var text in allText)
             {
                 //Console.WriteLine($"Text = [{text.Text}]");
-                result.AddRange(CheckFormFields(text));
+                var checkFormFields = CheckFormFields(text);
+                foreach (var field in checkFormFields)
+                {
+                    result.Add(field);
+                }
                 _lastText = text;
             }
 
