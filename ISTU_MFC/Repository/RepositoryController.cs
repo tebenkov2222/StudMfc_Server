@@ -365,7 +365,7 @@ namespace Repository
         
         public List<RequestModel> GetFilteredRequests(int userId, string status)
         {
-            var res = _db.GetTableAvailableRequestsForEmployees(userId, status);
+            var res = _db.GetFiltredRequestsForEmployees(userId, status);
             var answ = new List<RequestModel>();
             for (int i = 1; i < res.Length; i++)
             {
