@@ -5,11 +5,45 @@ namespace Documents.Fields
     public class FormFieldData
     {
         public Text Text;
+        public FormFieldData JoinedLastFormField;
         public string Name;
-        public int StartIndex;
-        public int EndIndex;
+
+        public int StartIndex
+        {
+            get
+            {
+                if (_isJoinedText)
+                {
+                    return _startIndex + JoinedLastFormField.EndIndex;
+                }
+                else return _startIndex;
+            }
+            set
+            {
+                _startIndex = value;
+            }
+        }
+
+        public int EndIndex
+        {
+            get
+            {
+                if (_isJoinedText)
+                {
+                    return _endIndex + JoinedLastFormField.EndIndex;
+                }
+                else return _endIndex;
+            }
+            set
+            {
+                _endIndex = value;
+            }
+        }
+        private int _startIndex;
+        private int _endIndex;
         private string _defaultValue;
         private bool _isChanged;
+        private bool _isJoinedText;
         public string Value
         {
             get => Text.Text.Substring(StartIndex, EndIndex - StartIndex);
@@ -17,7 +51,7 @@ namespace Documents.Fields
             {
                 var start = Text.Text.Substring(0, StartIndex);
                 var end = Text.Text.Substring(EndIndex+1);
-                EndIndex = StartIndex + value.Length-1;
+                EndIndex = _startIndex + value.Length-1;
                 Text.Text = start + value + end;
             }
         }
@@ -31,6 +65,11 @@ namespace Documents.Fields
             _defaultValue = Value;
         }
 
+        public void JoinLastField(FormFieldData field)
+        {
+            _isJoinedText = true;
+            JoinedLastFormField = field;
+        }
         public void SetValue(string value)
         {
             _isChanged = true;
@@ -43,6 +82,9 @@ namespace Documents.Fields
             {
                 case "FieldDefault":
                     ResetValue();
+                    break;
+                case "DeleteField":
+                    SetValue("");
                     break;
                 case "NameStudentField":
                     SetValue(GetFieldValueByName("NameStudentField"));
