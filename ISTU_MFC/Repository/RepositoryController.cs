@@ -317,7 +317,7 @@ namespace Repository
             return answ;
         }
 
-        public List<ServiceModel> GetSubdivisionInfo(int sunId)
+        public List<ServiceModel> GetSubdivisionInfo(int sunId, int userId)
         {
             var res = _db.GetServicesBySubdivision(sunId);
             var answ = new List<ServiceModel>();
@@ -331,6 +331,7 @@ namespace Repository
                     DocumentLink = res[i][6],
                     FormLink = res[i][7],
                     Info = res[i][3],
+                    Availability = _db.CheckAvailability(userId, sunId, res[i][2])
                 });
             }
             return answ;
