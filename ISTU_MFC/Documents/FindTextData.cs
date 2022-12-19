@@ -9,7 +9,7 @@ namespace Documents
         public int EndIndex = -1;
         public string Substring() => Text.Text.Substring(StartIndex, EndIndex - StartIndex);
 
-        public FindTextData(ref Text text, int startIndex, int endIndex)
+        public FindTextData(Text text, int startIndex, int endIndex)
         {
             Text = text;
             StartIndex = startIndex;

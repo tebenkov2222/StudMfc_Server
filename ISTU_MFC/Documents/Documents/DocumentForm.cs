@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Wordprocessing;
 using FormFieldData = Documents.Fields.FormFieldData;
@@ -10,6 +11,7 @@ namespace Documents.Documents
     {
         private const char _pattern = '_';
         private Text _lastText = new Text();
+        private bool _lastTextHasFields = false;
 
         public DocumentForm(string patchToFile, bool isEditable = false) : base(patchToFile, isEditable)
         {
@@ -55,6 +57,7 @@ namespace Documents.Documents
         }
 
         private int _countEmpty = 0;
+        private int _countDelete = 0;
         private List<FormFieldData> CheckFormFields(Text text)
         {
             List<FormFieldData> result = new();
@@ -70,7 +73,15 @@ namespace Documents.Documents
                 FormFieldData fieldData;
                 if (startIndex == 0 && endIndex == maxIndex)
                 {
-                    fieldData = new FormFieldData(text,_lastText.Text, startIndex, endIndex);
+                    if (_lastTextHasFields)
+                    {
+                        fieldData = new FormFieldData(text,$"Delete_{_countDelete}", startIndex, endIndex);
+                        _countDelete++;
+                    }
+                    else
+                    {
+                        fieldData = new FormFieldData(text,_lastText.Text, startIndex, endIndex);
+                    }
                 }
                 else if (startIndex == 0)
                 {
@@ -91,9 +102,23 @@ namespace Documents.Documents
             else
             {
                 int curStartIndex = 0;
-                foreach (var field in foundedFields)
+                FormFieldData lastFieldData;
+
+                for (var i = 0; i < foundedFields.Count; i++)
                 {
-                    var fieldData = new FormFieldData(text,textValue.Substring(curStartIndex,field.startIndex - curStartIndex), field.startIndex, field.endIndex);
+                    var field = foundedFields[i];
+                    FormFieldData fieldData;
+                    if (i > 0)
+                    {
+                        lastFieldData = result.Last();
+                        fieldData = new FormFieldData(text,textValue.Substring(curStartIndex,field.startIndex - curStartIndex), field.startIndex - lastFieldData.EndIndex, field.endIndex - lastFieldData.EndIndex);
+                        fieldData.JoinLastField(lastFieldData);
+                    }
+                    else
+                    {
+                        fieldData = new FormFieldData(text,textValue.Substring(curStartIndex,field.startIndex - curStartIndex), field.startIndex, field.endIndex);
+
+                    }
                     if (fieldData.Name == "" || fieldData.Name == " ")
                     {
                         _countEmpty++;
@@ -101,7 +126,6 @@ namespace Documents.Documents
                     }
                     result.Add(fieldData);
                     curStartIndex = field.endIndex+1;
-
                 }
             }
             return result;
@@ -120,6 +144,7 @@ namespace Documents.Documents
                     result.Add(field);
                 }
                 _lastText = text;
+                _lastTextHasFields = checkFormFields.Count > 0;
             }
 
             return result;

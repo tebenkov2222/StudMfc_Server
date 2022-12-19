@@ -68,12 +68,66 @@ namespace Documents.Documents
         public IEnumerable<FindTextData> FindTextByFirstEntry(string pattern)
         {
            return GetAllText().Where(t => t.Text.LastIndexOf(pattern) != -1)
-                .Select(t => new FindTextData(ref t, t.Text.LastIndexOf(pattern), t.Text.Length -1));
+                .Select(t => new FindTextData(t, t.Text.LastIndexOf(pattern), t.Text.Length -1));
+        }
+        private List<(int startIndex, int endIndex)> CheckText(Text text, string patternStart, string patternEnd)
+        {
+            var list = new List<(int startIndex, int endIndex)>();
+            var textValue = text.Text;
+            bool isPatternStarted = false;
+            int startIndex = 0;
+            string textAfter = "", textBefore = "";
+            textAfter = textValue;
+            for (var i = 0; i < textValue.Length; i++)
+            {
+                char c = textValue[i];
+                    
+                if (textAfter.StartsWith(patternStart))
+                {
+                    if (!isPatternStarted)
+                    {
+                        startIndex = i;
+                    }
+                    isPatternStarted = true;
+                }
+                else
+                if (textBefore.EndsWith(patternEnd))
+                {
+                    if (isPatternStarted)
+                    {
+                        isPatternStarted = false;
+                        list.Add((startIndex, i));
+                    }
+                }
+                if (i == textValue.Length - 1)
+                {
+                    if (isPatternStarted)
+                    {
+                        list.Add((startIndex, i));
+                    }
+                }
+
+                textBefore += textAfter.Length > 0 ? textAfter[0] : "";
+                textAfter = textAfter.Length > 0 ? textAfter.Substring(1) : "";
+            }
+            return list;
         }
         public IEnumerable<FindTextData> FindTextByFirstAndLatestEntry(string startPattern, string endPattern)
         {
-            var enumerable = GetAllText().Where(t => t.Text.LastIndexOf(startPattern) != -1 && t.Text.LastIndexOf(endPattern) != -1); ;
-            return enumerable.Select(t => new FindTextData(ref t, t.Text.LastIndexOf(startPattern),t.Text.LastIndexOf(endPattern) + endPattern.Length));
+            List<FindTextData> res = new List<FindTextData>();
+            foreach (var text in GetAllText())
+            {
+                var valueTuples = CheckText(text, startPattern, endPattern);
+                foreach (var fieldCoord in valueTuples)
+                {
+                    res.Add(new FindTextData(text,fieldCoord.startIndex, fieldCoord.endIndex) );
+                }
+            }
+
+            return res;
+            var enumerable = GetAllText().Where(t => t.Text.LastIndexOf(startPattern) != -1 && t.Text.LastIndexOf(endPattern) != -1);
+
+            return enumerable.Select(t => new FindTextData(t, t.Text.LastIndexOf(startPattern),t.Text.LastIndexOf(endPattern) + endPattern.Length));
         }
         public IEnumerable<Paragraph> GetParagraphs()
         {

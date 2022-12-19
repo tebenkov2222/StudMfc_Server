@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Documents.Fields;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Documents.Documents
 {
@@ -36,14 +36,33 @@ namespace Documents.Documents
                 }
                 else
                 {
-                    throw new WarningException($"Field {field.Name} does not exist in nameValuesDictionary");
+                    //throw new WarningException($"Field {field.Name} does not exist in nameValuesDictionary");
                 }
             }
         }
 
         private IEnumerable<TemplateField> FindAllFields()
         {
-           return FindTextByFirstAndLatestEntry(_patternStart, _patternEnd).Select(t => new TemplateField(t));
+            List<TemplateField> result = new List<TemplateField>();
+            var fondedTexts = FindTextByFirstAndLatestEntry(_patternStart, _patternEnd).ToList();
+            for (int i = 0; i < fondedTexts.Count; i++)
+            {
+                var findTextData = fondedTexts[i];
+                var templateField = new TemplateField(findTextData);
+                if (i > 0)
+                {
+                    var lastField = result.Last();
+                    if (lastField.Text == findTextData.Text)
+                    {
+                        templateField.JointField(lastField);
+                    }
+                }
+                result.Add( templateField);
+                
+            }
+
+            return result;
+            //return fondedTexts.Select(t => new TemplateField(t));
         }
     }
 }

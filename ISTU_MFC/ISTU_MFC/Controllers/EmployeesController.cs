@@ -314,7 +314,7 @@ namespace ISTU_MFC.Controllers
             for (int i = 0; i < formFields.Count; i++)
             {
                 var formField = formFields[i];
-                if (formField.Name.StartsWith("Empty_"))
+                if (formField.Name.StartsWith("Delete_"))
                 {
                     formField.SetValue("");
                 }
@@ -381,7 +381,7 @@ namespace ISTU_MFC.Controllers
             List<FormFieldData> formFieldIEnumerable = new List<FormFieldData>();
             foreach (var field in formFieldResult)
             {
-                if (field.Name.StartsWith("Empty_"))
+                if (field.Name.StartsWith("Delete_"))
                 {
                     field.SetValue("");
                 }

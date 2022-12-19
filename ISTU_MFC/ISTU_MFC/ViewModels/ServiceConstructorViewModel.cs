@@ -31,6 +31,11 @@ namespace ISTU_MFC.ViewModels
                 },
                 new SelectListItem()
                 {
+                    Text = "Спрятать поле",
+                    Value = "DeleteField"
+                },
+                new SelectListItem()
+                {
                     Text = "Имя ",
                     Value = "NameStudentField",
                     Group = groupStudent
