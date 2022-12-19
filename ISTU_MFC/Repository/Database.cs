@@ -70,6 +70,14 @@ namespace Repository
              " FROM list_of_requests_for_employees " + $"WHERE status <> '{status}' AND user_id = {userId};");
         }
         
+        public string[][] GetFiltredRequestsForEmployees(int userId, string status)
+        {
+            using var query = new QueryTool(_db);
+            return query.QueryWithTable
+            ("SELECT request_id, name_service, stud_family, stud_name, stud_secondname, create_date " +
+             " FROM list_of_requests_for_employees " + $"WHERE status = '{status}' AND user_id = {userId};");
+        }
+        
         // получить таблицу заявок по фамилии студента для сотрудника
         // (метод для поиска сотрудником всех заявок по фамилии студента)
         public string[][] GetTableNamedRequestsForEmployees(int userId, string family)
