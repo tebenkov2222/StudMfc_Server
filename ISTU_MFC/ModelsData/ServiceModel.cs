@@ -9,5 +9,6 @@ namespace ModelsData
         public string DocumentLink { get; set; }
         public string FormLink { get; set; }
         public string Status { get; set; }
+        public bool Availability { get; set; }
     }
 }

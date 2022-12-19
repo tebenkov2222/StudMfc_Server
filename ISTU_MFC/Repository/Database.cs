@@ -149,6 +149,16 @@ namespace Repository
              " FROM information_about_requests " + $"WHERE student_user_id = '{userId}';");
         }
 
+        public bool CheckAvailability(int userId, int subId, string nameServ)
+        {
+            using var query = new QueryTool(_db);
+            var result =  query.QueryWithTable
+            ($"SELECT * FROM information_about_requests WHERE student_user_id = '{userId}'"+
+             $" AND subdivision_id = '{subId}' AND name_service = '{nameServ}' "+
+             " AND status <> 'closed' AND status <> 'processed';");
+            return result.Length <= 1;
+        }
+
         #endregion
 
         #region Request
