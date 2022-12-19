@@ -79,11 +79,12 @@ namespace ISTU_MFC.Controllers
         [Authorize(Roles = "Student")]
         public IActionResult About(string sub_id, string info)
         {
+            int userId = Int32.Parse(HttpContext.User.FindFirst(ClaimsIdentity.DefaultNameClaimType).Value);
             var model = new AboutModel()
             {
                 Sub_Id = sub_id,
                 Info = info,
-                Servises = _repository.GetSubdivisionInfo(Int32.Parse(sub_id))
+                Servises = _repository.GetSubdivisionInfo(Int32.Parse(sub_id), userId)
             };
              return View(model);
         }
