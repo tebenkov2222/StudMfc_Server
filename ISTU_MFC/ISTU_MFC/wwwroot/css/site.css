@@ -176,7 +176,8 @@ body {
 .form-panel-text{
     margin: 0 auto;
     text-align: center;
-    max-width: fit-content;
+    width: 252px;
+    overflow-wrap: break-word;
 }
 .btn-big {
     background-color: #164ACF;
