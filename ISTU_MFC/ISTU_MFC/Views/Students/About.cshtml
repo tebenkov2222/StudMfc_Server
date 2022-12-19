@@ -18,7 +18,6 @@
     @foreach (var item in Model.Servises)
     {
         <form method="post" name="ServRequest">
-            <div>@item.Availability</div>
             <div name="form" class="form-panel">
                 @Html.Hidden("name", @item.Name)
                 @Html.Hidden("servId", @item.Id)
@@ -26,7 +25,14 @@
                 @Html.Hidden("formLink", @item.FormLink)
                 <b class="form-panel-text">@item.Name</b>
                 <label class="form-panel-text">@item.Info</label>
-                <button asp-action="RegService" class="btn" type="submit" style="margin: auto; width: 190px">Заполнить</button>
+                @if (item.Availability)
+                {
+                    <button asp-action="RegService" class="btn" type="submit" style="margin: auto; width: 190px">Заполнить</button>
+                }
+                else
+                {
+                    <button asp-action="RegService" class="btn" type="submit" style="margin: auto; width: 190px" disabled>Заполнить</button>
+                }
                 <button asp-action="DownloadForm" class="btn" type="submit" style="margin: auto; width: 190px">Скачать бланк</button>
             </div>
             @*<button asp-action="ShowService" asp-controller="Students" class="form-panel about">"@item.Name"</button>*@

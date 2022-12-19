@@ -5,7 +5,11 @@
     Layout = "_LayoutEmployees";
     ViewData["Title"] = "DownloadGeneration";
 }
-
+<form method="post" name="Download">
+    <input name="Type" value="ChooseRequest" type="hidden"/>
+    <input name="Id" value="@Model.RequestId" type="hidden"/>
+    <button asp-action="WorkWithDoc" class="btn" type="submit">Назад</button>
+</form>
 <div class="d-flex justify-content-center">
     <h3>ID заявки:</h3>
     <h3 name="IDservice">@Model.RequestId</h3>

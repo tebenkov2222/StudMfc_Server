@@ -107,6 +107,10 @@ body {
     background-color: #0f3598;
     color: white;
 }
+.btn:disabled {
+    background-color: #5a6268;
+    color: white;
+}
 .left-margin {
     margin: 0 0 0 20px;
 }

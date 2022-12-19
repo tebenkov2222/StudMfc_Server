@@ -103,7 +103,7 @@ namespace Documents.Documents
                 {
                     if (isPatternStarted)
                     {
-                        list.Add((startIndex, i));
+                        list.Add((startIndex, i+1));
                     }
                 }
 
