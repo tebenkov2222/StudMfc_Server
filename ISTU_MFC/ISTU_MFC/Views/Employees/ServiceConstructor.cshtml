@@ -32,7 +32,7 @@
             <form asp-action="ServiceConstructorOnAddFile" method="post" class="form-horizontal" enctype="multipart/form-data">
                 <input name="model" value="@Model" style="display: none"/><br>
                 <fieldset name="nameTemplate" class="form-group">
-                    <label>Документ для заявки</label>
+                    <label>Документ для услуги</label>
                     <label class="input-file">
                         <input style="display: none" type="file" name="uploadedFile" accept=".docx" onchange="changeInput(this)" required/>
                         <span>Выберите файл</span>
